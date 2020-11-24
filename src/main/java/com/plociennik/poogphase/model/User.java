@@ -14,11 +14,10 @@ public class User {
     private LocalDate dateOfBirth;
     private List<User> friends;
     private Map<User, ChatLog> chatArchive;
-    private List<ChatMessage> messages;
     private List<Post> posts;
     private List<Comment> comments;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, Map<User, ChatLog> chatArchive, List<ChatMessage> messages, List<Post> posts, List<Comment> comments) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, Map<User, ChatLog> chatArchive, List<Post> posts, List<Comment> comments) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -28,7 +27,6 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.friends = friends;
         this.chatArchive = chatArchive;
-        this.messages = messages;
         this.posts = posts;
         this.comments = comments;
     }
@@ -36,7 +34,6 @@ public class User {
     public User() {
         friends = new ArrayList<>();
         chatArchive = new HashMap<>();
-        messages = new ArrayList<>();
         posts = new ArrayList<>();
         comments = new ArrayList<>();
     }
@@ -115,14 +112,6 @@ public class User {
 
     public void setChatArchive(Map<User, ChatLog> chatArchive) {
         this.chatArchive = chatArchive;
-    }
-
-    public List<ChatMessage> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<ChatMessage> messages) {
-        this.messages = messages;
     }
 
     public List<Post> getPosts() {

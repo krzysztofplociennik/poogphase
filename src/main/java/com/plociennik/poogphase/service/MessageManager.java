@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class MessageManager {
 
     public void sendMessage(User author, User recipient, ChatMessage chatMessage) {
-        author.getMessages().add(chatMessage);
         if (!author.getChatArchive().containsKey(recipient)) {
             author.getChatArchive().put(recipient,
                     new ChatLog(1L, author, recipient, new ArrayList<>()));

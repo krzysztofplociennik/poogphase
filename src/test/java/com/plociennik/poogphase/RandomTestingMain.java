@@ -26,17 +26,9 @@ public class RandomTestingMain {
                 LocalDate.of(2020, 11, 24), LocalTime.of(16, 52)));
         ChatMessage chatMessage2 = new ChatMessage(1L, paula, mark, "Oh, hey Mark! How are you?", LocalDateTime.of(
                 LocalDate.of(2020, 11, 24), LocalTime.of(16, 54)));
-        ChatLog mark_paulaChatLog = new ChatLog();
 
         manager.sendMessage(mark, paula, chatMessage1);
         manager.sendMessage(paula, mark, chatMessage2);
-
-//        System.out.println(mark.getMessages().size());
-
-
-        Map<User, ChatLog> chats = mark.getChatArchive();
-
-//        System.out.println(chats.containsKey(paula));
 
         manager.showChatLog(mark, paula);
     }
