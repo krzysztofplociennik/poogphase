@@ -2,9 +2,7 @@ package com.plociennik.poogphase.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class User {
     private long id;
@@ -16,9 +14,11 @@ public class User {
     private LocalDate dateOfBirth;
     private List<User> friends;
     private Map<User, ChatLog> chatArchive;
+    private List<ChatMessage> messages;
+    private List<Post> posts;
+    private List<Comment> comments;
 
-    public User(long id, String username, String password, String mail, String firstName,
-                String lastName, LocalDate dateOfBirth, List<User> friends, Map<User, ChatLog> chatArchive) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, Map<User, ChatLog> chatArchive, List<ChatMessage> messages, List<Post> posts, List<Comment> comments) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -28,9 +28,17 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.friends = friends;
         this.chatArchive = chatArchive;
+        this.messages = messages;
+        this.posts = posts;
+        this.comments = comments;
     }
 
     public User() {
+        friends = new ArrayList<>();
+        chatArchive = new HashMap<>();
+        messages = new ArrayList<>();
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
     }
 
     public long getId() {
@@ -109,6 +117,30 @@ public class User {
         this.chatArchive = chatArchive;
     }
 
+    public List<ChatMessage> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<ChatMessage> messages) {
+        this.messages = messages;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,6 +159,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getFirstName(), getLastName(), getDateOfBirth(), getFriends(), chatArchive);
+        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getFirstName(), getLastName(), getDateOfBirth());
     }
 }
