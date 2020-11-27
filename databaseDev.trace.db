@@ -1,0 +1,8 @@
+2020-11-26 15:27:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "DUMMY_MODEL" nie istnieje
+Table "DUMMY_MODEL" not found; SQL statement:
+select count(*) as col_0_0_ from dummy_model dummymodel0_ [42102-200]
+2020-11-27 14:28:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "DUMMY_MODEL" nie istnieje
+Table "DUMMY_MODEL" not found; SQL statement:
+select count(*) as col_0_0_ from dummy_model dummymodel0_ [42102-200]

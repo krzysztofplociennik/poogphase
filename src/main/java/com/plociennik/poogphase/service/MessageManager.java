@@ -21,12 +21,12 @@ public class MessageManager {
 
     public void showChatLog(User user1, User user2) {
         if (user1.getChatArchive().containsKey(user2)) {
-            System.out.println("Chat log of " + user1.getFirstName() + " and " + user2 + ":\n");
+            System.out.println("Chat log of " + user1.getFirstName() + " and " + user2.getFirstName() + ":\n");
             for (ChatMessage message : user1.getChatArchive().get(user2).getLog()) {
                 System.out.println(message.getDateTime().toString() + " " + message.getAuthor().getFirstName() + ": " + message.getContent());
             }
         } else {
-            System.out.println("There is no chat log yet");
+            System.out.println("There is no chat log yet between " + user1.getFirstName() + " and " + user2.getFirstName());
         }
     }
 }
