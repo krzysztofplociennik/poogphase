@@ -1,7 +1,9 @@
 package com.plociennik.poogphase.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Comment {
     private long id;
     private User author;
@@ -20,6 +22,8 @@ public class Comment {
     public Comment() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -28,6 +32,7 @@ public class Comment {
         this.id = id;
     }
 
+    @ManyToOne
     public User getAuthor() {
         return author;
     }
@@ -44,6 +49,7 @@ public class Comment {
         this.content = content;
     }
 
+    @ManyToOne
     public Post getPost() {
         return post;
     }

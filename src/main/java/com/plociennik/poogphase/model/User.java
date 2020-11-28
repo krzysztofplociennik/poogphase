@@ -1,13 +1,11 @@
 package com.plociennik.poogphase.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+@Entity(name = "users")
 public class User {
     private long id;
     private String username;
@@ -17,11 +15,11 @@ public class User {
     private String lastName;
     private LocalDate dateOfBirth;
     private List<User> friends;
-    private Map<User, ChatLog> chatArchive;
     private List<Post> posts;
     private List<Comment> comments;
+    private Map<User, ChatLog> chatArchive;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, Map<User, ChatLog> chatArchive, List<Post> posts, List<Comment> comments) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, List<Post> posts, List<Comment> comments, Map<User, ChatLog> chatArchive) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,18 +28,20 @@ public class User {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.friends = friends;
-        this.chatArchive = chatArchive;
         this.posts = posts;
         this.comments = comments;
+        this.chatArchive = chatArchive;
     }
 
     public User() {
         friends = new ArrayList<>();
-        chatArchive = new HashMap<>();
         posts = new ArrayList<>();
         comments = new ArrayList<>();
+        chatArchive = new HashMap<>();
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -50,6 +50,7 @@ public class User {
         this.id = id;
     }
 
+    @Column
     public String getUsername() {
         return username;
     }
@@ -58,6 +59,7 @@ public class User {
         this.username = username;
     }
 
+    @Column
     public String getPassword() {
         return password;
     }
@@ -66,6 +68,7 @@ public class User {
         this.password = password;
     }
 
+    @Column
     public String getMail() {
         return mail;
     }
@@ -74,6 +77,7 @@ public class User {
         this.mail = mail;
     }
 
+    @Column
     public String getFirstName() {
         return firstName;
     }
@@ -82,6 +86,7 @@ public class User {
         this.firstName = firstName;
     }
 
+    @Column
     public String getLastName() {
         return lastName;
     }
@@ -90,10 +95,12 @@ public class User {
         this.lastName = lastName;
     }
 
+    @Transient
     public int getAge() {
         return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
     }
 
+    @Column
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -102,6 +109,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @ElementCollection
     public List<User> getFriends() {
         return friends;
     }
@@ -110,14 +118,11 @@ public class User {
         this.friends = friends;
     }
 
-    public Map<User, ChatLog> getChatArchive() {
-        return chatArchive;
-    }
-
-    public void setChatArchive(Map<User, ChatLog> chatArchive) {
-        this.chatArchive = chatArchive;
-    }
-
+    @OneToMany(
+            targetEntity = Post.class,
+            mappedBy = "author",
+            cascade = CascadeType.REMOVE
+    )
     public List<Post> getPosts() {
         return posts;
     }
@@ -126,12 +131,30 @@ public class User {
         this.posts = posts;
     }
 
+    @OneToMany(
+            targetEntity = Comment.class,
+            mappedBy = "author",
+            cascade = CascadeType.REMOVE
+    )
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @OneToMany(
+            targetEntity = ChatMessage.class,
+            mappedBy = "author",
+            cascade = CascadeType.REMOVE
+    )
+    public Map<User, ChatLog> getChatArchive() {
+        return chatArchive;
+    }
+
+    public void setChatArchive(Map<User, ChatLog> chatArchive) {
+        this.chatArchive = chatArchive;
     }
 
     @Override
@@ -152,6 +175,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getFirstName(), getLastName(), getDateOfBirth());
+        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getFirstName(), getLastName(), getDateOfBirth(), (int)(Math.random() * 9999) + 1);
     }
 }

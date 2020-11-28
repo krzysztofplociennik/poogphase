@@ -11,9 +11,9 @@ public class MessageManager {
     public void sendMessage(User author, User recipient, ChatMessage chatMessage) {
         if (!author.getChatArchive().containsKey(recipient)) {
             author.getChatArchive().put(recipient,
-                    new ChatLog(1L, author, recipient, new ArrayList<>()));
+                    new ChatLog(1L, author.getUsername() + recipient.getUsername(), new ArrayList<>()));
             recipient.getChatArchive().put(author,
-                    new ChatLog(1L, recipient, author, new ArrayList<>()));
+                    new ChatLog(1L, author.getUsername() + recipient.getUsername(), new ArrayList<>()));
         }
         author.getChatArchive().get(recipient).getLog().add(chatMessage);
         recipient.getChatArchive().get(author).getLog().add(chatMessage);

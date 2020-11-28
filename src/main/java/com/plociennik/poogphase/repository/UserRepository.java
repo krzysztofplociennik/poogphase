@@ -1,15 +1,15 @@
 package com.plociennik.poogphase.repository;
 
 import com.plociennik.poogphase.model.DummyModel;
+import com.plociennik.poogphase.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DummyRepository extends JpaRepository<DummyModel, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @Override
-    List<DummyModel> findAll();
+    List<User> findAll();
 
-    DummyModel findByName(String name);
-
+    User findByUsername(String username);
 }

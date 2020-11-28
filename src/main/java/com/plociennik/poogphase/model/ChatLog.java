@@ -1,18 +1,19 @@
 package com.plociennik.poogphase.model;
 
+import javax.persistence.*;
+import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class ChatLog {
     private long id;
-    private User user1;
-    private User user2;
+    private String signature;
     private List<ChatMessage> log;
 
-    public ChatLog(long id, User user1, User user2, List<ChatMessage> log) {
+    public ChatLog(long id, String signature, List<ChatMessage> log) {
         this.id = id;
-        this.user1 = user1;
-        this.user2 = user2;
+        this.signature = signature;
         this.log = log;
     }
 
@@ -20,6 +21,8 @@ public class ChatLog {
         log = new ArrayList<>();
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -28,22 +31,20 @@ public class ChatLog {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public String getSignature() {
+        return this.signature;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
-    public User getUser2() {
-        return user2;
-    }
-
-    public void setUser2(User user2) {
-        this.user2 = user2;
-    }
-
+    @OneToMany(
+            targetEntity = ChatMessage.class,
+            mappedBy = "chatLog",
+            cascade = CascadeType.REMOVE
+    )
+    @ElementCollection
     public List<ChatMessage> getLog() {
         return log;
     }

@@ -1,9 +1,11 @@
 package com.plociennik.poogphase.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Post {
     private long id;
     private User author;
@@ -23,6 +25,8 @@ public class Post {
         comments = new ArrayList<>();
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -31,6 +35,7 @@ public class Post {
         this.id = id;
     }
 
+    @ManyToOne
     public User getAuthor() {
         return author;
     }
@@ -55,6 +60,11 @@ public class Post {
         this.dateTime = dateTime;
     }
 
+    @OneToMany(
+            targetEntity = Comment.class,
+            mappedBy = "post",
+            cascade = CascadeType.REMOVE
+    )
     public List<Comment> getComments() {
         return comments;
     }
