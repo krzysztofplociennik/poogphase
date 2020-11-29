@@ -10,4 +10,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Override
     List<Post> findAll();
+
+    Post findByContent(String content);
 }

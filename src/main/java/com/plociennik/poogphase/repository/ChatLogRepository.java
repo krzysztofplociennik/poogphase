@@ -9,4 +9,6 @@ import java.util.List;
 public interface ChatLogRepository extends JpaRepository<ChatLog, Long> {
     @Override
     List<ChatLog> findAll();
+
+    ChatLog findBySignature(String signature);
 }

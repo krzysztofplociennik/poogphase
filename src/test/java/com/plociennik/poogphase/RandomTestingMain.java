@@ -9,10 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RandomTestingMain {
 
@@ -61,6 +58,24 @@ public class RandomTestingMain {
 //        System.out.println(user2.hashCode());
 
 //        System.out.println((int)(Math.random() * 8) + 1);
+
+//        System.out.println("Do you want to delete ALL data? Y or N");
+//        String input = new Scanner(System.in).nextLine();
+//        if (input.equals("Y")) {
+////            for (Post instance : postRepository.findAll()) {
+////                postRepository.deleteAll();
+////            }
+//            System.out.println("The repository is now empty. ");
+//        } else {
+//            System.out.println("Aborted.");
+//        }
+
+//        User user1 = new User();
+//        user1.setUsername("asasd");
+//        User user2 = new User();
+//        user2.setUsername("asqqqqqq");
+//
+//        System.out.println(user1.hashCode() + "\n" + user2.hashCode());
 
 
 

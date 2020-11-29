@@ -128,4 +128,11 @@ public class UserRepositoryTestSuite {
         Assert.assertNotEquals(null, searchedUser.getComments());
         //Clean up
     }
+
+    @Test
+    public void testSearch() {
+        User searchedUser = repository.findByUsername("marqez");
+
+        System.out.println(repository.findByUsernameAndPassword(searchedUser.getUsername(), searchedUser.getPassword()).getAge());
+    }
 }

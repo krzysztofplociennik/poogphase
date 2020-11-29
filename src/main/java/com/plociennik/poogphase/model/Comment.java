@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class Comment {
     private long id;
     private User author;
-    private String content;
     private Post post;
+    private String content;
     private LocalDateTime dateTime;
 
     public Comment(long id, User author, String content, Post post, LocalDateTime dateTime) {

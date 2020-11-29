@@ -40,11 +40,11 @@ public class ChatLog {
     }
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "chatLog",
             cascade = CascadeType.REMOVE
     )
-    @ElementCollection
     public List<ChatMessage> getLog() {
         return log;
     }

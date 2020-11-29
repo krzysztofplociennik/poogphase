@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +41,6 @@ public class UserServiceTestSuite {
         for (String username : Arrays.asList("marqez", "atomix", "wiki", "paul")) {
             service.removeUser(service.getUserByUsername(username).getId());
         }
-//        repository.deleteById(repository.findByUsername("marqez").getId());
-//        repository.deleteById(repository.findByUsername("atomix").getId());
-//        repository.deleteById(repository.findByUsername("wiki").getId());
-//        repository.deleteById(repository.findByUsername("paul").getId());
     }
 
     @Test
@@ -87,9 +82,9 @@ public class UserServiceTestSuite {
         //Given
 
         //When
-        User searchedUser = service.getUserByUsername("marqez");
+        long searchedUserId = service.getUserByUsername("marqez").getId();
         //Then
-        Assert.assertEquals("marqez@gmail.com", searchedUser.getMail());
+        Assert.assertEquals("marqez@gmail.com", service.getUser(searchedUserId).get().getMail());
         //Clean up
     }
 

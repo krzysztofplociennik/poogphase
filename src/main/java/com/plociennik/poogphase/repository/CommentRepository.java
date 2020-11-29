@@ -9,4 +9,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Override
     List<Comment> findAll();
+
+    Comment findByContent(String content);
 }
