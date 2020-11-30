@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ChatLogTestSuite {
+public class ChatLogRepositoryTestSuite {
     @Autowired
     private ChatLogRepository chatLogRepository;
     @Autowired

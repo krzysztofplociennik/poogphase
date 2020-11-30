@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class UserServiceTestSuite {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @Before
     public void initSomeData() {
@@ -32,49 +32,49 @@ public class UserServiceTestSuite {
         User paula = new User();
         paula.setUsername("paul");
         for (User user  : Arrays.asList(mark, peter, victoria, paula)) {
-            service.saveUser(user);
+            userService.saveUser(user);
         }
     }
 
     @After
     public void cleanUpData() {
         for (String username : Arrays.asList("marqez", "atomix", "wiki", "paul")) {
-            service.removeUser(service.getUserByUsername(username).getId());
+            userService.removeUser(userService.getUserByUsername(username).getId());
         }
     }
 
     @Test
     public void saveUser() {
         //Given
-        long sizeBeforeSaving = service.getAllUsers().size();
+        long sizeBeforeSaving = userService.getAllUsers().size();
         User dummyUser = new User();
         dummyUser.setUsername("dummy");
         //When
-        service.saveUser(dummyUser);
-        long dummyId = service.getUserByUsername("dummy").getId();
+        userService.saveUser(dummyUser);
+        long dummyId = userService.getUserByUsername("dummy").getId();
         //Then
-        Assert.assertEquals(sizeBeforeSaving + 1, service.getAllUsers().size());
+        Assert.assertEquals(sizeBeforeSaving + 1, userService.getAllUsers().size());
         //Clean up
-        service.removeUser(dummyId);
+        userService.removeUser(dummyId);
     }
 
     @Test
     public void getAllUsers() {
         //Given
-        long sizeBeforeSaving = service.getAllUsers().size();
+        long sizeBeforeSaving = userService.getAllUsers().size();
         User user1 = new User();
         user1.setUsername("user1");
         User user2 = new User();
         user2.setUsername("user2");
         //When
-        service.saveUser(user1); service.saveUser(user2);
-        long dummyId1 = service.getUserByUsername("user1").getId();
-        long dummyId2 = service.getUserByUsername("user2").getId();
+        userService.saveUser(user1); userService.saveUser(user2);
+        long dummyId1 = userService.getUserByUsername("user1").getId();
+        long dummyId2 = userService.getUserByUsername("user2").getId();
         //Then
-        Assert.assertEquals(sizeBeforeSaving + 2, service.getAllUsers().size());
+        Assert.assertEquals(sizeBeforeSaving + 2, userService.getAllUsers().size());
         //Clean up
-        service.removeUser(dummyId1);
-        service.removeUser(dummyId2);
+        userService.removeUser(dummyId1);
+        userService.removeUser(dummyId2);
     }
 
     @Test
@@ -82,45 +82,45 @@ public class UserServiceTestSuite {
         //Given
 
         //When
-        long searchedUserId = service.getUserByUsername("marqez").getId();
+        long searchedUserId = userService.getUserByUsername("marqez").getId();
         //Then
-        Assert.assertEquals("marqez@gmail.com", service.getUser(searchedUserId).get().getMail());
+        Assert.assertTrue(userService.getUser(searchedUserId).isPresent());
         //Clean up
     }
 
     @Test
     public void editUser() {
         //Given
-        long sizeBeforeEditing = service.getAllUsers().size();
+        long sizeBeforeEditing = userService.getAllUsers().size();
         //When
-        User searchedUser = service.getUserByUsername("atomix");
+        User searchedUser = userService.getUserByUsername("atomix");
         searchedUser.setMail("atomix2@gmail.com");
-        service.saveUser(searchedUser);
+        userService.saveUser(searchedUser);
         //Then
-        Assert.assertEquals(sizeBeforeEditing, service.getAllUsers().size());
-        Assert.assertEquals("atomix2@gmail.com", service.getUserByUsername("atomix").getMail());
+        Assert.assertEquals(sizeBeforeEditing, userService.getAllUsers().size());
+        Assert.assertEquals("atomix2@gmail.com", userService.getUserByUsername("atomix").getMail());
         //Clean up
     }
 
     @Test
     public void deleteUser() {
         //Given
-        long sizeBeforeDeleting = service.getAllUsers().size();
+        long sizeBeforeDeleting = userService.getAllUsers().size();
         User user1 = new User();
         user1.setUsername("dummy");
-        service.saveUser(user1);
+        userService.saveUser(user1);
         //When
-        long dummyId = service.getUserByUsername("dummy").getId();
-        service.removeUser(dummyId);
+        long dummyId = userService.getUserByUsername("dummy").getId();
+        userService.removeUser(dummyId);
         //Then
-        Assert.assertFalse(service.getAllUsers().contains(user1));
-        Assert.assertEquals(sizeBeforeDeleting, service.getAllUsers().size());
+        Assert.assertFalse(userService.getAllUsers().contains(user1));
+        Assert.assertEquals(sizeBeforeDeleting, userService.getAllUsers().size());
     }
 
     @Test
     public void testIfCollectionsAreNotNullUponCreatingNewUser() {
         //Given
-        User searchedUser = service.getUserByUsername("paul");
+        User searchedUser = userService.getUserByUsername("paul");
         //When
         //Then
         Assert.assertNotEquals(null, searchedUser.getFriends());

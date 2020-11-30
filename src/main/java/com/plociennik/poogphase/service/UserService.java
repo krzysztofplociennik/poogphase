@@ -12,25 +12,25 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     public List<User> getAllUsers() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
     public Optional<User> getUser(final long id) {
-        return repository.findById(id);
+        return userRepository.findById(id);
     }
 
     public User saveUser(final User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public void removeUser(final long id) {
-        repository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     public User getUserByUsername(String username) {
-        return repository.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 }

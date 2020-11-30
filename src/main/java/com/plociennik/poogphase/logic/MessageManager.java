@@ -1,4 +1,4 @@
-package com.plociennik.poogphase.service;
+package com.plociennik.poogphase.logic;
 
 import com.plociennik.poogphase.model.ChatLog;
 import com.plociennik.poogphase.model.ChatMessage;

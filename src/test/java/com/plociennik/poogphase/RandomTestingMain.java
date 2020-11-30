@@ -1,15 +1,6 @@
 package com.plociennik.poogphase;
 
-import com.plociennik.poogphase.model.ChatLog;
-import com.plociennik.poogphase.model.ChatMessage;
-import com.plociennik.poogphase.model.User;
-import com.plociennik.poogphase.service.MessageManager;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.util.*;
+import com.plociennik.poogphase.logic.MessageManager;
 
 public class RandomTestingMain {
 
