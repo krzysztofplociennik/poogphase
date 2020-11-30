@@ -27,6 +27,9 @@ public class ChatMessageRepositoryTestSuite {
 
     @Before
     public void initSomeData() {
+        if (chatMessageRepository.findAll().size() > 0) {
+            chatMessageRepository.deleteAll();
+        }
         ChatMessage msg1 = new ChatMessage(1L, null, "marq", "Heyyy, what's up",
                 LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(20, 25)), null);
         ChatMessage msg2 = new ChatMessage(1L, null, "paul", "good good",
@@ -49,6 +52,7 @@ public class ChatMessageRepositoryTestSuite {
         chatMessageRepository.deleteById(chatMessageRepository.findByContentAndDateTime(cont2, time2).getId());
         chatMessageRepository.deleteById(chatMessageRepository.findByContentAndDateTime(cont3, time3).getId());
         chatMessageRepository.deleteById(chatMessageRepository.findByContentAndDateTime(cont4, time4).getId());
+        System.out.println("The size after testing: " + chatMessageRepository.findAll().size());
     }
 
     @Test
@@ -132,5 +136,15 @@ public class ChatMessageRepositoryTestSuite {
         chatMessageRepository.deleteById(dummyId);
         //Then
         Assert.assertEquals(sizeBeforeDeleting, chatMessageRepository.count());
+    }
+
+    @Test
+    public void showNumberOfRecords() {
+        System.out.println("Number of records: " + chatMessageRepository.findAll().size());
+    }
+
+    @Test
+    public void truncateTable() {
+//        chatMessageRepository.deleteAll();
     }
 }
