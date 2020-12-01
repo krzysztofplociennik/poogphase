@@ -142,4 +142,9 @@ public class ChatLogRepositoryTestSuite {
         Assert.assertNotEquals(null, searchedLog.getLog());
         //Clean up
     }
+
+    @Test
+    public void showNumberOfRecords() {
+
+    }
 }

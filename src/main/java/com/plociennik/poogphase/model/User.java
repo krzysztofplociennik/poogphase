@@ -121,7 +121,7 @@ public class User {
     @OneToMany(
             targetEntity = Post.class,
             mappedBy = "author",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     public List<Post> getPosts() {
         return posts;
@@ -134,7 +134,7 @@ public class User {
     @OneToMany(
             targetEntity = Comment.class,
             mappedBy = "author",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     public List<Comment> getComments() {
         return comments;
@@ -147,7 +147,7 @@ public class User {
     @OneToMany(
             targetEntity = ChatMessage.class,
             mappedBy = "author",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     public Map<User, ChatLog> getChatArchive() {
         return chatArchive;

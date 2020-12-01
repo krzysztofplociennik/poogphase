@@ -1,7 +1,6 @@
 package com.plociennik.poogphase.repository;
 
 import com.plociennik.poogphase.model.Comment;
-import com.plociennik.poogphase.model.Post;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,11 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
@@ -51,10 +48,12 @@ public class CommentRepositoryTestSuite {
 
     @After
     public void cleanUpData() {
-        commentRepository.deleteById(commentRepository.findByContent("This is my first comment").getId());
-        commentRepository.deleteById(commentRepository.findByContent("This is my second comment").getId());
-        commentRepository.deleteById(commentRepository.findByContent("This is my third comment").getId());
-        commentRepository.deleteById(commentRepository.findByContent("This is my fourth comment").getId());
+//        commentRepository.deleteById(commentRepository.findByContent("This is my first comment").getId());
+//        commentRepository.deleteById(commentRepository.findByContent("This is my second comment").getId());
+//        commentRepository.deleteById(commentRepository.findByContent("This is my third comment").getId());
+//        commentRepository.deleteById(commentRepository.findByContent("This is my fourth comment").getId());
+        commentRepository.deleteAll();
+        System.out.println("Number of records: " + commentRepository.findAll().size());
     }
 
     @Test
@@ -130,5 +129,10 @@ public class CommentRepositoryTestSuite {
         commentRepository.deleteById(dummyId);
         //Then
         Assert.assertEquals(sizeBeforeDeleting, commentRepository.count());
+    }
+
+    @Test
+    public void showNumberOfRecords() {
+
     }
 }

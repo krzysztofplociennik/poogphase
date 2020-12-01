@@ -12,5 +12,5 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     @Override
     List<ChatMessage> findAll();
 
-    ChatMessage findByContentAndDateTime(String content, LocalDateTime dateTime);
+    ChatMessage findByContent(String content);
 }

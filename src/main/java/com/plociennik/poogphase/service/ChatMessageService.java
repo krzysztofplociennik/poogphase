@@ -4,7 +4,7 @@ import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +31,8 @@ public class ChatMessageService {
         chatMessageRepository.deleteById(id);
     }
 
-    public ChatMessage findByContentAndDateTime(String content, LocalDateTime dateTime) {
-        return chatMessageRepository.findByContentAndDateTime(content, dateTime);
+    public ChatMessage findByContent(String content) {
+        return chatMessageRepository.findByContent(content);
     }
 
 }

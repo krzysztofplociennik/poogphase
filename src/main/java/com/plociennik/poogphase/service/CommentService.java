@@ -1,13 +1,9 @@
 package com.plociennik.poogphase.service;
 
-import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.Comment;
-import com.plociennik.poogphase.repository.ChatMessageRepository;
 import com.plociennik.poogphase.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +17,8 @@ public class CommentService {
     }
 
     public Comment saveComment(Comment comment) {
+        comment.getPost().getComments().add(comment);
+        comment.getPost().setComments(comment.getPost().getComments());
         return commentRepository.save(comment);
     }
 
@@ -32,7 +30,7 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    public Comment findByContentAndDateTime(String content) {
+    public Comment findByContent(String content) {
         return commentRepository.findByContent(content);
     }
 }

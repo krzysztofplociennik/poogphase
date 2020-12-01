@@ -39,16 +39,15 @@ public class ChatMessageServiceTestSuite {
     @Test
     public void saveChatMessage() {
         ChatLog chatLog = new ChatLog();
-        chatLog.setSignature("dummy");
+        chatLog.setSignature("saveMessageDummy");
         chatLogService.saveChatLog(chatLog);
-        String content = "This is my first chat";
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(20, 45));
-        chatMessageService.saveMessage(new ChatMessage(1L, null, "", content, dateTime, chatLog));
 
-        long searchedMessageId = chatMessageService.findByContentAndDateTime(content, dateTime).getId();
-        long searchedChatLogId = chatLogService.findBySignature("dummy").getId();
+        chatMessageService.saveMessage(new ChatMessage(1L, null, "", "saveMessageContent", null, chatLog));
 
-        Assert.assertEquals(2020, chatMessageService.getMessage(searchedMessageId).get().getDateTime().getYear());
+        long searchedMessageId = chatMessageService.findByContent("saveMessageContent").getId();
+        long searchedChatLogId = chatLogService.findBySignature("saveMessageDummy").getId();
+
+        Assert.assertTrue(chatMessageService.getMessage(searchedMessageId).isPresent());
         //Clean up
         chatMessageService.removeMessage(searchedMessageId);
         chatLogService.removeChatLog(searchedChatLogId);
@@ -69,8 +68,8 @@ public class ChatMessageServiceTestSuite {
         ChatMessage chatMessage2 = new ChatMessage(222L, null, "", "content2", dateTime2, chatLog2);
         chatMessageService.saveMessage(chatMessage);
         chatMessageService.saveMessage(chatMessage2);
-        long searchedMessageId = chatMessageService.findByContentAndDateTime("content", dateTime).getId();
-        long searchedMessageId2 = chatMessageService.findByContentAndDateTime("content2", dateTime2).getId();
+        long searchedMessageId = chatMessageService.findByContent("content").getId();
+        long searchedMessageId2 = chatMessageService.findByContent("content2").getId();
         long searchedChatLogId = chatLogService.findBySignature("dummy").getId();
         long searchedChatLogId2 = chatLogService.findBySignature("dummy2").getId();
 
@@ -90,7 +89,7 @@ public class ChatMessageServiceTestSuite {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(20, 45));
         chatMessageService.saveMessage(new ChatMessage(1L, null, "", "content", dateTime, chatLog));
 
-        long searchedMessageId = chatMessageService.findByContentAndDateTime("content", dateTime).getId();
+        long searchedMessageId = chatMessageService.findByContent("content").getId();
         long searchedChatLogId = chatLogService.findBySignature("dummy").getId();
 
         ChatMessage searchedMessage = chatMessageService.getMessage(searchedMessageId).get();
@@ -109,7 +108,7 @@ public class ChatMessageServiceTestSuite {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(20, 45));
         ChatMessage chatMessage = new ChatMessage(1L, null, "", "testContent", dateTime, chatLog);
         chatMessageService.saveMessage(chatMessage);
-        ChatMessage searchedMessage = chatMessageService.findByContentAndDateTime("testContent", dateTime);
+        ChatMessage searchedMessage = chatMessageService.findByContent("testContent");
 
         long searchedChatLogId = chatLogService.findBySignature("dummy").getId();
 
@@ -130,7 +129,7 @@ public class ChatMessageServiceTestSuite {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(20, 45));
         chatMessageService.saveMessage(new ChatMessage(1L, null, "", "content", dateTime, chatLog));
 
-        long searchedMessageId = chatMessageService.findByContentAndDateTime("content", dateTime).getId();
+        long searchedMessageId = chatMessageService.findByContent("content").getId();
         long searchedChatLogId = chatLogService.findBySignature("dummy").getId();
 
         chatMessageService.removeMessage(chatMessageService.getMessage(searchedMessageId).get().getId());

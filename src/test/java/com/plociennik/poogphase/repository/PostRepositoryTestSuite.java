@@ -21,8 +21,6 @@ public class PostRepositoryTestSuite {
 
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Before
     public void initSomeData() {
@@ -53,6 +51,7 @@ public class PostRepositoryTestSuite {
         postRepository.deleteById(postRepository.findByContent("This is my second post").getId());
         postRepository.deleteById(postRepository.findByContent("This is my third post").getId());
         postRepository.deleteById(postRepository.findByContent("This is my fourth post").getId());
+        postRepository.deleteAll();
         System.out.println("There are " + postRepository.findAll().size() + " records now.");
     }
 
@@ -143,6 +142,11 @@ public class PostRepositoryTestSuite {
         //Then
         Assert.assertNotEquals(null, searchedPost.getComments());
         //Clean up
+    }
+
+    @Test
+    public void showNumberOfRecords() {
+
     }
 }
 
