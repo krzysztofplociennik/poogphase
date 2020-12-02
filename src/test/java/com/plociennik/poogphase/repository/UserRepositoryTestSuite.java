@@ -9,130 +9,116 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserRepositoryTestSuite {
-
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
+    private long initialUserRepositorySize;
 
     @Before
-    public void initSomeData() {
-        User mark = new User(1L, "marqez", "marq", "marqez@gmail.com", "Mark", "Jey",
-                LocalDate.of(1991, 6, 12), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
-        User peter = new User(2L, "atomix", "124", "atomix@gmail.com", "Peter", "Kowalski",
-                LocalDate.of(1995, 1, 28), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
-        User victoria = new User(3L, "wiki", "wix", "wiki@gmail.com", "Victoria", "Fran",
-                LocalDate.of(1993, 10, 2), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
-        User paula = new User();
-        paula.setUsername("paul");
-        repository.saveAll(Arrays.asList(mark, peter, victoria, paula));
+    public void init() {
+        initialUserRepositorySize = userRepository.count();
     }
 
     @After
-    public void cleanUpData() {
-        repository.deleteById(repository.findByUsername("marqez").getId());
-        repository.deleteById(repository.findByUsername("atomix").getId());
-        repository.deleteById(repository.findByUsername("wiki").getId());
-        repository.deleteById(repository.findByUsername("paul").getId());
+    public void finalCheck() {
+        Assert.assertEquals(initialUserRepositorySize, userRepository.count());
     }
 
     @Test
     public void saveUser() {
-        //Given
-        long sizeBeforeSaving = repository.count();
-        User dummyUser = new User();
-        dummyUser.setUsername("dummy");
-        //When
-        repository.save(dummyUser);
-        long dummyId = repository.findByUsername("dummy").getId();
+        User user = new User();
+        user.setUsername("getUsername");
+        userRepository.save(user);
+
+        long searchedUserId = userRepository.findByUsername("getUsername").getId();
         //Then
-        Assert.assertEquals(sizeBeforeSaving + 1, repository.count());
+        Assert.assertEquals(initialUserRepositorySize + 1, userRepository.count());
         //Clean up
-        repository.deleteById(dummyId);
+        userRepository.deleteById(searchedUserId);
     }
 
     @Test
     public void getAllUsers() {
-        //Given
-        long sizeBeforeSaving = repository.count();
         User user1 = new User();
-        user1.setUsername("user1");
+        user1.setUsername("getAllUsername");
         User user2 = new User();
-        user2.setUsername("user2");
-        //When
-        repository.saveAll(Arrays.asList(user1, user2));
-        long dummyId1 = repository.findByUsername("user1").getId();
-        long dummyId2 = repository.findByUsername("user2").getId();
-        //Then
-        Assert.assertEquals(sizeBeforeSaving + 2, repository.count());
+        user2.setUsername("getAllUsername2");
+        userRepository.saveAll(Arrays.asList(user1, user2));
+
+        long searchedUserId = userRepository.findByUsername("getAllUsername").getId();
+        long searchedUserId2 = userRepository.findByUsername("getAllUsername2").getId();
+
+        Assert.assertEquals(initialUserRepositorySize + 2, userRepository.count());
         //Clean up
-        repository.deleteById(dummyId1);
-        repository.deleteById(dummyId2);
+        userRepository.deleteById(searchedUserId);
+        userRepository.deleteById(searchedUserId2);
     }
 
     @Test
     public void getUser() {
-        //Given
+        User user = new User();
+        user.setUsername("getUsername");
+        userRepository.save(user);
 
-        //When
-        User searchedUser = repository.findByUsername("marqez");
-        //Then
-        Assert.assertEquals("marqez@gmail.com", searchedUser.getMail());
+        long searchedUserId = userRepository.findByUsername("getUsername").getId();
+
+        Assert.assertTrue(userRepository.findById(searchedUserId).isPresent());
         //Clean up
+        userRepository.deleteById(searchedUserId);
     }
 
     @Test
     public void editUser() {
-        //Given
-        long sizeBeforeEditing = repository.count();
-        //When
-        User searchedUser = repository.findByUsername("atomix");
-        searchedUser.setMail("atomix2@gmail.com");
-        repository.save(searchedUser);
-        //Then
-        Assert.assertEquals(sizeBeforeEditing, repository.count());
-        Assert.assertEquals("atomix2@gmail.com", repository.findByUsername("atomix").getMail());
+        User user = new User();
+        user.setUsername("editUsername");
+        userRepository.save(user);
+
+        user.setMail("editMail");
+        userRepository.save(user);
+
+        long searchedUserId = userRepository.findByUsername("editUsername").getId();
+
+        Assert.assertEquals(initialUserRepositorySize + 1, userRepository.count());
+        Assert.assertEquals("editMail", userRepository.findById(searchedUserId).get().getMail());
         //Clean up
+        userRepository.deleteById(searchedUserId);
     }
 
     @Test
     public void deleteUser() {
         //Given
-        long sizeBeforeDeleting = repository.count();
         User user1 = new User();
-        user1.setUsername("dummy");
-        repository.save(user1);
-        //When
-        long dummyId = repository.findByUsername("dummy").getId();
-        repository.deleteById(dummyId);
-        //Then
-        Assert.assertFalse(repository.findAll().contains(user1));
-        Assert.assertEquals(sizeBeforeDeleting, repository.count());
+        user1.setUsername("deleteUsername");
+        userRepository.save(user1);
+
+        long searchedUserId = userRepository.findByUsername("deleteUsername").getId();
+
+        userRepository.deleteById(searchedUserId);
     }
 
     @Test
     public void testIfCollectionsAreNotNullUponCreatingNewUser() {
         //Given
-        User searchedUser = repository.findByUsername("paul");
-        //When
-        //Then
+        User user = new User();
+        user.setUsername("notNullUsername");
+        userRepository.save(user);
+
+        User searchedUser = userRepository.findByUsername("notNullUsername");
+
         Assert.assertNotEquals(null, searchedUser.getFriends());
         Assert.assertNotEquals(null, searchedUser.getChatArchive());
         Assert.assertNotEquals(null, searchedUser.getPosts());
         Assert.assertNotEquals(null, searchedUser.getComments());
         //Clean up
+        userRepository.deleteById(searchedUser.getId());
     }
 
     @Test
-    public void testSearch() {
-        User searchedUser = repository.findByUsername("marqez");
-
-        System.out.println(repository.findByUsernameAndPassword(searchedUser.getUsername(), searchedUser.getPassword()).getAge());
+    public void showNumberOfRecords() {
+        System.out.println("Number of records: " + userRepository.count());
     }
 }

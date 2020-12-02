@@ -12,141 +12,113 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PostRepositoryTestSuite {
-
     @Autowired
     private PostRepository postRepository;
+    private long initialPostRepositorySize;
 
     @Before
-    public void initSomeData() {
-        Post post1 = new Post(1L,
-                null,
-                "This is my first post",
-                LocalDateTime.of(LocalDate.of(2020, 11, 28), LocalTime.of(18, 51)),
-                new ArrayList<>());
-        Post post2 = new Post(1L,
-                null,
-                "This is my second post",
-                LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(8, 2)),
-                new ArrayList<>());
-        Post post3 = new Post(1L,
-                null,
-                "This is my third post",
-                LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(14, 11)),
-                new ArrayList<>());
-        Post post4 = new Post();
-        post4.setContent("This is my fourth post");
-
-        postRepository.saveAll(Arrays.asList(post1, post2, post3, post4));
+    public void init() {
+        initialPostRepositorySize = postRepository.count();
     }
 
     @After
-    public void cleanUpData() {
-        postRepository.deleteById(postRepository.findByContent("This is my first post").getId());
-        postRepository.deleteById(postRepository.findByContent("This is my second post").getId());
-        postRepository.deleteById(postRepository.findByContent("This is my third post").getId());
-        postRepository.deleteById(postRepository.findByContent("This is my fourth post").getId());
-        postRepository.deleteAll();
-        System.out.println("There are " + postRepository.findAll().size() + " records now.");
-    }
-
-    @Test
-    public void checkRepositorySize() {
+    public void finalCheck() {
+        Assert.assertEquals(initialPostRepositorySize, postRepository.count());
     }
 
     @Test
     public void savePost() {
-        //Given
-        long sizeBeforeSaving = postRepository.count();
-        Post dummyPost = new Post();
-        dummyPost.setContent("dummy");
-        //When
-        postRepository.save(dummyPost);
-        long dummyId = postRepository.findByContent("dummy").getId();
-        //Then
-        Assert.assertEquals(sizeBeforeSaving + 1, postRepository.count());
+        Post post = new Post();
+        post.setContent("saveContent");
+        postRepository.save(post);
+
+        long searchedPostId = postRepository.findByContent("saveContent").getId();
+
+        Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
         //Clean up
-        postRepository.deleteById(dummyId);
-        Assert.assertEquals(sizeBeforeSaving, postRepository.count());
+        postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void getAllPosts() {
-        //Given
-        long sizeBeforeSaving = postRepository.count();
         Post post1 = new Post();
-        post1.setContent("post1");
+        post1.setContent("getAllContent");
         Post post2 = new Post();
-        post2.setContent("post2");
-        //When
+        post2.setContent("getAllContent2");
         postRepository.saveAll(Arrays.asList(post1, post2));
-        long dummyId1 = postRepository.findByContent("post1").getId();
-        long dummyId2 = postRepository.findByContent("post2").getId();
-        //Then
-        Assert.assertEquals(sizeBeforeSaving + 2, postRepository.count());
+
+        long searchedPostId = postRepository.findByContent("getAllContent").getId();
+        long searchedPostId2 = postRepository.findByContent("getAllContent2").getId();
+
+        Assert.assertEquals(initialPostRepositorySize + 2, postRepository.count());
         //Clean up
-        postRepository.deleteById(dummyId1);
-        postRepository.deleteById(dummyId2);
+        postRepository.deleteById(searchedPostId);
+        postRepository.deleteById(searchedPostId2);
     }
 
     @Test
     public void getPost() {
-        //Given
+        Post post = new Post();
+        post.setContent("getContent");
+        postRepository.save(post);
 
-        //When
-        Post searchedPost = postRepository.findByContent("This is my second post");
-        //Then
-        Assert.assertEquals(29, searchedPost.getDateTime().getDayOfMonth());
+        long searchedPostId = postRepository.findByContent("getContent").getId();
+
+        Assert.assertTrue(postRepository.findById(searchedPostId).isPresent());
         //Clean up
+        postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void editPost() {
-        //Given
-        long sizeBeforeEditing = postRepository.count();
-        //When
-        Post searchedPost = postRepository.findByContent("This is my first post");
-        searchedPost.setDateTime(LocalDateTime.of(LocalDate.of(2020, 11, 29),
-                LocalTime.of(10, 45)));
-        postRepository.save(searchedPost);
-        //Then
-        Assert.assertEquals(sizeBeforeEditing, postRepository.count());
-        Assert.assertEquals(10, postRepository.findByContent("This is my first post").getDateTime().getHour());
+        Post post = new Post();
+        post.setContent("editContent");
+        postRepository.save(post);
+
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(10, 45));
+        post.setDateTime(dateTime);
+        postRepository.save(post);
+
+        long searchedPostId = postRepository.findByContent("editContent").getId();
+
+        Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
+        Assert.assertEquals(10, postRepository.findById(searchedPostId).get().getDateTime().getHour());
         //Clean up
+        postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void deletePost() {
-        //Given
-        long sizeBeforeDeleting = postRepository.count();
         Post post = new Post();
-        post.setContent("dummy");
+        post.setContent("deleteContent");
         postRepository.save(post);
-        //When
-        long dummyId = postRepository.findByContent("dummy").getId();
-        postRepository.deleteById(dummyId);
-        //Then
-        Assert.assertEquals(sizeBeforeDeleting, postRepository.count());
+
+        long searchedPostId = postRepository.findByContent("deleteContent").getId();
+
+        postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void testIfCommentsAreNotNullUponCreatingNewPost() {
-        //Given
-        //When
-        Post searchedPost = postRepository.findByContent("This is my fourth post");
-        //Then
-        Assert.assertNotEquals(null, searchedPost.getComments());
+        Post post = new Post();
+        post.setContent("notNullContent");
+        postRepository.save(post);
+
+        long searchedPostId = postRepository.findByContent("notNullContent").getId();
+
+        Assert.assertNotEquals(null, postRepository.findById(searchedPostId).get().getComments());
         //Clean up
+        postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void showNumberOfRecords() {
-
+        System.out.println("There are " + postRepository.findAll().size() + " records now.");
     }
 }
 

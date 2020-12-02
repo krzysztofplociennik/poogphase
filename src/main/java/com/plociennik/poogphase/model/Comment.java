@@ -3,7 +3,7 @@ package com.plociennik.poogphase.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "comments")
 public class Comment {
     private long id;
     private User author;

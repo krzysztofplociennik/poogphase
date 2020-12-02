@@ -5,7 +5,7 @@ import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "chatLogs")
 public class ChatLog {
     private long id;
     private String signature;
@@ -43,7 +43,7 @@ public class ChatLog {
             fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "chatLog",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     public List<ChatMessage> getLog() {
         return log;

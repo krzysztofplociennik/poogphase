@@ -3,7 +3,7 @@ package com.plociennik.poogphase.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "messages")
 public class ChatMessage {
     private long id;
     private User author;

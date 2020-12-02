@@ -23,12 +23,12 @@ public class ChatLogServiceTestSuite {
 
 
     @Before
-    public void initSomeData() {
+    public void init() {
         initialChatLogRepositorySize = chatLogService.getAllChatLogs().size();
     }
 
     @After
-    public void cleanUpData() {
+    public void finalCheck() {
         Assert.assertEquals(initialChatLogRepositorySize, chatLogService.getAllChatLogs().size());
     }
 

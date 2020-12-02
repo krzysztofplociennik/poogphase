@@ -25,13 +25,13 @@ public class CommentServiceTestSuite {
     long initialCommentRepositorySize;
 
     @Before
-    public void initSomeData() {
+    public void init() {
         initialPostRepositorySize = postService.getAllPosts().size();
         initialCommentRepositorySize = commentService.getAllComments().size();
     }
 
     @After
-    public void cleanUpData() {
+    public void finalCheck() {
         Assert.assertEquals(initialPostRepositorySize, postService.getAllPosts().size());
         Assert.assertEquals(initialCommentRepositorySize, commentService.getAllComments().size());
     }

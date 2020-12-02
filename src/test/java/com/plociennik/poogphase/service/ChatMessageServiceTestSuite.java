@@ -25,13 +25,13 @@ public class ChatMessageServiceTestSuite {
     private long initialChatLogRepositorySize;
 
     @Before
-    public void initSomeData() {
+    public void init() {
         initialChatMessageRepositorySize = chatMessageService.getAllMessages().size();
         initialChatLogRepositorySize = chatLogService.getAllChatLogs().size();
     }
 
     @After
-    public void cleanUpData() {
+    public void finalCheck() {
         Assert.assertEquals(initialChatMessageRepositorySize, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialChatLogRepositorySize, chatLogService.getAllChatLogs().size());
     }

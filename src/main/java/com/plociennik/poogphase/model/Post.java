@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "posts")
 public class Post {
     private long id;
     private User author;
@@ -63,7 +63,7 @@ public class Post {
     @OneToMany(
             targetEntity = Comment.class,
             mappedBy = "post",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     public List<Comment> getComments() {
         return comments;

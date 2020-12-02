@@ -1,9 +1,6 @@
 package com.plociennik.poogphase.service;
 
-import com.plociennik.poogphase.model.ChatLog;
-import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.Post;
-import com.plociennik.poogphase.repository.PostRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,13 +24,13 @@ public class PostServiceTestSuite {
     long initialCommentRepositorySize;
 
     @Before
-    public void initSomeData() {
+    public void init() {
         initialPostRepositorySize = postService.getAllPosts().size();
         initialCommentRepositorySize = commentService.getAllComments().size();
     }
 
     @After
-    public void cleanUpData() {
+    public void finalCheck() {
         Assert.assertEquals(initialPostRepositorySize, postService.getAllPosts().size());
         Assert.assertEquals(initialCommentRepositorySize, commentService.getAllComments().size());
     }

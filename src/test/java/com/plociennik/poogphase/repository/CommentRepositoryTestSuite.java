@@ -19,120 +19,98 @@ import java.util.Arrays;
 public class CommentRepositoryTestSuite {
     @Autowired
     private CommentRepository commentRepository;
+    private long initialCommentRepositorySize;
 
     @Before
-    public void initSomeData() {
-        if (commentRepository.count() > 0) {
-            commentRepository.deleteAll();
-        }
-        Comment comment1 = new Comment(1L,
-                null,
-                "This is my first comment",
-                null,
-                LocalDateTime.of(LocalDate.of(2020, 11, 28), LocalTime.of(18, 51)));
-        Comment comment2 = new Comment(1L,
-                null,
-                "This is my second comment",
-                null,
-                LocalDateTime.of(LocalDate.of(2020, 11, 27), LocalTime.of(8, 2)));
-        Comment comment3 = new Comment(1L,
-                null,
-                "This is my third comment",
-                null,
-                LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(14, 11)));
-        Comment comment4 = new Comment();
-        comment4.setContent("This is my fourth comment");
-
-        commentRepository.saveAll(Arrays.asList(comment1, comment2, comment3, comment4));
+    public void init() {
+        initialCommentRepositorySize = commentRepository.count();
     }
 
     @After
-    public void cleanUpData() {
-//        commentRepository.deleteById(commentRepository.findByContent("This is my first comment").getId());
-//        commentRepository.deleteById(commentRepository.findByContent("This is my second comment").getId());
-//        commentRepository.deleteById(commentRepository.findByContent("This is my third comment").getId());
-//        commentRepository.deleteById(commentRepository.findByContent("This is my fourth comment").getId());
-        commentRepository.deleteAll();
-        System.out.println("Number of records: " + commentRepository.findAll().size());
+    public void finalCheck() {
+        System.out.println("Number of records: " + commentRepository.count());
     }
 
     @Test
     public void saveComment() {
         //Given
-        long sizeBeforeSaving = commentRepository.count();
-        Comment dummyComment = new Comment();
-        dummyComment.setContent("dummy");
+        Comment comment = new Comment();
+        comment.setContent("saveCommentContent");
         //When
-        commentRepository.save(dummyComment);
-        long dummyId = commentRepository.findByContent("dummy").getId();
+        commentRepository.save(comment);
+        long searchedCommentId = commentRepository.findByContent("saveCommentContent").getId();
         //Then
-        Assert.assertEquals(sizeBeforeSaving + 1, commentRepository.count());
+        Assert.assertEquals(initialCommentRepositorySize + 1, commentRepository.count());
         //Clean up
-        commentRepository.deleteById(dummyId);
-        Assert.assertEquals(sizeBeforeSaving, commentRepository.count());
+        commentRepository.deleteById(searchedCommentId);
     }
 
     @Test
     public void getAllComments() {
         //Given
-        long sizeBeforeSaving = commentRepository.count();
         Comment comment1 = new Comment();
-        comment1.setContent("comment1");
+        comment1.setContent("getAllContent");
         Comment comment2 = new Comment();
-        comment2.setContent("comment2");
+        comment2.setContent("getAllContent2");
         //When
         commentRepository.saveAll(Arrays.asList(comment1, comment2));
-        long dummyId1 = commentRepository.findByContent("comment1").getId();
-        long dummyId2 = commentRepository.findByContent("comment2").getId();
+        long searchedCommentId = commentRepository.findByContent("getAllContent").getId();
+        long searchedCommentId2 = commentRepository.findByContent("getAllContent2").getId();
         //Then
-        Assert.assertEquals(sizeBeforeSaving + 2, commentRepository.count());
+        Assert.assertEquals(initialCommentRepositorySize + 2, commentRepository.count());
         //Clean up
-        commentRepository.deleteById(dummyId1);
-        commentRepository.deleteById(dummyId2);
+        commentRepository.deleteById(searchedCommentId);
+        commentRepository.deleteById(searchedCommentId2);
     }
 
     @Test
     public void getComment() {
         //Given
-
+        Comment comment = new Comment();
+        comment.setContent("getContent");
+        commentRepository.save(comment);
         //When
-        Comment searchedComment = commentRepository.findByContent("This is my second comment");
+        long searchedCommentId = commentRepository.findByContent("getContent").getId();
         //Then
-        Assert.assertEquals(27, searchedComment.getDateTime().getDayOfMonth());
+        Assert.assertTrue(commentRepository.findById(searchedCommentId).isPresent());
         //Clean up
+        commentRepository.deleteById(searchedCommentId);
     }
 
     @Test
     public void editComment() {
         //Given
-        long sizeBeforeEditing = commentRepository.count();
         //When
-        Comment searchedComment = commentRepository.findByContent("This is my first comment");
-        searchedComment.setDateTime(LocalDateTime.of(LocalDate.of(2020, 11, 29),
-                LocalTime.of(10, 45)));
-        commentRepository.save(searchedComment);
+        Comment comment = new Comment();
+        comment.setContent("editContent");
+        commentRepository.save(comment);
+
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(10, 45));
+        comment.setDateTime(dateTime);
+        commentRepository.save(comment);
+
+        long searchedCommentId = commentRepository.findByContent("editContent").getId();
         //Then
-        Assert.assertEquals(sizeBeforeEditing, commentRepository.count());
-        Assert.assertEquals(45, commentRepository.findByContent("This is my first comment").getDateTime().getMinute());
+        Assert.assertEquals(initialCommentRepositorySize + 1, commentRepository.count());
+        Assert.assertEquals(2020, commentRepository.findById(searchedCommentId).get().getDateTime().getYear());
         //Clean up
+        commentRepository.deleteById(searchedCommentId);
     }
 
     @Test
-    public void deletePost() {
+    public void deleteComment() {
         //Given
-        long sizeBeforeDeleting = commentRepository.count();
         Comment comment = new Comment();
-        comment.setContent("dummy");
+        comment.setContent("deleteContent");
         commentRepository.save(comment);
         //When
-        long dummyId = commentRepository.findByContent("dummy").getId();
-        commentRepository.deleteById(dummyId);
+        long searchedCommentId = commentRepository.findByContent("deleteContent").getId();
+        commentRepository.deleteById(searchedCommentId);
         //Then
-        Assert.assertEquals(sizeBeforeDeleting, commentRepository.count());
     }
 
     @Test
     public void showNumberOfRecords() {
-
+        System.out.println("Number of records: " + commentRepository.count());
     }
 }
