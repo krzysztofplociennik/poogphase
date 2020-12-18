@@ -1,6 +1,7 @@
 package com.plociennik.poogphase.service;
 
 import com.plociennik.poogphase.model.Post;
+import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,26 +12,41 @@ import java.util.Optional;
 @Service
 public class PostService {
     @Autowired
-    private PostRepository repository;
+    private PostRepository postRepository;
+    @Autowired
+    private UserService userService;
 
     public List<Post> getAllPosts() {
-        return repository.findAll();
+        return postRepository.findAll();
     }
 
     public Post savePost(Post post) {
-        return repository.save(post);
+        return postRepository.save(post);
     }
 
     public Optional<Post> getPost(final long id) {
-        return repository.findById(id);
+        return postRepository.findById(id);
     }
 
     public void removePost(long id) {
-        repository.deleteById(id);
+        postRepository.deleteById(id);
     }
 
-    public Post findByContent(String content) {
-        return repository.findByContent(content);
+    public Post savePost2(User author, Post post) {
+        author.getPosts().add(post);
+        post.setAuthor(author);
+        return postRepository.save(post);
+    }
+
+    public void removePost2(long id) {
+        Post post = postRepository.findById(id).get();
+        User author = post.getAuthor();
+        author.getPosts().remove(post);
+        userService.saveUser(author);
+    }
+
+    public Post getByContent(String content) {
+        return postRepository.findByContent(content);
     }
 
 }

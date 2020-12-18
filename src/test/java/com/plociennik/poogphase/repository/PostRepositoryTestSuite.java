@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,11 +33,9 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void savePost() {
-        Post post = new Post();
-        post.setContent("saveContent");
-        postRepository.save(post);
+        postRepository.save(new Post(1L, null, "savePostContent", null, new ArrayList<>()));
 
-        long searchedPostId = postRepository.findByContent("saveContent").getId();
+        long searchedPostId = postRepository.findByContent("savePostContent").getId();
 
         Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
         //Clean up
@@ -46,14 +44,11 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getAllPosts() {
-        Post post1 = new Post();
-        post1.setContent("getAllContent");
-        Post post2 = new Post();
-        post2.setContent("getAllContent2");
-        postRepository.saveAll(Arrays.asList(post1, post2));
+        postRepository.save(new Post(1L, null, "getAllPostsContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, "getAllPostsContent2", null, new ArrayList<>()));
 
-        long searchedPostId = postRepository.findByContent("getAllContent").getId();
-        long searchedPostId2 = postRepository.findByContent("getAllContent2").getId();
+        long searchedPostId = postRepository.findByContent("getAllPostsContent").getId();
+        long searchedPostId2 = postRepository.findByContent("getAllPostsContent2").getId();
 
         Assert.assertEquals(initialPostRepositorySize + 2, postRepository.count());
         //Clean up
@@ -63,11 +58,9 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getPost() {
-        Post post = new Post();
-        post.setContent("getContent");
-        postRepository.save(post);
+        postRepository.save(new Post(1L, null, "getPostContent", null, new ArrayList<>()));
 
-        long searchedPostId = postRepository.findByContent("getContent").getId();
+        long searchedPostId = postRepository.findByContent("getPostContent").getId();
 
         Assert.assertTrue(postRepository.findById(searchedPostId).isPresent());
         //Clean up
@@ -76,42 +69,38 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void editPost() {
-        Post post = new Post();
-        post.setContent("editContent");
-        postRepository.save(post);
-
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(10, 45));
-        post.setDateTime(dateTime);
-        postRepository.save(post);
-
-        long searchedPostId = postRepository.findByContent("editContent").getId();
+        postRepository.save(new Post(1L, null, "editPostContent", null, new ArrayList<>()));
 
         Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
-        Assert.assertEquals(10, postRepository.findById(searchedPostId).get().getDateTime().getHour());
+        Assert.assertNull(postRepository.findByContent("editPostContent").getDateTime());
+
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 29), LocalTime.of(10, 45));
+        Post searchedPost = postRepository.findByContent("editPostContent");
+        searchedPost.setDateTime(dateTime);
+        postRepository.save(searchedPost);
+
+        Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
+        Assert.assertEquals(10, postRepository.findById(searchedPost.getId()).get().getDateTime().getHour());
         //Clean up
-        postRepository.deleteById(searchedPostId);
+        postRepository.deleteById(searchedPost.getId());
     }
 
     @Test
     public void deletePost() {
-        Post post = new Post();
-        post.setContent("deleteContent");
-        postRepository.save(post);
+        postRepository.save(new Post(1L, null, "deletePostContent", null, new ArrayList<>()));
 
-        long searchedPostId = postRepository.findByContent("deleteContent").getId();
+        long searchedPostId = postRepository.findByContent("deletePostContent").getId();
 
         postRepository.deleteById(searchedPostId);
     }
 
     @Test
     public void testIfCommentsAreNotNullUponCreatingNewPost() {
-        Post post = new Post();
-        post.setContent("notNullContent");
-        postRepository.save(post);
+        postRepository.save(new Post(1L, null, "notNullContent", null, new ArrayList<>()));
 
         long searchedPostId = postRepository.findByContent("notNullContent").getId();
 
-        Assert.assertNotEquals(null, postRepository.findById(searchedPostId).get().getComments());
+        Assert.assertNotNull(postRepository.findById(searchedPostId).get().getComments());
         //Clean up
         postRepository.deleteById(searchedPostId);
     }

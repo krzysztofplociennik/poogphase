@@ -31,11 +31,11 @@ public class UserRepositoryTestSuite {
     @Test
     public void saveUser() {
         User user = new User();
-        user.setUsername("getUsername");
+        user.setUsername("saveUsername");
         userRepository.save(user);
 
-        long searchedUserId = userRepository.findByUsername("getUsername").getId();
-        //Then
+        long searchedUserId = userRepository.findByUsername("saveUsername").getId();
+
         Assert.assertEquals(initialUserRepositorySize + 1, userRepository.count());
         //Clean up
         userRepository.deleteById(searchedUserId);
@@ -77,8 +77,12 @@ public class UserRepositoryTestSuite {
         user.setUsername("editUsername");
         userRepository.save(user);
 
-        user.setMail("editMail");
-        userRepository.save(user);
+        Assert.assertEquals(initialUserRepositorySize + 1, userRepository.count());
+        Assert.assertNull(userRepository.findByUsername("editUsername").getMail());
+
+        User searchedUser = userRepository.findByUsername("editUsername");
+        searchedUser.setMail("editMail");
+        userRepository.save(searchedUser);
 
         long searchedUserId = userRepository.findByUsername("editUsername").getId();
 
@@ -109,10 +113,10 @@ public class UserRepositoryTestSuite {
 
         User searchedUser = userRepository.findByUsername("notNullUsername");
 
-        Assert.assertNotEquals(null, searchedUser.getFriends());
-        Assert.assertNotEquals(null, searchedUser.getChatArchive());
-        Assert.assertNotEquals(null, searchedUser.getPosts());
-        Assert.assertNotEquals(null, searchedUser.getComments());
+        Assert.assertNotNull(searchedUser.getFriends());
+        Assert.assertNotNull(searchedUser.getMessages());
+        Assert.assertNotNull(searchedUser.getPosts());
+        Assert.assertNotNull(searchedUser.getComments());
         //Clean up
         userRepository.deleteById(searchedUser.getId());
     }

@@ -61,8 +61,10 @@ public class Post {
     }
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             targetEntity = Comment.class,
             mappedBy = "post",
+            orphanRemoval = true,
             cascade = CascadeType.ALL
     )
     public List<Comment> getComments() {

@@ -2,6 +2,8 @@ package com.plociennik.poogphase.service;
 
 import com.plociennik.poogphase.model.Comment;
 import com.plociennik.poogphase.model.Post;
+import com.plociennik.poogphase.model.User;
+import com.plociennik.poogphase.repository.CommentRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,6 +21,10 @@ import java.time.LocalTime;
 public class CommentServiceTestSuite {
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private UserService userService;
     @Autowired
     private PostService postService;
     long initialPostRepositorySize;
@@ -38,16 +44,17 @@ public class CommentServiceTestSuite {
 
     @Test
     public void saveComment() {
+        User user = userService.getUserByUsername("goofy");
         Post post = new Post();
         post.setContent("saveContent1Post");
         postService.savePost(post);
         Comment comment = new Comment();
         comment.setContent("saveContent1Comment");
         comment.setPost(post);
-        commentService.saveComment(comment);
+        commentService.saveComment(user, post, comment);
         //Getting id
-        long searchedPostId = postService.findByContent("saveContent1Post").getId();
-        long searchedCommentId = commentService.findByContent("saveContent1Comment").getId();
+        long searchedPostId = postService.getByContent("saveContent1Post").getId();
+        long searchedCommentId = commentService.getByContent("saveContent1Comment").getId();
 
         Assert.assertTrue(commentService.getComment(searchedCommentId).isPresent());
         //Clean up
@@ -57,6 +64,7 @@ public class CommentServiceTestSuite {
 
     @Test
     public void getAllComments() {
+        User user = userService.getUserByUsername("goofy");
         long initialSizeOfRepository = commentService.getAllComments().size();
         Post post = new Post();
         Post post2 = new Post();
@@ -70,13 +78,13 @@ public class CommentServiceTestSuite {
         comment2.setContent("getAllContentComment2");
         comment.setPost(post);
         comment2.setPost(post2);
-        commentService.saveComment(comment);
-        commentService.saveComment(comment2);
+        commentService.saveComment(user, post, comment);
+        commentService.saveComment(user, post2, comment2);
 
-        long searchedCommentId = commentService.findByContent("getAllContentComment").getId();
-        long searchedCommentId2 = commentService.findByContent("getAllContentComment2").getId();
-        long searchedPostId = postService.findByContent("getAllContentPost").getId();
-        long searchedPostId2 = postService.findByContent("getAllContentPost2").getId();
+        long searchedCommentId = commentService.getByContent("getAllContentComment").getId();
+        long searchedCommentId2 = commentService.getByContent("getAllContentComment2").getId();
+        long searchedPostId = postService.getByContent("getAllContentPost").getId();
+        long searchedPostId2 = postService.getByContent("getAllContentPost2").getId();
 
         Assert.assertEquals(initialSizeOfRepository + 2, commentService.getAllComments().size());
 
@@ -88,16 +96,17 @@ public class CommentServiceTestSuite {
 
     @Test
     public void getComment() {
+        User user = userService.getUserByUsername("goofy");
         Post post = new Post();
         post.setContent("getContentPost");
         postService.savePost(post);
         Comment comment = new Comment();
         comment.setContent("getContentComment");
         comment.setPost(post);
-        commentService.saveComment(comment);
+        commentService.saveComment(user, post, comment);
 
-        long searchedCommentId = commentService.findByContent("getContentComment").getId();
-        long searchedPostId = postService.findByContent("getContentPost").getId();
+        long searchedCommentId = commentService.getByContent("getContentComment").getId();
+        long searchedPostId = postService.getByContent("getContentPost").getId();
 
         Assert.assertTrue(commentService.getComment(searchedCommentId).isPresent());
 
@@ -107,20 +116,21 @@ public class CommentServiceTestSuite {
 
     @Test
     public void editComment() {
+        User user = userService.getUserByUsername("goofy");
         Post post = new Post();
         post.setContent("editContentPost");
         postService.savePost(post);
         Comment comment = new Comment();
         comment.setContent("editContentComment");
         comment.setPost(post);
-        commentService.saveComment(comment);
+        commentService.saveComment(user, post, comment);
 
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 12, 1), LocalTime.of(11, 16));
         comment.setDateTime(dateTime);
-        commentService.saveComment(comment);
+        commentService.saveComment(user, post, comment);
 
-        long searchedCommentId = commentService.findByContent("editContentComment").getId();
-        long searchedPostId = postService.findByContent("editContentPost").getId();
+        long searchedCommentId = commentService.getByContent("editContentComment").getId();
+        long searchedPostId = postService.getByContent("editContentPost").getId();
 
         Assert.assertEquals(12, commentService.getComment(searchedCommentId).get().getDateTime().getMonthValue());
 
@@ -130,16 +140,17 @@ public class CommentServiceTestSuite {
 
     @Test
     public void deleteComment() {
+        User user = userService.getUserByUsername("goofy");
         Post post = new Post();
         post.setContent("removeContentPost");
         postService.savePost(post);
         Comment comment = new Comment();
         comment.setContent("removeContentComment");
         comment.setPost(post);
-        commentService.saveComment(comment);
+        commentService.saveComment(user, post, comment);
 
-        long searchedCommentId = commentService.findByContent("removeContentComment").getId();
-        long searchedPostId = postService.findByContent("removeContentPost").getId();
+        long searchedCommentId = commentService.getByContent("removeContentComment").getId();
+        long searchedPostId = postService.getByContent("removeContentPost").getId();
 
         commentService.removeComment(searchedCommentId);
         postService.removePost(searchedPostId);
@@ -148,5 +159,88 @@ public class CommentServiceTestSuite {
     @Test
     public void showNumberOfRecords() {
         System.out.println("Number of records: " + commentService.getAllComments().size());
+    }
+
+    @Test
+    public void saveAndDeleteComment2() {
+        //User and post setup
+        User user = userService.getUserByUsername("goofy");
+        Post post = new Post();
+        long initialPostsSize = postService.getAllPosts().size();
+        long initialPostListSize = user.getPosts().size();
+        long initialCommentsInUserSize = user.getComments().size();
+        long initialCommentsInPostSize = post.getComments().size();
+        post.setContent("save2PostContent");
+        postService.savePost2(user, post);
+        long searchedPostId = postService.getByContent("save2PostContent").getId();
+        //Saving post
+        Assert.assertEquals(initialPostsSize + 1, postService.getAllPosts().size());
+        Assert.assertEquals(initialPostListSize + 1, userService.getUserByUsername("goofy").getPosts().size());
+        //Comment setup
+        Comment comment = new Comment();
+        long initialSizeOfCommentsInRep = commentService.getAllComments().size();
+        comment.setContent("save2CommentContent");
+        commentService.saveComment2(user, post, comment);
+        long searchedCommentId = commentService.getByContent("save2CommentContent").getId();
+        //Saving comment
+        Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
+        Assert.assertEquals(initialCommentsInUserSize + 1, userService.getUserByUsername("goofy").getComments().size());
+        Assert.assertEquals(initialCommentsInPostSize + 1, postService.getByContent("save2PostContent").getComments().size());
+        //Removing comment
+        commentService.removeComment2(searchedCommentId);
+        Assert.assertEquals(initialSizeOfCommentsInRep, commentService.getAllComments().size());
+        Assert.assertEquals(initialCommentsInUserSize, userService.getUserByUsername("goofy").getComments().size());
+        Assert.assertEquals(initialCommentsInPostSize, postService.getByContent("save2PostContent").getComments().size());
+        //Removing post
+        postService.removePost2(searchedPostId);
+        Assert.assertEquals(initialPostsSize, postService.getAllPosts().size());
+        Assert.assertEquals(initialPostListSize, userService.getUserByUsername("goofy").getPosts().size());
+    }
+
+    @Test
+    public void editComment2() {
+        //User and post setup
+        User user = userService.getUserByUsername("goofy");
+        Post post = new Post();
+        long initialPostsSize = postService.getAllPosts().size();
+        long initialPostListSize = user.getPosts().size();
+        long initialCommentsInUserSize = user.getComments().size();
+        long initialCommentsInPostSize = post.getComments().size();
+        post.setContent("save2PostContent");
+        postService.savePost2(user, post);
+        long searchedPostId = postService.getByContent("save2PostContent").getId();
+        //Saving post
+        Assert.assertEquals(initialPostsSize + 1, postService.getAllPosts().size());
+        Assert.assertEquals(initialPostListSize + 1, userService.getUserByUsername("goofy").getPosts().size());
+        //Comment setup
+        Comment comment = new Comment();
+        long initialSizeOfCommentsInRep = commentService.getAllComments().size();
+        comment.setContent("save2CommentContent");
+        commentService.saveComment2(user, post, comment);
+        long searchedCommentId = commentService.getByContent("save2CommentContent").getId();
+        //Saving comment
+        Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
+        Assert.assertEquals(initialCommentsInUserSize + 1, userService.getUserByUsername("goofy").getComments().size());
+        Assert.assertEquals(initialCommentsInPostSize + 1, postService.getByContent("save2PostContent").getComments().size());
+        Assert.assertNull(commentService.getByContent("save2CommentContent").getDateTime());
+
+        Comment searchedComment = commentService.getByContent("save2CommentContent");
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 12, 17), LocalTime.of(16, 52));
+        searchedComment.setDateTime(dateTime);
+        commentService.saveComment2(searchedComment.getAuthor(), searchedComment.getPost(), searchedComment);
+
+        Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
+        Assert.assertEquals(initialCommentsInUserSize + 1, userService.getUserByUsername("goofy").getComments().size());
+        Assert.assertEquals(initialCommentsInPostSize + 1, postService.getByContent("save2PostContent").getComments().size());
+        Assert.assertEquals(2020, commentService.getByContent("save2CommentContent").getDateTime().getYear());
+        //Removing comment
+        commentService.removeComment2(searchedCommentId);
+        Assert.assertEquals(initialSizeOfCommentsInRep, commentService.getAllComments().size());
+        Assert.assertEquals(initialCommentsInUserSize, userService.getUserByUsername("goofy").getComments().size());
+        Assert.assertEquals(initialCommentsInPostSize, postService.getByContent("save2PostContent").getComments().size());
+        //Removing post
+        postService.removePost2(searchedPostId);
+        Assert.assertEquals(initialPostsSize, postService.getAllPosts().size());
+        Assert.assertEquals(initialPostListSize, userService.getUserByUsername("goofy").getPosts().size());
     }
 }

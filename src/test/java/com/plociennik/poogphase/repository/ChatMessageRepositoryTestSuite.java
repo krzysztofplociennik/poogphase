@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,13 +29,10 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void saveMessage() {
-        //Given
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setContent("saveMessageContent");
-        chatMessageRepository.save(chatMessage);
-        //When
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "saveMessageContent", null));
+
         long searchedMessageId = chatMessageRepository.findByContent("saveMessageContent").getId();
-        //Then
+
         Assert.assertTrue(chatMessageRepository.findById(searchedMessageId).isPresent());
         //Clean up
         chatMessageRepository.deleteById(searchedMessageId);
@@ -44,16 +40,12 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void getAllMessages() {
-        //Given
-        ChatMessage chatMessage1 = new ChatMessage();
-        chatMessage1.setContent("getAllContent");
-        ChatMessage chatMessage2 = new ChatMessage();
-        chatMessage2.setContent("getAllContent2");
-        chatMessageRepository.saveAll(Arrays.asList(chatMessage1, chatMessage2));
-        //When
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "getAllContent", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "getAllContent2", null));
+
         long searchedMessageId = chatMessageRepository.findByContent("getAllContent").getId();
         long searchedMessageId2 = chatMessageRepository.findByContent("getAllContent2").getId();
-        //Then
+
         Assert.assertEquals(initialChatMessageRepositorySize + 2, chatMessageRepository.count());
         //Clean up
         chatMessageRepository.deleteById(searchedMessageId);
@@ -62,13 +54,10 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void getMessage() {
-        //Given
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setContent("getMessageContent");
-        chatMessageRepository.save(chatMessage);
-        //When
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "getMessageContent", null));
+
         long searchedMessageId = chatMessageRepository.findByContent("getMessageContent").getId();
-        //Then
+
         Assert.assertTrue(chatMessageRepository.findById(searchedMessageId).isPresent());
         //Clean up
         chatMessageRepository.deleteById(searchedMessageId);
@@ -76,29 +65,25 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void editMessage() {
-        //Given
-        //When
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setContent("editMessageContent");
-        chatMessageRepository.save(chatMessage);
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "editMessageContent", null));
+        long sizeOfRepAfterSaving = chatMessageRepository.count();
+        ChatMessage chatMessage = chatMessageRepository.findByContent("editMessageContent");
+
+        Assert.assertEquals("", chatMessage.getRecipient());
 
         chatMessage.setRecipient("marqez");
         chatMessageRepository.save(chatMessage);
 
-        long searchedMessageId = chatMessageRepository.findByContent("editMessageContent").getId();
-        //Then
-        Assert.assertEquals("marqez", chatMessageRepository.findById(searchedMessageId).get().getRecipient());
+        Assert.assertEquals(sizeOfRepAfterSaving, chatMessageRepository.count());
+        Assert.assertEquals("marqez",chatMessageRepository.findByContent("editMessageContent").getRecipient());
         //Clean up
-        chatMessageRepository.deleteById(searchedMessageId);
+        chatMessageRepository.deleteById(chatMessage.getId());
     }
 
     @Test
     public void deleteMessage() {
-        //Given
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setContent("deleteMessageContent");
-        chatMessageRepository.save(chatMessage);
-        //When
+        chatMessageRepository.save(new ChatMessage(1L, null, "", "deleteMessageContent", null));
+
         long searchedMessageId = chatMessageRepository.findByContent("deleteMessageContent").getId();
 
         chatMessageRepository.deleteById(searchedMessageId);
@@ -108,4 +93,4 @@ public class ChatMessageRepositoryTestSuite {
     public void showNumberOfRecords() {
         System.out.println("Number of records: " + chatMessageRepository.findAll().size());
     }
-}
+}   // <(")

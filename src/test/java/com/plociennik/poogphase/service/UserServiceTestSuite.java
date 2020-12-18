@@ -15,6 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserServiceTestSuite {
     @Autowired
     private UserService userService;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private CommentService commentService;
     private long initialUserRepositorySize;
 
     @Before
@@ -109,10 +113,34 @@ public class UserServiceTestSuite {
         User searchedUser = userService.getUserByUsername("notNullUsername");
 
         Assert.assertNotEquals(null, searchedUser.getFriends());
-        Assert.assertNotEquals(null, searchedUser.getChatArchive());
+        Assert.assertNotEquals(null, searchedUser.getMessages());
         Assert.assertNotEquals(null, searchedUser.getPosts());
         Assert.assertNotEquals(null, searchedUser.getComments());
         //Clean up
         userService.removeUser(searchedUser.getId());
+    }
+
+    @Test
+    public void showNumberOfRecords() {
+        System.out.println("Number of records: " + userService.getAllUsers().size());
+    }
+
+    @Test
+    public void addAndDeleteFriend() {
+        User dummy = userService.getUserByUsername("dummy");
+        User silly = userService.getUserByUsername("silly");
+
+        long sizeOfFriendsListInDummy = dummy.getFriends().size();
+        long sizeOfFriendsListInSilly = silly.getFriends().size();
+
+        userService.addFriend(dummy, silly);
+
+        Assert.assertEquals(sizeOfFriendsListInDummy + 1, userService.getUserByUsername("dummy").getFriends().size());
+        Assert.assertEquals(sizeOfFriendsListInSilly + 1, userService.getUserByUsername("silly").getFriends().size());
+
+        userService.deleteFriend(dummy, silly);
+
+        Assert.assertEquals(sizeOfFriendsListInDummy, userService.getUserByUsername("dummy").getFriends().size());
+        Assert.assertEquals(sizeOfFriendsListInSilly, userService.getUserByUsername("silly").getFriends().size());
     }
 }

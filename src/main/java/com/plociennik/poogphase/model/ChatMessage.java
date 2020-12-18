@@ -10,15 +10,13 @@ public class ChatMessage {
     private String recipient;
     private String content;
     private LocalDateTime dateTime;
-    private ChatLog chatLog;
 
-    public ChatMessage(long id, User author, String recipient, String content, LocalDateTime dateTime, ChatLog chatLog) {
+    public ChatMessage(long id, User author, String recipient, String content, LocalDateTime dateTime) {
         this.id = id;
         this.author = author;
         this.recipient = recipient;
         this.content = content;
         this.dateTime = dateTime;
-        this.chatLog = chatLog;
     }
 
     public ChatMessage() {
@@ -65,14 +63,5 @@ public class ChatMessage {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
-    }
-
-    @ManyToOne
-    public ChatLog getChatLog() {
-        return chatLog;
-    }
-
-    public void setChatLog(ChatLog chatLog) {
-        this.chatLog = chatLog;
     }
 }

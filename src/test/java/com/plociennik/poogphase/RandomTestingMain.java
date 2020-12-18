@@ -2,6 +2,12 @@ package com.plociennik.poogphase;
 
 import com.plociennik.poogphase.logic.MessageManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class RandomTestingMain {
 
     private MessageManager messageManager;
@@ -67,6 +73,42 @@ public class RandomTestingMain {
 //        user2.setUsername("asqqqqqq");
 //
 //        System.out.println(user1.hashCode() + "\n" + user2.hashCode());
+
+//        List<String> list = new ArrayList<>();
+//        list.add("dummy");
+//        list.add("silly");
+//        list.add("dummy");
+//        list.add("silly");
+//        list.add("dummy");
+//        list.add("dummy");
+//        list.add("dummy");
+//        list.add("dummy");
+//
+//        String dummy = "dummy";
+//
+//        System.out.println("Size of the list: " + list.size());
+//
+////        list.remove("dummy");
+//        list = list.stream().filter(s -> !s.equals("dummy")).collect(Collectors.toList());
+//
+//        System.out.println("Size of the list: " + list.size());
+//        for (String s : list) {
+//            System.out.println(s);
+//        }
+
+//        String user = "mark", user2 = "paula", signature = user + "&" + user2;
+//
+//        System.out.println(signature);
+//
+//        String[] split = signature.split("&");
+//        for (String s : split) {
+//            System.out.println(s);
+//        }
+
+        Map<String, String> map = new HashMap<>();
+        System.out.println(map.size());
+        map.put("ex", "1");
+        System.out.println(map.size());
 
 
 

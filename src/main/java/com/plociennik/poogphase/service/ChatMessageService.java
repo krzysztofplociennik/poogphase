@@ -1,6 +1,7 @@
 package com.plociennik.poogphase.service;
 
 import com.plociennik.poogphase.model.ChatMessage;
+import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,34 @@ import java.util.Optional;
 public class ChatMessageService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
+    @Autowired
+    private UserService userService;
 
     public List<ChatMessage> getAllMessages() {
         return chatMessageRepository.findAll();
     }
 
     public ChatMessage saveMessage(ChatMessage message) {
-        message.getChatLog().getLog().add(message);
-        message.getChatLog().setLog(message.getChatLog().getLog());
+        message.getAuthor().getMessages().add(message);
+        message.getAuthor().setMessages(message.getAuthor().getMessages());
         return chatMessageRepository.save(message);
+    }
+
+    public ChatMessage saveMessage2(ChatMessage message) {
+        Optional<ChatMessage> optionalChatMessage = message.getAuthor().getMessages().stream()
+                .filter(chatMessage -> chatMessage.getId() == message.getId())
+                .findAny();
+        if (optionalChatMessage.isEmpty()) {
+            message.getAuthor().getMessages().add(message);
+            message.getAuthor().setMessages(message.getAuthor().getMessages());
+            return chatMessageRepository.save(message);
+        } else {
+            optionalChatMessage.get().setRecipient(message.getRecipient());
+            optionalChatMessage.get().setAuthor(message.getAuthor());
+            optionalChatMessage.get().setContent(message.getContent());
+            optionalChatMessage.get().setDateTime(message.getDateTime());
+            return chatMessageRepository.save(optionalChatMessage.get());
+        }
     }
 
     public Optional<ChatMessage> getMessage(final long id) {
@@ -31,7 +51,14 @@ public class ChatMessageService {
         chatMessageRepository.deleteById(id);
     }
 
-    public ChatMessage findByContent(String content) {
+    public void removeMessage2(long id) {
+        ChatMessage chatMessage = chatMessageRepository.findById(id).get();
+        User author = chatMessage.getAuthor();
+        author.getMessages().remove(chatMessage);
+        userService.saveUser(author);
+    }
+
+    public ChatMessage getByContent(String content) {
         return chatMessageRepository.findByContent(content);
     }
 

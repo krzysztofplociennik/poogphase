@@ -1,5 +1,7 @@
 package com.plociennik.poogphase.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,12 +16,13 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    private List<User> friends;
-    private List<Post> posts;
-    private List<Comment> comments;
-    private Map<User, ChatLog> chatArchive;
+    private Set<String> friends;
+    private Set<Post> posts;
+    private Set<Comment> comments;
+    private Set<ChatMessage> messages;
+    private Map<User, Set<ChatMessage>> chatLogs;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, List<User> friends, List<Post> posts, List<Comment> comments, Map<User, ChatLog> chatArchive) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, Set<String> friends, Set<Post> posts, Set<Comment> comments, Set<ChatMessage> messages, Map<User, Set<ChatMessage>> chatLogs) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,14 +33,16 @@ public class User {
         this.friends = friends;
         this.posts = posts;
         this.comments = comments;
-        this.chatArchive = chatArchive;
+        this.messages = messages;
+        this.chatLogs = chatLogs;
     }
 
     public User() {
-        friends = new ArrayList<>();
-        posts = new ArrayList<>();
-        comments = new ArrayList<>();
-        chatArchive = new HashMap<>();
+        friends = new HashSet<>();
+        posts = new HashSet<>();
+        comments = new HashSet<>();
+        messages = new HashSet<>();
+        chatLogs = new HashMap<>();
     }
 
     @Id
@@ -110,51 +115,67 @@ public class User {
     }
 
     @ElementCollection
-    public List<User> getFriends() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<String> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(Set<String> friends) {
         this.friends = friends;
     }
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             targetEntity = Post.class,
             mappedBy = "author",
+            orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public List<Post> getPosts() {
+    public Set<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             targetEntity = Comment.class,
             mappedBy = "author",
+            orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "author",
+            orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Map<User, ChatLog> getChatArchive() {
-        return chatArchive;
+    public Set<ChatMessage> getMessages() {
+        return messages;
     }
 
-    public void setChatArchive(Map<User, ChatLog> chatArchive) {
-        this.chatArchive = chatArchive;
+    public void setMessages(Set<ChatMessage> messages) {
+        this.messages = messages;
+    }
+
+    @Transient
+    public Map<User, Set<ChatMessage>> getChatLogs() {
+        return chatLogs;
+    }
+
+    public void setChatLogs(Map<User, Set<ChatMessage>> chatLogs) {
+        this.chatLogs = chatLogs;
     }
 
     @Override
@@ -170,7 +191,7 @@ public class User {
                 Objects.equals(getLastName(), user.getLastName()) &&
                 Objects.equals(getDateOfBirth(), user.getDateOfBirth()) &&
                 Objects.equals(getFriends(), user.getFriends()) &&
-                Objects.equals(chatArchive, user.chatArchive);
+                Objects.equals(chatLogs, user.chatLogs);
     }
 
     @Override
