@@ -10,9 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,13 +31,32 @@ public class ChatMessageServiceTestSuite {
     }
 
     @Test
-    public void saveChatMessage() {
+    public void saveAndDelete2Message() {
         User user = userService.getUserByUsername("dummy");
-        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "saveMessageContent", null));
+        long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
+        long initialSizeOfMessagesInUser = user.getMessages().size();
+        chatMessageService.saveMessage2(new ChatMessage(1L, user, "", "content", null));
 
-        long searchedMessageId = chatMessageService.getByContent("saveMessageContent").getId();
+        Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
+        Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
 
-        Assert.assertTrue(chatMessageService.getMessage(searchedMessageId).isPresent());
+        long searchedMessageId = chatMessageService.getByContent("content").getId();
+
+        chatMessageService.removeMessage2(searchedMessageId);
+        Assert.assertEquals(initialSizeOfMessagesInRep, chatMessageService.getAllMessages().size());
+        Assert.assertEquals(initialSizeOfMessagesInUser, userService.getUserByUsername("dummy").getMessages().size());
+    }
+
+    @Test
+    public void getChatMessage() {
+        User user = userService.getUserByUsername("dummy");
+        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "content", null));
+
+        long searchedMessageId = chatMessageService.getByContent("content").getId();
+
+        ChatMessage searchedMessage = chatMessageService.getMessage(searchedMessageId).get();
+
+        Assert.assertEquals("content", searchedMessage.getContent());
         //Clean up
         chatMessageService.removeMessage2(searchedMessageId);
     }
@@ -60,65 +76,6 @@ public class ChatMessageServiceTestSuite {
         //Clean up
         chatMessageService.removeMessage2(searchedMessageId);
         chatMessageService.removeMessage2(searchedMessageId2);
-    }
-
-    @Test
-    public void getChatMessage() {
-        User user = userService.getUserByUsername("dummy");
-        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "content", null));
-
-        long searchedMessageId = chatMessageService.getByContent("content").getId();
-
-        ChatMessage searchedMessage = chatMessageService.getMessage(searchedMessageId).get();
-
-        Assert.assertEquals("content", searchedMessage.getContent());
-        //Clean up
-        chatMessageService.removeMessage2(searchedMessageId);
-    }
-
-    @Test
-    public void editChatMessage() {
-        User user = userService.getUserByUsername("dummy");
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 11, 30), LocalTime.of(20, 45));
-        ChatMessage chatMessage = new ChatMessage(1L, user, "", "testContent", dateTime);
-        chatMessageService.saveMessage(chatMessage);
-        ChatMessage searchedMessage = chatMessageService.getByContent("testContent");
-
-        searchedMessage.setRecipient("mark");
-        chatMessageService.saveMessage(searchedMessage);
-
-        Assert.assertEquals("mark", chatMessageService.getMessage(searchedMessage.getId()).get().getRecipient());
-        //Clean up
-        chatMessageService.removeMessage2(searchedMessage.getId());
-    }
-
-    @Test
-    public void deleteChatMessage() {
-        User user = userService.getUserByUsername("dummy");
-        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "content", null));
-
-        long searchedMessageId = chatMessageService.getByContent("content").getId();
-
-        chatMessageService.removeMessage2(chatMessageService.getMessage(searchedMessageId).get().getId());
-
-        //Clean up
-    }
-
-    @Test
-    public void saveAndDelete2Message() {
-        User user = userService.getUserByUsername("dummy");
-        long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
-        long initialSizeOfMessagesInUser = user.getMessages().size();
-        chatMessageService.saveMessage2(new ChatMessage(1L, user, "", "content", null));
-
-        Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
-        Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
-
-        long searchedMessageId = chatMessageService.getByContent("content").getId();
-
-        chatMessageService.removeMessage2(searchedMessageId);
-        Assert.assertEquals(initialSizeOfMessagesInRep, chatMessageService.getAllMessages().size());
-        Assert.assertEquals(initialSizeOfMessagesInUser, userService.getUserByUsername("dummy").getMessages().size());
     }
 
     @Test
