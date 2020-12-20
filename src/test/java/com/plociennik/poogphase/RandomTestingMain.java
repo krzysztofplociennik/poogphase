@@ -1,16 +1,6 @@
 package com.plociennik.poogphase;
 
-import com.plociennik.poogphase.logic.MessageManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public class RandomTestingMain {
-
-    private MessageManager messageManager;
 
     public static void main(String[] args) {
 //        MessageManager manager = new MessageManager();
@@ -105,10 +95,12 @@ public class RandomTestingMain {
 //            System.out.println(s);
 //        }
 
-        Map<String, String> map = new HashMap<>();
-        System.out.println(map.size());
-        map.put("ex", "1");
-        System.out.println(map.size());
+//        Map<String, String> map = new HashMap<>();
+//        System.out.println(map.size());
+//        map.put("ex", "1");
+//        System.out.println(map.size());
+
+
 
 
 

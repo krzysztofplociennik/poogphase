@@ -32,7 +32,7 @@ public class CommentRepositoryTestSuite {
 
     @Test
     public void saveComment() {
-        commentRepository.save(new Comment(1L, null, "saveCommentContent", null, null));
+        commentRepository.save(new Comment(1L, null, null, null, "saveCommentContent"));
 
         long searchedCommentId = commentRepository.findByContent("saveCommentContent").getId();
 
@@ -43,8 +43,8 @@ public class CommentRepositoryTestSuite {
 
     @Test
     public void getAllComments() {
-        commentRepository.save(new Comment(1L, null, "getAllContent", null, null));
-        commentRepository.save(new Comment(1L, null, "getAllContent2", null, null));
+        commentRepository.save(new Comment(1L, null, null, null, "getAllContent"));
+        commentRepository.save(new Comment(1L, null, null, null, "getAllContent2"));
 
         long searchedCommentId = commentRepository.findByContent("getAllContent").getId();
         long searchedCommentId2 = commentRepository.findByContent("getAllContent2").getId();
@@ -57,7 +57,7 @@ public class CommentRepositoryTestSuite {
 
     @Test
     public void getComment() {
-        commentRepository.save(new Comment(1L, null, "getCommentContent", null, null));
+        commentRepository.save(new Comment(1L, null, null, null, "getCommentContent"));
 
         long searchedCommentId = commentRepository.findByContent("getCommentContent").getId();
 
@@ -88,7 +88,7 @@ public class CommentRepositoryTestSuite {
 
     @Test
     public void deleteComment() {
-        commentRepository.save(new Comment(1L, null, "deleteCommentContent", null, null));
+        commentRepository.save(new Comment(1L, null, null, null, "deleteCommentContent"));
 
         long searchedCommentId = commentRepository.findByContent("deleteCommentContent").getId();
 

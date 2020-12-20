@@ -33,7 +33,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void savePost() {
-        postRepository.save(new Post(1L, null, "savePostContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "savePostContent"));
 
         long searchedPostId = postRepository.findByContent("savePostContent").getId();
 
@@ -44,8 +44,8 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getAllPosts() {
-        postRepository.save(new Post(1L, null, "getAllPostsContent", null, new ArrayList<>()));
-        postRepository.save(new Post(1L, null, "getAllPostsContent2", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getAllPostsContent"));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getAllPostsContent2"));
 
         long searchedPostId = postRepository.findByContent("getAllPostsContent").getId();
         long searchedPostId2 = postRepository.findByContent("getAllPostsContent2").getId();
@@ -58,7 +58,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getPost() {
-        postRepository.save(new Post(1L, null, "getPostContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getPostContent"));
 
         long searchedPostId = postRepository.findByContent("getPostContent").getId();
 
@@ -69,7 +69,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void editPost() {
-        postRepository.save(new Post(1L, null, "editPostContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "editPostContent"));
 
         Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
         Assert.assertNull(postRepository.findByContent("editPostContent").getDateTime());
@@ -87,7 +87,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void deletePost() {
-        postRepository.save(new Post(1L, null, "deletePostContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "deletePostContent"));
 
         long searchedPostId = postRepository.findByContent("deletePostContent").getId();
 
@@ -96,7 +96,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void testIfCommentsAreNotNullUponCreatingNewPost() {
-        postRepository.save(new Post(1L, null, "notNullContent", null, new ArrayList<>()));
+        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "notNullContent"));
 
         long searchedPostId = postRepository.findByContent("notNullContent").getId();
 

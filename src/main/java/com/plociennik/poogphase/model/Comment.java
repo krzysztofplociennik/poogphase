@@ -8,15 +8,15 @@ public class Comment {
     private long id;
     private User author;
     private Post post;
-    private String content;
     private LocalDateTime dateTime;
+    private String content;
 
-    public Comment(long id, User author, String content, Post post, LocalDateTime dateTime) {
+    public Comment(long id, User author, Post post, LocalDateTime dateTime, String content) {
         this.id = id;
         this.author = author;
-        this.content = content;
         this.post = post;
         this.dateTime = dateTime;
+        this.content = content;
     }
 
     public Comment() {
@@ -41,14 +41,6 @@ public class Comment {
         this.author = author;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     @ManyToOne
     public Post getPost() {
         return post;
@@ -64,5 +56,13 @@ public class Comment {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

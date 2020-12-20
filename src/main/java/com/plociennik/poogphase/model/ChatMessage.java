@@ -8,15 +8,15 @@ public class ChatMessage {
     private long id;
     private User author;
     private String recipient;
-    private String content;
     private LocalDateTime dateTime;
+    private String content;
 
-    public ChatMessage(long id, User author, String recipient, String content, LocalDateTime dateTime) {
+    public ChatMessage(long id, User author, String recipient, LocalDateTime dateTime, String content) {
         this.id = id;
         this.author = author;
         this.recipient = recipient;
-        this.content = content;
         this.dateTime = dateTime;
+        this.content = content;
     }
 
     public ChatMessage() {
@@ -49,19 +49,19 @@ public class ChatMessage {
         this.recipient = recipient;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

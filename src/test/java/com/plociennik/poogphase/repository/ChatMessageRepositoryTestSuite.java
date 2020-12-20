@@ -29,7 +29,7 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void saveMessage() {
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "saveMessageContent", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "saveMessageContent"));
 
         long searchedMessageId = chatMessageRepository.findByContent("saveMessageContent").getId();
 
@@ -40,8 +40,8 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void getAllMessages() {
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "getAllContent", null));
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "getAllContent2", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "getAllContent"));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "getAllContent2"));
 
         long searchedMessageId = chatMessageRepository.findByContent("getAllContent").getId();
         long searchedMessageId2 = chatMessageRepository.findByContent("getAllContent2").getId();
@@ -54,7 +54,7 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void getMessage() {
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "getMessageContent", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "getMessageContent"));
 
         long searchedMessageId = chatMessageRepository.findByContent("getMessageContent").getId();
 
@@ -65,7 +65,7 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void editMessage() {
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "editMessageContent", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "editMessageContent"));
         long sizeOfRepAfterSaving = chatMessageRepository.count();
         ChatMessage chatMessage = chatMessageRepository.findByContent("editMessageContent");
 
@@ -82,7 +82,7 @@ public class ChatMessageRepositoryTestSuite {
 
     @Test
     public void deleteMessage() {
-        chatMessageRepository.save(new ChatMessage(1L, null, "", "deleteMessageContent", null));
+        chatMessageRepository.save(new ChatMessage(1L, null, "", null, "deleteMessageContent"));
 
         long searchedMessageId = chatMessageRepository.findByContent("deleteMessageContent").getId();
 

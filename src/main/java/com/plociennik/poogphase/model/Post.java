@@ -9,16 +9,16 @@ import java.util.List;
 public class Post {
     private long id;
     private User author;
-    private String content;
     private LocalDateTime dateTime;
     private List<Comment> comments;
+    private String content;
 
-    public Post(long id, User author, String content, LocalDateTime dateTime, List<Comment> comments) {
+    public Post(long id, User author, LocalDateTime dateTime, List<Comment> comments, String content) {
         this.id = id;
         this.author = author;
-        this.content = content;
         this.dateTime = dateTime;
         this.comments = comments;
+        this.content = content;
     }
 
     public Post() {
@@ -44,14 +44,6 @@ public class Post {
         this.author = author;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -73,5 +65,13 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
