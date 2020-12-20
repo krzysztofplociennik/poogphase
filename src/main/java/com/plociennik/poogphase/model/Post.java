@@ -3,17 +3,19 @@ package com.plociennik.poogphase.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "posts")
 public class Post {
     private long id;
     private User author;
     private LocalDateTime dateTime;
-    private List<Comment> comments;
+    private Set<Comment> comments;
     private String content;
 
-    public Post(long id, User author, LocalDateTime dateTime, List<Comment> comments, String content) {
+    public Post(long id, User author, LocalDateTime dateTime, Set<Comment> comments, String content) {
         this.id = id;
         this.author = author;
         this.dateTime = dateTime;
@@ -22,7 +24,7 @@ public class Post {
     }
 
     public Post() {
-        comments = new ArrayList<>();
+        comments = new LinkedHashSet<>();
     }
 
     @Id
@@ -59,11 +61,11 @@ public class Post {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 

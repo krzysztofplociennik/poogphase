@@ -22,7 +22,9 @@ public class User {
     private Set<ChatMessage> messages;
     private Map<User, Set<ChatMessage>> chatLogs;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, Set<String> friends, Set<Post> posts, Set<Comment> comments, Set<ChatMessage> messages, Map<User, Set<ChatMessage>> chatLogs) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName,
+                LocalDate dateOfBirth, Set<String> friends, Set<Post> posts, Set<Comment> comments,
+                Set<ChatMessage> messages, Map<User, Set<ChatMessage>> chatLogs) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -100,11 +102,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Transient
-    public int getAge() {
-        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
-    }
-
     @Column
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
@@ -112,6 +109,11 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Transient
+    public int getAge() {
+        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
     }
 
     @ElementCollection

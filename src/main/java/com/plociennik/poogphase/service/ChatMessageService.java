@@ -20,7 +20,7 @@ public class ChatMessageService {
         return chatMessageRepository.findAll();
     }
 
-    public ChatMessage saveMessage(ChatMessage message) {
+    public ChatMessage saveMessage(final ChatMessage message) {
         Optional<ChatMessage> optionalChatMessage = message.getAuthor().getMessages().stream()
                 .filter(chatMessage -> chatMessage.getId() == message.getId())
                 .findAny();
@@ -41,14 +41,14 @@ public class ChatMessageService {
         return chatMessageRepository.findById(id);
     }
 
-    public void removeMessage(long id) {
+    public void removeMessage(final long id) {
         ChatMessage chatMessage = chatMessageRepository.findById(id).get();
         User author = chatMessage.getAuthor();
         author.getMessages().remove(chatMessage);
         userService.saveUser(author);
     }
 
-    public ChatMessage getByContent(String content) {
+    public ChatMessage getByContent(final String content) {
         return chatMessageRepository.findByContent(content);
     }
 

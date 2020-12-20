@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,7 +34,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void savePost() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "savePostContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "savePostContent"));
 
         long searchedPostId = postRepository.findByContent("savePostContent").getId();
 
@@ -44,8 +45,8 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getAllPosts() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getAllPostsContent"));
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getAllPostsContent2"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "getAllPostsContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "getAllPostsContent2"));
 
         long searchedPostId = postRepository.findByContent("getAllPostsContent").getId();
         long searchedPostId2 = postRepository.findByContent("getAllPostsContent2").getId();
@@ -58,7 +59,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void getPost() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "getPostContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "getPostContent"));
 
         long searchedPostId = postRepository.findByContent("getPostContent").getId();
 
@@ -69,7 +70,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void editPost() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "editPostContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "editPostContent"));
 
         Assert.assertEquals(initialPostRepositorySize + 1, postRepository.count());
         Assert.assertNull(postRepository.findByContent("editPostContent").getDateTime());
@@ -87,7 +88,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void deletePost() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "deletePostContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "deletePostContent"));
 
         long searchedPostId = postRepository.findByContent("deletePostContent").getId();
 
@@ -96,7 +97,7 @@ public class PostRepositoryTestSuite {
 
     @Test
     public void testIfCommentsAreNotNullUponCreatingNewPost() {
-        postRepository.save(new Post(1L, null, null, new ArrayList<>(), "notNullContent"));
+        postRepository.save(new Post(1L, null, null, new LinkedHashSet<>(), "notNullContent"));
 
         long searchedPostId = postRepository.findByContent("notNullContent").getId();
 

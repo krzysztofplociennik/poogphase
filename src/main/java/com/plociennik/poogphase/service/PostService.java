@@ -15,28 +15,28 @@ public class PostService {
     @Autowired
     private UserService userService;
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public Post savePost(final User author, final Post post) {
+        author.getPosts().add(post);
+        post.setAuthor(author);
+        return postRepository.save(post);
     }
 
     public Optional<Post> getPost(final long id) {
         return postRepository.findById(id);
     }
 
-    public Post savePost(User author, Post post) {
-        author.getPosts().add(post);
-        post.setAuthor(author);
-        return postRepository.save(post);
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 
-    public void removePost(long id) {
+    public void removePost(final long id) {
         Post post = postRepository.findById(id).get();
         User author = post.getAuthor();
         author.getPosts().remove(post);
         userService.saveUser(author);
     }
 
-    public Post getByContent(String content) {
+    public Post getByContent(final String content) {
         return postRepository.findByContent(content);
     }
 
