@@ -21,12 +21,6 @@ public class ChatMessageService {
     }
 
     public ChatMessage saveMessage(ChatMessage message) {
-        message.getAuthor().getMessages().add(message);
-        message.getAuthor().setMessages(message.getAuthor().getMessages());
-        return chatMessageRepository.save(message);
-    }
-
-    public ChatMessage saveMessage2(ChatMessage message) {
         Optional<ChatMessage> optionalChatMessage = message.getAuthor().getMessages().stream()
                 .filter(chatMessage -> chatMessage.getId() == message.getId())
                 .findAny();
@@ -48,10 +42,6 @@ public class ChatMessageService {
     }
 
     public void removeMessage(long id) {
-        chatMessageRepository.deleteById(id);
-    }
-
-    public void removeMessage2(long id) {
         ChatMessage chatMessage = chatMessageRepository.findById(id).get();
         User author = chatMessage.getAuthor();
         author.getMessages().remove(chatMessage);

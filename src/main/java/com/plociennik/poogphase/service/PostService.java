@@ -20,25 +20,17 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post savePost(Post post) {
-        return postRepository.save(post);
-    }
-
     public Optional<Post> getPost(final long id) {
         return postRepository.findById(id);
     }
 
-    public void removePost(long id) {
-        postRepository.deleteById(id);
-    }
-
-    public Post savePost2(User author, Post post) {
+    public Post savePost(User author, Post post) {
         author.getPosts().add(post);
         post.setAuthor(author);
         return postRepository.save(post);
     }
 
-    public void removePost2(long id) {
+    public void removePost(long id) {
         Post post = postRepository.findById(id).get();
         User author = post.getAuthor();
         author.getPosts().remove(post);

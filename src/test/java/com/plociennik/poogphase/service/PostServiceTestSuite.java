@@ -46,20 +46,21 @@ public class PostServiceTestSuite {
         long initialSizeOfPostsInRep = postService.getAllPosts().size();
         long initialSizeOfPostsInUser = user.getPosts().size();
         post.setContent("save2PostContent");
-        postService.savePost2(user, post);
+        postService.savePost(user, post);
         long searchedPostId = postService.getByContent("save2PostContent").getId();
         Assert.assertEquals(initialSizeOfPostsInRep + 1, postService.getAllPosts().size());
         Assert.assertEquals(initialSizeOfPostsInUser + 1, userService.getUserByUsername("dummy").getPosts().size());
-        postService.removePost2(searchedPostId);
+        postService.removePost(searchedPostId);
         Assert.assertEquals(initialSizeOfPostsInRep, postService.getAllPosts().size());
         Assert.assertEquals(initialSizeOfPostsInUser, userService.getUserByUsername("dummy").getPosts().size());
     }
 
     @Test
     public void getPost() {
+        User user = userService.getUserByUsername("dummy");
         Post post = new Post();
         post.setContent("getContentPost");
-        postService.savePost(post);
+        postService.savePost(user, post);
 
         long searchedPostId = postService.getByContent("getContentPost").getId();
 
@@ -71,12 +72,13 @@ public class PostServiceTestSuite {
     @Test
     public void getAllPosts() {
         long initialSizeOfRepository = postService.getAllPosts().size();
+        User user = userService.getUserByUsername("dummy");
         Post post = new Post();
         Post post2 = new Post();
         post.setContent("getAllContent");
         post2.setContent("getAllContent2");
-        postService.savePost(post);
-        postService.savePost(post2);
+        postService.savePost(user, post);
+        postService.savePost(user, post2);
 
         long searchedPostId = postService.getByContent("getAllContent").getId();
         long searchedPostId2 = postService.getByContent("getAllContent2").getId();
@@ -94,13 +96,13 @@ public class PostServiceTestSuite {
         long initialSizeOfPostsInRep = postService.getAllPosts().size();
         long initialSizeOfPostsInUser = user.getPosts().size();
         post.setContent("save2PostContent");
-        postService.savePost2(user, post);
+        postService.savePost(user, post);
         long searchedPostId = postService.getByContent("save2PostContent").getId();
         Assert.assertEquals(initialSizeOfPostsInRep + 1, postService.getAllPosts().size());
         Assert.assertEquals(initialSizeOfPostsInUser + 1, userService.getUserByUsername("dummy").getPosts().size());
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 12, 5), LocalTime.of(15, 11));
         post.setDateTime(dateTime);
-        postService.savePost2(user, post);
+        postService.savePost(user, post);
         Assert.assertEquals(12, postService.getByContent("save2PostContent").getDateTime().getMonthValue());
         Assert.assertEquals(15, userService.getUserByUsername("dummy").getPosts().stream()
                 .filter(post1 -> post1.getContent().equals("save2PostContent"))
@@ -108,7 +110,7 @@ public class PostServiceTestSuite {
                 .get()
                 .getDateTime()
                 .getHour());
-        postService.removePost2(searchedPostId);
+        postService.removePost(searchedPostId);
         Assert.assertEquals(initialSizeOfPostsInRep, postService.getAllPosts().size());
         Assert.assertEquals(initialSizeOfPostsInUser, userService.getUserByUsername("dummy").getPosts().size());
     }

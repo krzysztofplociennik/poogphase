@@ -35,14 +35,14 @@ public class ChatMessageServiceTestSuite {
         User user = userService.getUserByUsername("dummy");
         long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
         long initialSizeOfMessagesInUser = user.getMessages().size();
-        chatMessageService.saveMessage2(new ChatMessage(1L, user, "", "content", null));
+        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "content", null));
 
         Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
 
         long searchedMessageId = chatMessageService.getByContent("content").getId();
 
-        chatMessageService.removeMessage2(searchedMessageId);
+        chatMessageService.removeMessage(searchedMessageId);
         Assert.assertEquals(initialSizeOfMessagesInRep, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser, userService.getUserByUsername("dummy").getMessages().size());
     }
@@ -58,7 +58,7 @@ public class ChatMessageServiceTestSuite {
 
         Assert.assertEquals("content", searchedMessage.getContent());
         //Clean up
-        chatMessageService.removeMessage2(searchedMessageId);
+        chatMessageService.removeMessage(searchedMessageId);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class ChatMessageServiceTestSuite {
 
         Assert.assertEquals(initialRepositorySize + 2, chatMessageService.getAllMessages().size());
         //Clean up
-        chatMessageService.removeMessage2(searchedMessageId);
-        chatMessageService.removeMessage2(searchedMessageId2);
+        chatMessageService.removeMessage(searchedMessageId);
+        chatMessageService.removeMessage(searchedMessageId2);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class ChatMessageServiceTestSuite {
         User user = userService.getUserByUsername("dummy");
         long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
         long initialSizeOfMessagesInUser = user.getMessages().size();
-        chatMessageService.saveMessage2(new ChatMessage(1L, user, "", "content", null));
+        chatMessageService.saveMessage(new ChatMessage(1L, user, "", "content", null));
 
         Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
@@ -92,13 +92,13 @@ public class ChatMessageServiceTestSuite {
         long searchedMessageId = chatMessageService.getByContent("content").getId();
         ChatMessage searchedMessage = chatMessageService.getByContent("content");
         searchedMessage.setRecipient("atomix");
-        chatMessageService.saveMessage2(searchedMessage);
+        chatMessageService.saveMessage(searchedMessage);
 
         Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
         Assert.assertEquals("atomix", chatMessageService.getByContent("content").getRecipient());
 
-        chatMessageService.removeMessage2(searchedMessageId);
+        chatMessageService.removeMessage(searchedMessageId);
         Assert.assertEquals(initialSizeOfMessagesInRep, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser, userService.getUserByUsername("dummy").getMessages().size());
     }
