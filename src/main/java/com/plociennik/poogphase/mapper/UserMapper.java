@@ -29,9 +29,9 @@ public class UserMapper {
                 userDto.getLastName(),
                 userDto.getDateOfBirth(),
                 userDto.getFriends(),
-                postMapper.mapToPostList(userDto.getPosts()),
-                commentMapper.mapToCommentList(userDto.getComments()),
-                chatMessageMapper.mapToChatMessageList(userDto.getMessages()),
+                postMapper.mapToPostSet(userDto.getPosts()),
+                commentMapper.mapToCommentSet(userDto.getComments()),
+                chatMessageMapper.mapToChatMessageSet(userDto.getMessages()),
                 chatMessageMapper.mapToMap(userDto.getChatLogs()));
     }
 
@@ -45,9 +45,9 @@ public class UserMapper {
                 user.getLastName(),
                 user.getDateOfBirth(),
                 user.getFriends(),
-                postMapper.mapToPostDtoList(user.getPosts()),
-                commentMapper.mapToCommentDtoList(user.getComments()),
-                chatMessageMapper.mapToChatMessageDtoList(user.getMessages()),
+                postMapper.mapToPostDtoSet(user.getPosts()),
+                commentMapper.mapToCommentDtoSet(user.getComments()),
+                chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()),
                 chatMessageMapper.mapToMapDto(user.getChatLogs()));
     }
 
@@ -62,9 +62,9 @@ public class UserMapper {
                         userDto.getLastName(),
                         userDto.getDateOfBirth(),
                         userDto.getFriends(),
-                        postMapper.mapToPostList(userDto.getPosts()),
-                        commentMapper.mapToCommentList(userDto.getComments()),
-                        chatMessageMapper.mapToChatMessageList(userDto.getMessages()),
+                        postMapper.mapToPostSet(userDto.getPosts()),
+                        commentMapper.mapToCommentSet(userDto.getComments()),
+                        chatMessageMapper.mapToChatMessageSet(userDto.getMessages()),
                         chatMessageMapper.mapToMap(userDto.getChatLogs())))
                 .collect(Collectors.toList());
     }
@@ -79,9 +79,9 @@ public class UserMapper {
                         user.getLastName(),
                         user.getDateOfBirth(),
                         user.getFriends(),
-                        postMapper.mapToPostDtoList(user.getPosts()),
-                        commentMapper.mapToCommentDtoList(user.getComments()),
-                        chatMessageMapper.mapToChatMessageDtoList(user.getMessages()),
+                        postMapper.mapToPostDtoSet(user.getPosts()),
+                        commentMapper.mapToCommentDtoSet(user.getComments()),
+                        chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()),
                         chatMessageMapper.mapToMapDto(user.getChatLogs())))
                 .collect(Collectors.toList());
     }

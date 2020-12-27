@@ -35,7 +35,7 @@ public class CommentMapper {
                 comment.getContent());
     }
 
-    public Set<Comment> mapToCommentList(final Set<CommentDto> commentsDto) {
+    public Set<Comment> mapToCommentSet(final Set<CommentDto> commentsDto) {
         return commentsDto.stream()
                 .map(commentDto -> new Comment(
                         commentDto.getId(),
@@ -46,7 +46,7 @@ public class CommentMapper {
                 .collect(Collectors.toSet());
     }
 
-    public Set<CommentDto> mapToCommentDtoList(final Set<Comment> comments) {
+    public Set<CommentDto> mapToCommentDtoSet(final Set<Comment> comments) {
         return comments.stream()
                 .map(comment -> new CommentDto(
                         comment.getId(),

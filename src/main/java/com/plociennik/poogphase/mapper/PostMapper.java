@@ -5,7 +5,7 @@ import com.plociennik.poogphase.model.Post;
 import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.List;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +21,7 @@ public class PostMapper {
                 postDto.getId(),
                 userService.getUser(postDto.getAuthorId()).get(),
                 postDto.getDateTime(),
-                commentMapper.mapToCommentList(postDto.getComments()),
+                commentMapper.mapToCommentSet(postDto.getComments()),
                 postDto.getContent());
     }
 
@@ -30,28 +30,28 @@ public class PostMapper {
                 post.getId(),
                 post.getAuthor().getId(),
                 post.getDateTime(),
-                commentMapper.mapToCommentDtoList(post.getComments()),
+                commentMapper.mapToCommentDtoSet(post.getComments()),
                 post.getContent());
     }
 
-    public Set<Post> mapToPostList(final Set<PostDto> postsDto) {
+    public Set<Post> mapToPostSet(final Set<PostDto> postsDto) {
         return postsDto.stream()
                 .map(postDto -> new Post(
                         postDto.getId(),
                         userService.getUser(postDto.getAuthorId()).get(),
                         postDto.getDateTime(),
-                        commentMapper.mapToCommentList(postDto.getComments()),
+                        commentMapper.mapToCommentSet(postDto.getComments()),
                         postDto.getContent()))
                 .collect(Collectors.toSet());
     }
 
-    public Set<PostDto> mapToPostDtoList(final Set<Post> posts) {
+    public Set<PostDto> mapToPostDtoSet(final Set<Post> posts) {
         return posts.stream()
                 .map(post -> new PostDto(
                         post.getId(),
                         post.getAuthor().getId(),
                         post.getDateTime(),
-                        commentMapper.mapToCommentDtoList(post.getComments()),
+                        commentMapper.mapToCommentDtoSet(post.getComments()),
                         post.getContent()))
                 .collect(Collectors.toSet());
     }

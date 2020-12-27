@@ -1,9 +1,6 @@
 package com.plociennik.poogphase.dto;
 
-import com.plociennik.poogphase.model.Comment;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 public class PostDto {
