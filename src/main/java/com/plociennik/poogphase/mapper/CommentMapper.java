@@ -1,11 +1,12 @@
 package com.plociennik.poogphase.mapper;
 
-import com.plociennik.poogphase.dto.CommentDto;
+import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.Comment;
 import com.plociennik.poogphase.service.PostService;
 import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class CommentMapper {
                 comment.getContent());
     }
 
-    public Set<Comment> mapToCommentSet(final Set<CommentDto> commentsDto) {
+    public List<Comment> mapToCommentSet(final List<CommentDto> commentsDto) {
         return commentsDto.stream()
                 .map(commentDto -> new Comment(
                         commentDto.getId(),
@@ -43,10 +44,10 @@ public class CommentMapper {
                         postService.getPost(commentDto.getPostId()).get(),
                         commentDto.getDateTime(),
                         commentDto.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<CommentDto> mapToCommentDtoSet(final Set<Comment> comments) {
+    public List<CommentDto> mapToCommentDtoSet(final List<Comment> comments) {
         return comments.stream()
                 .map(comment -> new CommentDto(
                         comment.getId(),
@@ -54,6 +55,6 @@ public class CommentMapper {
                         comment.getPost().getId(),
                         comment.getDateTime(),
                         comment.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }

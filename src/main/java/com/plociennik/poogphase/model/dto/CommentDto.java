@@ -1,4 +1,4 @@
-package com.plociennik.poogphase.dto;
+package com.plociennik.poogphase.model.dto;
 
 import java.time.LocalDateTime;
 

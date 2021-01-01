@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PostService {
@@ -15,9 +16,10 @@ public class PostService {
     @Autowired
     private UserService userService;
 
-    public Post savePost(final User author, final Post post) {
-        author.getPosts().add(post);
-        post.setAuthor(author);
+    public Post savePost(final Post post) {
+        User author = post.getAuthor();
+//        author.getPosts().add(post);
+//        post.setAuthor(author);
         return postRepository.save(post);
     }
 

@@ -1,11 +1,12 @@
 package com.plociennik.poogphase.mapper;
 
-import com.plociennik.poogphase.dto.PostDto;
+import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.Post;
 import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class PostMapper {
                 post.getContent());
     }
 
-    public Set<Post> mapToPostSet(final Set<PostDto> postsDto) {
+    public List<Post> mapToPostSet(final List<PostDto> postsDto) {
         return postsDto.stream()
                 .map(postDto -> new Post(
                         postDto.getId(),
@@ -42,10 +43,10 @@ public class PostMapper {
                         postDto.getDateTime(),
                         commentMapper.mapToCommentSet(postDto.getComments()),
                         postDto.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<PostDto> mapToPostDtoSet(final Set<Post> posts) {
+    public List<PostDto> mapToPostDtoSet(final List<Post> posts) {
         return posts.stream()
                 .map(post -> new PostDto(
                         post.getId(),
@@ -53,6 +54,6 @@ public class PostMapper {
                         post.getDateTime(),
                         commentMapper.mapToCommentDtoSet(post.getComments()),
                         post.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }

@@ -1,25 +1,25 @@
-package com.plociennik.poogphase.dto;
-
-import com.plociennik.poogphase.model.User;
+package com.plociennik.poogphase.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
-public class ChatMessageDto {
+public class PostDto {
     private long id;
     private long authorId;
-    private String recipient;
     private LocalDateTime dateTime;
+    private List<CommentDto> comments;
     private String content;
 
-    public ChatMessageDto(long id, long authorId, String recipient, LocalDateTime dateTime, String content) {
+    public PostDto(long id, long authorId, LocalDateTime dateTime, List<CommentDto> comments, String content) {
         this.id = id;
         this.authorId = authorId;
-        this.recipient = recipient;
         this.dateTime = dateTime;
+        this.comments = comments;
         this.content = content;
     }
 
-    public ChatMessageDto() {
+    public PostDto() {
     }
 
     public long getId() {
@@ -38,20 +38,20 @@ public class ChatMessageDto {
         this.authorId = authorId;
     }
 
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public List<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 
     public String getContent() {

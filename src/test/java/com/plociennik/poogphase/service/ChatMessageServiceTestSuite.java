@@ -31,20 +31,28 @@ public class ChatMessageServiceTestSuite {
     }
 
     @Test
-    public void saveAndDelete2Message() {
+    public void saveAndDeleteMessage() {
         User user = userService.getUserByUsername("dummy");
-        long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
+        User user2 = userService.getUserByUsername("silly");
         long initialSizeOfMessagesInUser = user.getMessages().size();
-        chatMessageService.saveMessage(new ChatMessage(1L, user, "", null, "content"));
+        long initialSizeOfMessagesInUser2 = user2.getMessages().size();
+        ChatMessage message = new ChatMessage();
+        message.setAuthor(user);
+        message.setRecipient(user2.getUsername());
+        message.setContent("content");
+        chatMessageService.saveMessage(message);
 
-        Assert.assertEquals(initialSizeOfMessagesInRep + 1, chatMessageService.getAllMessages().size());
+
+        Assert.assertEquals(initialChatMessageRepositorySize + 3, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser + 1, userService.getUserByUsername("dummy").getMessages().size());
+        Assert.assertEquals(initialSizeOfMessagesInUser2 + 1, userService.getUserByUsername("silly").getMessages().size());
 
         long searchedMessageId = chatMessageService.getByContent("content").getId();
 
         chatMessageService.removeMessage(searchedMessageId);
-        Assert.assertEquals(initialSizeOfMessagesInRep, chatMessageService.getAllMessages().size());
+        Assert.assertEquals(initialChatMessageRepositorySize, chatMessageService.getAllMessages().size());
         Assert.assertEquals(initialSizeOfMessagesInUser, userService.getUserByUsername("dummy").getMessages().size());
+        Assert.assertEquals(initialSizeOfMessagesInUser2, userService.getUserByUsername("silly").getMessages().size());
     }
 
     @Test
@@ -79,7 +87,7 @@ public class ChatMessageServiceTestSuite {
     }
 
     @Test
-    public void editMessage2() {
+    public void editMessage() {
         User user = userService.getUserByUsername("dummy");
         long initialSizeOfMessagesInRep = chatMessageService.getAllMessages().size();
         long initialSizeOfMessagesInUser = user.getMessages().size();
@@ -106,5 +114,13 @@ public class ChatMessageServiceTestSuite {
     @Test
     public void showNumberOfRecords() {
         System.out.println("Number of records: " + chatMessageService.getAllMessages().size());
+    }
+
+    @Test
+    public void saveData() {
+        User user = userService.getUserByUsername("dummy");
+        chatMessageService.saveMessage(new ChatMessage(1L, user, "", null, "content"));
+
+
     }
 }

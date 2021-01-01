@@ -12,10 +12,10 @@ public class Post {
     private long id;
     private User author;
     private LocalDateTime dateTime;
-    private Set<Comment> comments;
+    private List<Comment> comments;
     private String content;
 
-    public Post(long id, User author, LocalDateTime dateTime, Set<Comment> comments, String content) {
+    public Post(long id, User author, LocalDateTime dateTime, List<Comment> comments, String content) {
         this.id = id;
         this.author = author;
         this.dateTime = dateTime;
@@ -24,7 +24,7 @@ public class Post {
     }
 
     public Post() {
-        comments = new LinkedHashSet<>();
+        comments = new ArrayList<>();
     }
 
     @Id
@@ -61,11 +61,11 @@ public class Post {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 

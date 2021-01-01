@@ -1,6 +1,6 @@
 package com.plociennik.poogphase.mapper;
 
-import com.plociennik.poogphase.dto.UserDto;
+import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ public class UserMapper {
                 userDto.getFriends(),
                 postMapper.mapToPostSet(userDto.getPosts()),
                 commentMapper.mapToCommentSet(userDto.getComments()),
-                chatMessageMapper.mapToChatMessageSet(userDto.getMessages()),
-                chatMessageMapper.mapToMap(userDto.getChatLogs()));
+                chatMessageMapper.mapToChatMessageSet(userDto.getMessages()));
+//                chatMessageMapper.mapToChatLogMap(userDto.getChatLogs()));
     }
 
     public UserDto mapToUserDto(final User user) {
@@ -47,8 +47,8 @@ public class UserMapper {
                 user.getFriends(),
                 postMapper.mapToPostDtoSet(user.getPosts()),
                 commentMapper.mapToCommentDtoSet(user.getComments()),
-                chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()),
-                chatMessageMapper.mapToMapDto(user.getChatLogs()));
+                chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()));
+//                chatMessageMapper.mapToChatLogMapDto(user.getChatLogs()));
     }
 
     public List<User> mapToUserList(final List<UserDto> usersDto) {
@@ -64,8 +64,8 @@ public class UserMapper {
                         userDto.getFriends(),
                         postMapper.mapToPostSet(userDto.getPosts()),
                         commentMapper.mapToCommentSet(userDto.getComments()),
-                        chatMessageMapper.mapToChatMessageSet(userDto.getMessages()),
-                        chatMessageMapper.mapToMap(userDto.getChatLogs())))
+                        chatMessageMapper.mapToChatMessageSet(userDto.getMessages())))
+//                        chatMessageMapper.mapToChatLogMap(userDto.getChatLogs())))
                 .collect(Collectors.toList());
     }
 
@@ -81,8 +81,8 @@ public class UserMapper {
                         user.getFriends(),
                         postMapper.mapToPostDtoSet(user.getPosts()),
                         commentMapper.mapToCommentDtoSet(user.getComments()),
-                        chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()),
-                        chatMessageMapper.mapToMapDto(user.getChatLogs())))
+                        chatMessageMapper.mapToChatMessageDtoSet(user.getMessages())))
+//                        chatMessageMapper.mapToChatLogMapDto(user.getChatLogs())))
                 .collect(Collectors.toList());
     }
 }

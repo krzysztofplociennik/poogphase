@@ -1,13 +1,12 @@
 package com.plociennik.poogphase.mapper;
 
-import com.plociennik.poogphase.dto.ChatMessageDto;
-import com.plociennik.poogphase.dto.UserDto;
+import com.plociennik.poogphase.model.dto.ChatMessageDto;
+import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +19,7 @@ public class ChatMessageMapper {
     @Autowired
     private UserMapper userMapper;
 
-    public ChatMessage mapToChatMessage(final com.plociennik.poogphase.dto.ChatMessageDto chatMessageDto) {
+    public ChatMessage mapToChatMessage(final ChatMessageDto chatMessageDto) {
         return new ChatMessage(
                 chatMessageDto.getId(),
                 userService.getUser(chatMessageDto.getAuthorId()).get(),
@@ -51,7 +50,7 @@ public class ChatMessageMapper {
 
     public Set<ChatMessageDto> mapToChatMessageDtoSet(final Set<ChatMessage> messages) {
         return messages.stream()
-                .map(message -> new com.plociennik.poogphase.dto.ChatMessageDto(
+                .map(message -> new ChatMessageDto(
                         message.getId(),
                         message.getAuthor().getId(),
                         message.getRecipient(),
@@ -60,7 +59,7 @@ public class ChatMessageMapper {
                 .collect(Collectors.toSet());
     }
 
-    public Map<User, Set<ChatMessage>> mapToMap(final Map<UserDto, Set<ChatMessageDto>> mapDto) {
+    public Map<User, Set<ChatMessage>> mapToChatLogMap(final Map<UserDto, Set<ChatMessageDto>> mapDto) {
         Map<User, Set<ChatMessage>> map = new HashMap<>();
         for (Map.Entry<UserDto, Set<ChatMessageDto>> entry : mapDto.entrySet()) {
             map.put(userMapper.mapToUser(entry.getKey()), mapToChatMessageSet(entry.getValue()));
@@ -68,7 +67,7 @@ public class ChatMessageMapper {
         return map;
     }
 
-    public Map<UserDto, Set<ChatMessageDto>> mapToMapDto(final Map<User, Set<ChatMessage>> map) {
+    public Map<UserDto, Set<ChatMessageDto>> mapToChatLogMapDto(final Map<User, Set<ChatMessage>> map) {
         Map<UserDto, Set<ChatMessageDto>> mapDto = new HashMap<>();
         for (Map.Entry<User, Set<ChatMessage>> entry : map.entrySet()) {
             mapDto.put(userMapper.mapToUserDto(entry.getKey()), mapToChatMessageDtoSet(entry.getValue()));

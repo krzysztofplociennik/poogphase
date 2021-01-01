@@ -17,14 +17,14 @@ public class User {
     private String lastName;
     private LocalDate dateOfBirth;
     private Set<String> friends;
-    private Set<Post> posts;
-    private Set<Comment> comments;
+    private List<Post> posts;
+    private List<Comment> comments;
     private Set<ChatMessage> messages;
-    private Map<User, Set<ChatMessage>> chatLogs;
+//    private Map<User, Set<ChatMessage>> chatLogs;
 
     public User(long id, String username, String password, String mail, String firstName, String lastName,
-                LocalDate dateOfBirth, Set<String> friends, Set<Post> posts, Set<Comment> comments,
-                Set<ChatMessage> messages, Map<User, Set<ChatMessage>> chatLogs) {
+                LocalDate dateOfBirth, Set<String> friends, List<Post> posts, List<Comment> comments,
+                Set<ChatMessage> messages/*, Map<User, Set<ChatMessage>> chatLogs*/) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -36,15 +36,15 @@ public class User {
         this.posts = posts;
         this.comments = comments;
         this.messages = messages;
-        this.chatLogs = chatLogs;
+//        this.chatLogs = chatLogs;
     }
 
     public User() {
         friends = new HashSet<>();
-        posts = new HashSet<>();
-        comments = new HashSet<>();
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
         messages = new HashSet<>();
-        chatLogs = new HashMap<>();
+//        chatLogs = new HashMap<>();
     }
 
     @Id
@@ -133,11 +133,11 @@ public class User {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Set<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 
@@ -148,11 +148,11 @@ public class User {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -160,8 +160,9 @@ public class User {
             fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "author",
-            orphanRemoval = true,
+//            cascade = CascadeType.REMOVE
             cascade = CascadeType.ALL
+//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
     public Set<ChatMessage> getMessages() {
         return messages;
@@ -171,14 +172,14 @@ public class User {
         this.messages = messages;
     }
 
-    @Transient
-    public Map<User, Set<ChatMessage>> getChatLogs() {
-        return chatLogs;
-    }
-
-    public void setChatLogs(Map<User, Set<ChatMessage>> chatLogs) {
-        this.chatLogs = chatLogs;
-    }
+//    @Transient
+//    public Map<User, Set<ChatMessage>> getChatLogs() {
+//        return chatLogs;
+//    }
+//
+//    public void setChatLogs(Map<User, Set<ChatMessage>> chatLogs) {
+//        this.chatLogs = chatLogs;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -192,8 +193,8 @@ public class User {
                 Objects.equals(getFirstName(), user.getFirstName()) &&
                 Objects.equals(getLastName(), user.getLastName()) &&
                 Objects.equals(getDateOfBirth(), user.getDateOfBirth()) &&
-                Objects.equals(getFriends(), user.getFriends()) &&
-                Objects.equals(chatLogs, user.chatLogs);
+                Objects.equals(getFriends(), user.getFriends());
+//                && Objects.equals(chatLogs, user.chatLogs);
     }
 
     @Override

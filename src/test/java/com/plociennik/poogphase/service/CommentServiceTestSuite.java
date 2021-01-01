@@ -51,8 +51,9 @@ public class CommentServiceTestSuite {
         long initialPostListSize = user.getPosts().size();
         long initialCommentsInUserSize = user.getComments().size();
         long initialCommentsInPostSize = post.getComments().size();
+        post.setAuthor(user);
         post.setContent("save2PostContent");
-        postService.savePost(user, post);
+        postService.savePost(post);
         long searchedPostId = postService.getByContent("save2PostContent").getId();
         //Saving post
         Assert.assertEquals(initialPostsSize + 1, postService.getAllPosts().size());
@@ -60,8 +61,10 @@ public class CommentServiceTestSuite {
         //Comment setup
         Comment comment = new Comment();
         long initialSizeOfCommentsInRep = commentService.getAllComments().size();
+        comment.setAuthor(user);
+        comment.setPost(post);
         comment.setContent("save2CommentContent");
-        commentService.saveComment(user, post, comment);
+        commentService.saveComment(comment);
         long searchedCommentId = commentService.getByContent("save2CommentContent").getId();
         //Saving comment
         Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
@@ -82,12 +85,14 @@ public class CommentServiceTestSuite {
     public void getComment() {
         User user = userService.getUserByUsername("goofy");
         Post post = new Post();
+        post.setAuthor(user);
         post.setContent("getContentPost");
-        postService.savePost(user, post);
+        postService.savePost(post);
         Comment comment = new Comment();
         comment.setContent("getContentComment");
+        comment.setAuthor(user);
         comment.setPost(post);
-        commentService.saveComment(user, post, comment);
+        commentService.saveComment(comment);
 
         long searchedCommentId = commentService.getByContent("getContentComment").getId();
         long searchedPostId = postService.getByContent("getContentPost").getId();
@@ -104,18 +109,22 @@ public class CommentServiceTestSuite {
         long initialSizeOfRepository = commentService.getAllComments().size();
         Post post = new Post();
         Post post2 = new Post();
+        post.setAuthor(user);
+        post2.setAuthor(user);
         post.setContent("getAllContentPost");
         post2.setContent("getAllContentPost2");
-        postService.savePost(user, post);
-        postService.savePost(user, post2);
+        postService.savePost(post);
+        postService.savePost(post2);
         Comment comment = new Comment();
         Comment comment2 = new Comment();
         comment.setContent("getAllContentComment");
         comment2.setContent("getAllContentComment2");
+        comment.setAuthor(user);
+        comment2.setAuthor(user);
         comment.setPost(post);
         comment2.setPost(post2);
-        commentService.saveComment(user, post, comment);
-        commentService.saveComment(user, post2, comment2);
+        commentService.saveComment(comment);
+        commentService.saveComment(comment2);
 
         long searchedCommentId = commentService.getByContent("getAllContentComment").getId();
         long searchedCommentId2 = commentService.getByContent("getAllContentComment2").getId();
@@ -139,8 +148,9 @@ public class CommentServiceTestSuite {
         long initialPostListSize = user.getPosts().size();
         long initialCommentsInUserSize = user.getComments().size();
         long initialCommentsInPostSize = post.getComments().size();
+        post.setAuthor(user);
         post.setContent("save2PostContent");
-        postService.savePost(user, post);
+        postService.savePost(post);
         long searchedPostId = postService.getByContent("save2PostContent").getId();
         //Saving post
         Assert.assertEquals(initialPostsSize + 1, postService.getAllPosts().size());
@@ -149,7 +159,9 @@ public class CommentServiceTestSuite {
         Comment comment = new Comment();
         long initialSizeOfCommentsInRep = commentService.getAllComments().size();
         comment.setContent("save2CommentContent");
-        commentService.saveComment(user, post, comment);
+        comment.setAuthor(user);
+        comment.setPost(post);
+        commentService.saveComment(comment);
         long searchedCommentId = commentService.getByContent("save2CommentContent").getId();
         //Saving comment
         Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
@@ -160,7 +172,7 @@ public class CommentServiceTestSuite {
         Comment searchedComment = commentService.getByContent("save2CommentContent");
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.of(2020, 12, 17), LocalTime.of(16, 52));
         searchedComment.setDateTime(dateTime);
-        commentService.saveComment(searchedComment.getAuthor(), searchedComment.getPost(), searchedComment);
+        commentService.saveComment(searchedComment);
 
         Assert.assertEquals(initialSizeOfCommentsInRep + 1, commentService.getAllComments().size());
         Assert.assertEquals(initialCommentsInUserSize + 1, userService.getUserByUsername("goofy").getComments().size());
@@ -180,5 +192,16 @@ public class CommentServiceTestSuite {
     @Test
     public void showNumberOfRecords() {
         System.out.println("Number of records: " + commentService.getAllComments().size());
+    }
+
+    @Test
+    public void saveData() {
+//        User user = userService.getUserByUsername("dummy");
+//        Post post = postService.getPost(1112L).get();
+//        Comment comment = new Comment();
+//        comment.setAuthor(user);
+//        comment.setPost(post);
+//        comment.setContent("Hey there goofy!");
+//        commentService.saveComment(comment);
     }
 }

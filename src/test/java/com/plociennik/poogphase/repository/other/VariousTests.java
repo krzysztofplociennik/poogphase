@@ -1,6 +1,12 @@
 package com.plociennik.poogphase.repository.other;
 
+import com.plociennik.poogphase.model.ChatMessage;
+import com.plociennik.poogphase.model.Post;
 import com.plociennik.poogphase.repository.*;
+import com.plociennik.poogphase.service.ChatMessageService;
+import com.plociennik.poogphase.service.CommentService;
+import com.plociennik.poogphase.service.PostService;
+import com.plociennik.poogphase.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +19,24 @@ public class VariousTests {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private UserService userService;
+    @Autowired
     private ChatMessageRepository chatMessageRepository;
+    @Autowired
+    private ChatMessageService chatMessageService;
     @Autowired
     private PostRepository postRepository;
     @Autowired
+    private PostService postService;
+    @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private CommentService commentService;
 
     @Test
     public void wipeAndShowAllRecords() {
 //        userRepository.deleteAll();
-//        chatMessageRepository.deleteAll();
+        chatMessageRepository.deleteAll();
 //        postRepository.deleteAll();
 //        commentRepository.deleteAll();
         System.out.println("Users: " + userRepository.findAll().size()
@@ -41,15 +55,22 @@ public class VariousTests {
     @Test
     public void deleteDataById() {
 //        userRepository.deleteById(1L);
-//        chatMessageRepository.deleteById(1L);
-//        postRepository.deleteById(2204L);
+//        chatMessageRepository.deleteById(1237L);
+        chatMessageRepository.deleteById(1238L);
+//        postRepository.deleteById(991L);
 //        commentRepository.deleteById(2205L);
+
+//        userService.removeUser(1L);
+//        chatMessageService.removeMessage(1237L);
+        chatMessageService.removeMessage(1238L);
+//        postService.removePost(991L);
+//        commentService.removeComment(1L);
     }
 
     @Test
     public void showRecordsId() {
 //        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
-//        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
+        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
 //        for (Post post : postRepository.findAll()) { System.out.println(post.getContent() + " : " + post.getId()); }
 //        for (Comment comment : commentRepository.findAll()) { System.out.println(comment.getContent() + " : " + comment.getId()); }
     }

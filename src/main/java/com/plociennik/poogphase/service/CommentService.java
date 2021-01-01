@@ -18,9 +18,9 @@ public class CommentService {
     @Autowired
     private PostService postService;
 
-    public Comment saveComment(final User author, final Post post, final Comment comment) {
-        comment.setAuthor(author);
-        comment.setPost(post);
+    public Comment saveComment(final Comment comment) {
+//        comment.setAuthor(author);
+//        comment.setPost(post);
         return commentRepository.save(comment);
     }
 
@@ -39,7 +39,7 @@ public class CommentService {
         author.getComments().remove(comment);
         userService.saveUser(author);
         post.getComments().remove(comment);
-        postService.savePost(post.getAuthor(), post);
+        postService.savePost(post);
     }
 
     public Comment getByContent(final String content) {

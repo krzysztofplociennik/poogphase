@@ -1,11 +1,8 @@
-package com.plociennik.poogphase.dto;
+package com.plociennik.poogphase.model.dto;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class UserDto {
     private long id;
@@ -16,14 +13,14 @@ public class UserDto {
     private String lastName;
     private LocalDate dateOfBirth;
     private Set<String> friends;
-    private Set<PostDto> posts;
-    private Set<CommentDto> comments;
+    private List<PostDto> posts;
+    private List<CommentDto> comments;
     private Set<ChatMessageDto> messages;
-    private Map<UserDto, Set<ChatMessageDto>> chatLogs;
+//    private Map<UserDto, Set<ChatMessageDto>> chatLogs;
 
     public UserDto(long id, String username, String password, String mail, String firstName, String lastName,
-                   LocalDate dateOfBirth, Set<String> friends, Set<PostDto> posts, Set<CommentDto> comments,
-                   Set<ChatMessageDto> messages, Map<UserDto, Set<ChatMessageDto>> chatLogs) {
+                   LocalDate dateOfBirth, Set<String> friends, List<PostDto> posts, List<CommentDto> comments,
+                   Set<ChatMessageDto> messages/*, Map<UserDto, Set<ChatMessageDto>> chatLogs*/) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -35,15 +32,15 @@ public class UserDto {
         this.posts = posts;
         this.comments = comments;
         this.messages = messages;
-        this.chatLogs = chatLogs;
+//        this.chatLogs = chatLogs;
     }
 
     public UserDto() {
         friends = new HashSet<>();
-        posts = new HashSet<>();
-        comments = new HashSet<>();
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
         messages = new HashSet<>();
-        chatLogs = new HashMap<>();
+//        chatLogs = new HashMap<>();
     }
 
     public long getId() {
@@ -102,9 +99,9 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getAge() {
-        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
-    }
+//    public int getAge() {
+//        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
+//    }
 
     public Set<String> getFriends() {
         return friends;
@@ -114,19 +111,19 @@ public class UserDto {
         this.friends = friends;
     }
 
-    public Set<PostDto> getPosts() {
+    public List<PostDto> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<PostDto> posts) {
+    public void setPosts(List<PostDto> posts) {
         this.posts = posts;
     }
 
-    public Set<CommentDto> getComments() {
+    public List<CommentDto> getComments() {
         return comments;
     }
 
-    public void setComments(Set<CommentDto> comments) {
+    public void setComments(List<CommentDto> comments) {
         this.comments = comments;
     }
 
@@ -138,11 +135,11 @@ public class UserDto {
         this.messages = messages;
     }
 
-    public Map<UserDto, Set<ChatMessageDto>> getChatLogs() {
-        return chatLogs;
-    }
-
-    public void setChatLogs(Map<UserDto, Set<ChatMessageDto>> chatLogs) {
-        this.chatLogs = chatLogs;
-    }
+//    public Map<UserDto, Set<ChatMessageDto>> getChatLogs() {
+//        return chatLogs;
+//    }
+//
+//    public void setChatLogs(Map<UserDto, Set<ChatMessageDto>> chatLogs) {
+//        this.chatLogs = chatLogs;
+//    }
 }
