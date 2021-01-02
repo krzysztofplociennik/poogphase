@@ -8,8 +8,8 @@ import com.plociennik.poogphase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,7 +37,7 @@ public class ChatMessageMapper {
                 chatMessage.getContent());
     }
 
-    public Set<ChatMessage> mapToChatMessageSet(final Set<ChatMessageDto> messages) {
+    public List<ChatMessage> mapToChatMessageList(final List<ChatMessageDto> messages) {
         return messages.stream()
                 .map(message -> new ChatMessage(
                         message.getId(),
@@ -45,10 +45,10 @@ public class ChatMessageMapper {
                         message.getRecipient(),
                         message.getDateTime(),
                         message.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<ChatMessageDto> mapToChatMessageDtoSet(final Set<ChatMessage> messages) {
+    public List<ChatMessageDto> mapToChatMessageDtoList(final List<ChatMessage> messages) {
         return messages.stream()
                 .map(message -> new ChatMessageDto(
                         message.getId(),
@@ -56,22 +56,22 @@ public class ChatMessageMapper {
                         message.getRecipient(),
                         message.getDateTime(),
                         message.getContent()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Map<User, Set<ChatMessage>> mapToChatLogMap(final Map<UserDto, Set<ChatMessageDto>> mapDto) {
-        Map<User, Set<ChatMessage>> map = new HashMap<>();
-        for (Map.Entry<UserDto, Set<ChatMessageDto>> entry : mapDto.entrySet()) {
-            map.put(userMapper.mapToUser(entry.getKey()), mapToChatMessageSet(entry.getValue()));
-        }
-        return map;
-    }
-
-    public Map<UserDto, Set<ChatMessageDto>> mapToChatLogMapDto(final Map<User, Set<ChatMessage>> map) {
-        Map<UserDto, Set<ChatMessageDto>> mapDto = new HashMap<>();
-        for (Map.Entry<User, Set<ChatMessage>> entry : map.entrySet()) {
-            mapDto.put(userMapper.mapToUserDto(entry.getKey()), mapToChatMessageDtoSet(entry.getValue()));
-        }
-        return mapDto;
-    }
+//    public Map<User, List<ChatMessage>> mapToChatLogMap(final Map<UserDto, List<ChatMessageDto>> mapDto) {
+//        Map<User, List<ChatMessage>> map = new HashMap<>();
+//        for (Map.Entry<UserDto, List<ChatMessageDto>> entry : mapDto.entrySet()) {
+//            map.put(userMapper.mapToUser(entry.getKey()), mapToChatMessageSet(entry.getValue()));
+//        }
+//        return map;
+//    }
+//
+//    public Map<UserDto, List<ChatMessageDto>> mapToChatLogMapDto(final Map<User, List<ChatMessage>> map) {
+//        Map<UserDto, List<ChatMessageDto>> mapDto = new HashMap<>();
+//        for (Map.Entry<User, List<ChatMessage>> entry : map.entrySet()) {
+//            mapDto.put(userMapper.mapToUserDto(entry.getKey()), mapToChatMessageDtoSet(entry.getValue()));
+//        }
+//        return mapDto;
+//    }
 }

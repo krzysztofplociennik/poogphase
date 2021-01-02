@@ -31,7 +31,7 @@ public class UserMapper {
                 userDto.getFriends(),
                 postMapper.mapToPostSet(userDto.getPosts()),
                 commentMapper.mapToCommentSet(userDto.getComments()),
-                chatMessageMapper.mapToChatMessageSet(userDto.getMessages()));
+                chatMessageMapper.mapToChatMessageList(userDto.getMessages()));
 //                chatMessageMapper.mapToChatLogMap(userDto.getChatLogs()));
     }
 
@@ -47,7 +47,7 @@ public class UserMapper {
                 user.getFriends(),
                 postMapper.mapToPostDtoSet(user.getPosts()),
                 commentMapper.mapToCommentDtoSet(user.getComments()),
-                chatMessageMapper.mapToChatMessageDtoSet(user.getMessages()));
+                chatMessageMapper.mapToChatMessageDtoList(user.getMessages()));
 //                chatMessageMapper.mapToChatLogMapDto(user.getChatLogs()));
     }
 
@@ -64,7 +64,7 @@ public class UserMapper {
                         userDto.getFriends(),
                         postMapper.mapToPostSet(userDto.getPosts()),
                         commentMapper.mapToCommentSet(userDto.getComments()),
-                        chatMessageMapper.mapToChatMessageSet(userDto.getMessages())))
+                        chatMessageMapper.mapToChatMessageList(userDto.getMessages())))
 //                        chatMessageMapper.mapToChatLogMap(userDto.getChatLogs())))
                 .collect(Collectors.toList());
     }
@@ -81,7 +81,7 @@ public class UserMapper {
                         user.getFriends(),
                         postMapper.mapToPostDtoSet(user.getPosts()),
                         commentMapper.mapToCommentDtoSet(user.getComments()),
-                        chatMessageMapper.mapToChatMessageDtoSet(user.getMessages())))
+                        chatMessageMapper.mapToChatMessageDtoList(user.getMessages())))
 //                        chatMessageMapper.mapToChatLogMapDto(user.getChatLogs())))
                 .collect(Collectors.toList());
     }

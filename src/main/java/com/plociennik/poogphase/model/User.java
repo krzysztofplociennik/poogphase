@@ -19,12 +19,11 @@ public class User {
     private Set<String> friends;
     private List<Post> posts;
     private List<Comment> comments;
-    private Set<ChatMessage> messages;
-//    private Map<User, Set<ChatMessage>> chatLogs;
+    private List<ChatMessage> messages;
 
     public User(long id, String username, String password, String mail, String firstName, String lastName,
                 LocalDate dateOfBirth, Set<String> friends, List<Post> posts, List<Comment> comments,
-                Set<ChatMessage> messages/*, Map<User, Set<ChatMessage>> chatLogs*/) {
+                List<ChatMessage> messages) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -36,15 +35,13 @@ public class User {
         this.posts = posts;
         this.comments = comments;
         this.messages = messages;
-//        this.chatLogs = chatLogs;
     }
 
     public User() {
         friends = new HashSet<>();
         posts = new ArrayList<>();
         comments = new ArrayList<>();
-        messages = new HashSet<>();
-//        chatLogs = new HashMap<>();
+        messages = new ArrayList<>();
     }
 
     @Id
@@ -142,12 +139,12 @@ public class User {
     }
 
     @OneToMany(
-            fetch = FetchType.EAGER,
             targetEntity = Comment.class,
             mappedBy = "author",
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Comment> getComments() {
         return comments;
     }
@@ -157,29 +154,18 @@ public class User {
     }
 
     @OneToMany(
-            fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "author",
-//            cascade = CascadeType.REMOVE
-            cascade = CascadeType.ALL
-//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+            cascade = CascadeType.REMOVE
     )
-    public Set<ChatMessage> getMessages() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<ChatMessage> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<ChatMessage> messages) {
+    public void setMessages(List<ChatMessage> messages) {
         this.messages = messages;
     }
-
-//    @Transient
-//    public Map<User, Set<ChatMessage>> getChatLogs() {
-//        return chatLogs;
-//    }
-//
-//    public void setChatLogs(Map<User, Set<ChatMessage>> chatLogs) {
-//        this.chatLogs = chatLogs;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -194,7 +180,6 @@ public class User {
                 Objects.equals(getLastName(), user.getLastName()) &&
                 Objects.equals(getDateOfBirth(), user.getDateOfBirth()) &&
                 Objects.equals(getFriends(), user.getFriends());
-//                && Objects.equals(chatLogs, user.chatLogs);
     }
 
     @Override

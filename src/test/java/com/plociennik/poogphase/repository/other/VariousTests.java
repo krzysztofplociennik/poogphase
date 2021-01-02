@@ -2,6 +2,7 @@ package com.plociennik.poogphase.repository.other;
 
 import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.Post;
+import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.repository.*;
 import com.plociennik.poogphase.service.ChatMessageService;
 import com.plociennik.poogphase.service.CommentService;
@@ -12,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,33 +39,26 @@ public class VariousTests {
     @Test
     public void wipeAndShowAllRecords() {
 //        userRepository.deleteAll();
-        chatMessageRepository.deleteAll();
+//        chatMessageRepository.deleteAll();
 //        postRepository.deleteAll();
 //        commentRepository.deleteAll();
         System.out.println("Users: " + userRepository.findAll().size()
                 + "\nChatMessages: " + chatMessageRepository.findAll().size()
                 + "\nPosts: " + postRepository.findAll().size()
                 + "\nComments: " + commentRepository.findAll().size());
-
-    }
-
-    @Test
-    public void misc() {
-        System.out.println(userRepository.findByUsername("dummy").getAge());
-        System.out.println(userRepository.findByUsername("dummy").getFriends().size());
     }
 
     @Test
     public void deleteDataById() {
 //        userRepository.deleteById(1L);
-//        chatMessageRepository.deleteById(1237L);
-        chatMessageRepository.deleteById(1238L);
+//        chatMessageRepository.deleteById(4L);
+//        chatMessageRepository.deleteById(1238L);
 //        postRepository.deleteById(991L);
 //        commentRepository.deleteById(2205L);
 
 //        userService.removeUser(1L);
-//        chatMessageService.removeMessage(1237L);
-        chatMessageService.removeMessage(1238L);
+//        chatMessageService.removeMessage(4L);
+//        chatMessageService.removeMessage(1238L);
 //        postService.removePost(991L);
 //        commentService.removeComment(1L);
     }
@@ -70,39 +66,85 @@ public class VariousTests {
     @Test
     public void showRecordsId() {
 //        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
-        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
+//        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
 //        for (Post post : postRepository.findAll()) { System.out.println(post.getContent() + " : " + post.getId()); }
 //        for (Comment comment : commentRepository.findAll()) { System.out.println(comment.getContent() + " : " + comment.getId()); }
     }
 
     @Test
+    public void insertData() {
+        insertUsers();
+        insertPosts();
+        insertComments();
+        insertMessages();
+    }
+
+    @Test
     public void insertUsers() {
-//        User dummy = new User();
-//        dummy.setUsername("dummy");
-//        dummy.setPassword("drdr");
-//        dummy.setMail("dreamydrummer@myplace.com");
-//        dummy.setFirstName("Dreamy");
-//        dummy.setLastName("Drummer");
-//        dummy.setDateOfBirth(LocalDate.of(1992, 11, 23));
-//
-//        User silly = new User();
-//        silly.setUsername("silly");
-//        silly.setPassword("sisi");
-//        silly.setMail("silkysillery@myplace.com");
-//        silly.setFirstName("Silky");
-//        silly.setLastName("Sillery");
-//        silly.setDateOfBirth(LocalDate.of(1993, 4, 10));
-//
-//        User goofy = new User();
-//        goofy.setUsername("goofy");
-//        goofy.setPassword("glgl");
-//        goofy.setMail("gleefulgluten@myplace.com");
-//        goofy.setFirstName("Gleeful");
-//        goofy.setLastName("Gluten");
-//        goofy.setDateOfBirth(LocalDate.of(1989, 9, 1));
-//
-//        userRepository.save(dummy);
-//        userRepository.save(silly);
-//        userRepository.save(goofy);
+        try {
+            userService.getUser(userService.getUserByUsername("dummy").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User dummy = new User();
+            dummy.setUsername("dummy");
+            dummy.setPassword("drdr");
+            dummy.setMail("dreamydrummer@myplace.com");
+            dummy.setFirstName("Dreamy");
+            dummy.setLastName("Drummer");
+            dummy.setDateOfBirth(LocalDate.of(1992, 11, 23));
+            userRepository.save(dummy);
+        }
+
+        try {
+            userService.getUser(userService.getUserByUsername("silly").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User silly = new User();
+            silly.setUsername("silly");
+            silly.setPassword("sisi");
+            silly.setMail("silkysillery@myplace.com");
+            silly.setFirstName("Silky");
+            silly.setLastName("Sillery");
+            silly.setDateOfBirth(LocalDate.of(1993, 4, 10));
+            userRepository.save(silly);
+        }
+
+        try {
+            userService.getUser(userService.getUserByUsername("goofy").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User goofy = new User();
+            goofy.setUsername("goofy");
+            goofy.setPassword("glgl");
+            goofy.setMail("gleefulgluten@myplace.com");
+            goofy.setFirstName("Gleeful");
+            goofy.setLastName("Gluten");
+            goofy.setDateOfBirth(LocalDate.of(1989, 9, 1));
+            userRepository.save(goofy);
+        }
+    }
+
+    @Test
+    public void insertPosts() {
+        if (userService.getAllUsers().size() != 0) {
+
+        }
+    }
+
+    @Test
+    public void insertComments() {
+        if (userService.getAllUsers().size() != 0 && postService.getAllPosts().size() != 0) {
+
+        }
+    }
+
+    @Test
+    public void insertMessages() {
+        if (userService.getAllUsers().size() != 0) {
+
+        }
+    }
+
+    @Test
+    public void misc() {
+        System.out.println(userRepository.findByUsername("dummy").getAge());
+        System.out.println(userRepository.findByUsername("dummy").getFriends().size());
     }
 }

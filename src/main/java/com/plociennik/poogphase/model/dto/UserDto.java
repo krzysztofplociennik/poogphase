@@ -15,12 +15,11 @@ public class UserDto {
     private Set<String> friends;
     private List<PostDto> posts;
     private List<CommentDto> comments;
-    private Set<ChatMessageDto> messages;
-//    private Map<UserDto, Set<ChatMessageDto>> chatLogs;
+    private List<ChatMessageDto> messages;
 
     public UserDto(long id, String username, String password, String mail, String firstName, String lastName,
                    LocalDate dateOfBirth, Set<String> friends, List<PostDto> posts, List<CommentDto> comments,
-                   Set<ChatMessageDto> messages/*, Map<UserDto, Set<ChatMessageDto>> chatLogs*/) {
+                   List<ChatMessageDto> messages) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -32,15 +31,13 @@ public class UserDto {
         this.posts = posts;
         this.comments = comments;
         this.messages = messages;
-//        this.chatLogs = chatLogs;
     }
 
     public UserDto() {
         friends = new HashSet<>();
         posts = new ArrayList<>();
         comments = new ArrayList<>();
-        messages = new HashSet<>();
-//        chatLogs = new HashMap<>();
+        messages = new ArrayList<>();
     }
 
     public long getId() {
@@ -127,19 +124,11 @@ public class UserDto {
         this.comments = comments;
     }
 
-    public Set<ChatMessageDto> getMessages() {
+    public List<ChatMessageDto> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<ChatMessageDto> messages) {
+    public void setMessages(List<ChatMessageDto> messages) {
         this.messages = messages;
     }
-
-//    public Map<UserDto, Set<ChatMessageDto>> getChatLogs() {
-//        return chatLogs;
-//    }
-//
-//    public void setChatLogs(Map<UserDto, Set<ChatMessageDto>> chatLogs) {
-//        this.chatLogs = chatLogs;
-//    }
 }
