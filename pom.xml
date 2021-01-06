@@ -63,6 +63,12 @@
             <artifactId>jaxb-runtime</artifactId>
             <version>2.3.2</version>
         </dependency>
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-spring-boot-starter -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+            <version>18.0.3</version>
+        </dependency>
 
+    </dependencies>
 </project>

@@ -1,5 +1,9 @@
 package com.plociennik.poogphase;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class RandomTestingMain {
 
     public static void main(String[] args) {
@@ -100,8 +104,10 @@ public class RandomTestingMain {
 //        map.put("ex", "1");
 //        System.out.println(map.size());
 
+        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 6), LocalTime.of(14, 35));
+        LocalDateTime dateTime2 = LocalDateTime.now();
 
-
+        System.out.println(dateTime1.compareTo(dateTime2));
 
 
     }
