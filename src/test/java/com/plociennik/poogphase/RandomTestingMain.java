@@ -3,6 +3,10 @@ package com.plociennik.poogphase;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
+import java.time.format.TextStyle;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class RandomTestingMain {
 
@@ -104,10 +108,21 @@ public class RandomTestingMain {
 //        map.put("ex", "1");
 //        System.out.println(map.size());
 
-        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 6), LocalTime.of(14, 35));
+        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 9), LocalTime.of(14, 35));
         LocalDateTime dateTime2 = LocalDateTime.now();
+        LocalDate date = dateTime2.toLocalDate();
 
         System.out.println(dateTime1.compareTo(dateTime2));
+
+        Period between = Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate());
+
+        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate()));
+
+        System.out.println(between.getYears());
+
+        System.out.println(date);
+
+        System.out.println(date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH ));
 
 
     }

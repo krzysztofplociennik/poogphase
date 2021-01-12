@@ -43,7 +43,7 @@ public class CommentServiceTestSuite {
     }
 
     @Test
-    public void saveAndDeleteComment2() {
+    public void saveAndDeleteComment() {
         //User and post setup
         User user = userService.getUserByUsername("goofy");
         Post post = new Post();
@@ -140,7 +140,7 @@ public class CommentServiceTestSuite {
     }
 
     @Test
-    public void editComment2() {
+    public void editComment() {
         //User and post setup
         User user = userService.getUserByUsername("goofy");
         Post post = new Post();

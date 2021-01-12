@@ -94,7 +94,7 @@ public class PostServiceTestSuite {
     }
 
     @Test
-    public void editPost2() {
+    public void editPost() {
         User user = userService.getUserByUsername("dummy");
         Post post = new Post();
         long initialSizeOfPostsInRep = postService.getAllPosts().size();
