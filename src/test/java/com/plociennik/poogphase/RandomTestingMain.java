@@ -1,5 +1,6 @@
 package com.plociennik.poogphase;
 
+import org.joda.time.DateTime;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -108,22 +109,26 @@ public class RandomTestingMain {
 //        map.put("ex", "1");
 //        System.out.println(map.size());
 
-        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 9), LocalTime.of(14, 35));
-        LocalDateTime dateTime2 = LocalDateTime.now();
-        LocalDate date = dateTime2.toLocalDate();
+//        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 9), LocalTime.of(14, 35));
+//        LocalDateTime dateTime2 = LocalDateTime.now();
+//        LocalDate date = dateTime2.toLocalDate();
+//
+//        System.out.println(dateTime1.compareTo(dateTime2));
+//
+//        Period between = Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate());
+//
+//        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate()));
+//
+//        System.out.println(between.getYears());
+//
+//        System.out.println(date);
+//
+//        System.out.println(date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH ));
 
-        System.out.println(dateTime1.compareTo(dateTime2));
+        DateTime yodaDateTime = new DateTime(2020, 1, 20, 7, 36);
 
-        Period between = Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate());
+        System.out.println(DateTime.now());
 
-        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate()));
-
-        System.out.println(between.getYears());
-
-        System.out.println(date);
-
-        System.out.println(date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH ));
-
-
+        System.out.println(yodaDateTime);
     }
 }
