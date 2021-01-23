@@ -1,10 +1,8 @@
 package com.plociennik.poogphase;
 
 import org.joda.time.DateTime;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
+
+import java.time.*;
 import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Locale;
@@ -130,5 +128,14 @@ public class RandomTestingMain {
         System.out.println(DateTime.now());
 
         System.out.println(yodaDateTime);
+
+        System.out.println(yodaDateTime.toGregorianCalendar().toString());
+
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        org.joda.time.LocalDateTime dateTime1 = org.joda.time.LocalDateTime.now();
+
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+
     }
 }

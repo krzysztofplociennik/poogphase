@@ -18,7 +18,7 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getPosts")
     public List<PostDto> getAllPosts() {
-        return postMapper.mapToPostDtoSet(postService.getAllPosts());
+        return postMapper.mapToPostDtoList(postService.getAllPosts());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getPost")

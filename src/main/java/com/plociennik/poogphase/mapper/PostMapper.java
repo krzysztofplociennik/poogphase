@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,7 +34,7 @@ public class PostMapper {
                 post.getContent());
     }
 
-    public List<Post> mapToPostSet(final List<PostDto> postsDto) {
+    public List<Post> mapToPostList(final List<PostDto> postsDto) {
         return postsDto.stream()
                 .map(postDto -> new Post(
                         postDto.getId(),
@@ -46,7 +45,7 @@ public class PostMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<PostDto> mapToPostDtoSet(final List<Post> posts) {
+    public List<PostDto> mapToPostDtoList(final List<Post> posts) {
         return posts.stream()
                 .map(post -> new PostDto(
                         post.getId(),

@@ -1,6 +1,7 @@
 package com.plociennik.poogphase.view.client;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import org.apache.http.client.methods.HttpPost;
@@ -27,7 +28,6 @@ public class ApiClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiClient.class);
     @Value("${api.endpoint}")
     private String baseEndpoint;
-    private Gson gson = new Gson();
 
     @Bean
     public RestTemplate restTemplate() {
@@ -65,17 +65,19 @@ public class ApiClient {
     }
 
     public void createPost(PostDto postDto) throws IOException {
-        PostDto post = new PostDto();
-        post.setDateTime(postDto.getDateTime());
-        post.setAuthorId(postDto.getAuthorId());
-        post.setContent(postDto.getContent());
 
-        String jsonContent = gson.toJson(post);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonPost = mapper.createObjectNode();
+        jsonPost.put("authorId", postDto.getAuthorId());
+        jsonPost.put("dateTime", postDto.getDateTime().toString());
+        jsonPost.put("content", postDto.getContent());
+
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost(baseEndpoint + "/post/createPost");
-            StringEntity params = new StringEntity(jsonContent);
+            StringEntity params = new StringEntity(json);
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
             httpClient.execute(request);

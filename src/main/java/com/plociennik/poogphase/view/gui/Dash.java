@@ -56,7 +56,7 @@ public class Dash extends HorizontalLayout {
         firstPartOfContentLayout.setPrimaryStyle("maxWidth", "300px");
 
         TextArea whatDoYouThinkTextArea = new TextArea("Want to share something?");
-        whatDoYouThinkTextArea.setWidth("200px");
+        whatDoYouThinkTextArea.setWidth("250px");
         whatDoYouThinkTextArea.setHeight("150px");
         whatDoYouThinkTextArea.setPreventInvalidInput(true);
         Button createPostButton = new Button("post!");

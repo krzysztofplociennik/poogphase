@@ -1,8 +1,8 @@
 package com.plociennik.poogphase.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class PostDto {
     private long id;
@@ -20,6 +20,7 @@ public class PostDto {
     }
 
     public PostDto() {
+        comments = new ArrayList<>();
     }
 
     public long getId() {

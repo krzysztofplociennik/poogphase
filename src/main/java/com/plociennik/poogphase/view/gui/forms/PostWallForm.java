@@ -5,7 +5,6 @@ import com.plociennik.poogphase.view.client.ApiClient;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;

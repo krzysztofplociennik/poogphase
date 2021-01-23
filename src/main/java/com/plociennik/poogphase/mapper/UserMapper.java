@@ -29,10 +29,9 @@ public class UserMapper {
                 userDto.getLastName(),
                 userDto.getDateOfBirth(),
                 userDto.getFriends(),
-                postMapper.mapToPostSet(userDto.getPosts()),
+                postMapper.mapToPostList(userDto.getPosts()),
                 commentMapper.mapToCommentSet(userDto.getComments()),
                 chatMessageMapper.mapToChatMessageList(userDto.getMessages()));
-//                chatMessageMapper.mapToChatLogMap(userDto.getChatLogs()));
     }
 
     public UserDto mapToUserDto(final User user) {
@@ -45,10 +44,9 @@ public class UserMapper {
                 user.getLastName(),
                 user.getDateOfBirth(),
                 user.getFriends(),
-                postMapper.mapToPostDtoSet(user.getPosts()),
+                postMapper.mapToPostDtoList(user.getPosts()),
                 commentMapper.mapToCommentDtoSet(user.getComments()),
                 chatMessageMapper.mapToChatMessageDtoList(user.getMessages()));
-//                chatMessageMapper.mapToChatLogMapDto(user.getChatLogs()));
     }
 
     public List<User> mapToUserList(final List<UserDto> usersDto) {
@@ -62,10 +60,9 @@ public class UserMapper {
                         userDto.getLastName(),
                         userDto.getDateOfBirth(),
                         userDto.getFriends(),
-                        postMapper.mapToPostSet(userDto.getPosts()),
+                        postMapper.mapToPostList(userDto.getPosts()),
                         commentMapper.mapToCommentSet(userDto.getComments()),
                         chatMessageMapper.mapToChatMessageList(userDto.getMessages())))
-//                        chatMessageMapper.mapToChatLogMap(userDto.getChatLogs())))
                 .collect(Collectors.toList());
     }
 
@@ -79,10 +76,9 @@ public class UserMapper {
                         user.getLastName(),
                         user.getDateOfBirth(),
                         user.getFriends(),
-                        postMapper.mapToPostDtoSet(user.getPosts()),
+                        postMapper.mapToPostDtoList(user.getPosts()),
                         commentMapper.mapToCommentDtoSet(user.getComments()),
                         chatMessageMapper.mapToChatMessageDtoList(user.getMessages())))
-//                        chatMessageMapper.mapToChatLogMapDto(user.getChatLogs())))
                 .collect(Collectors.toList());
     }
 }
