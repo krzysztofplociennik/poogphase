@@ -1,20 +1,27 @@
 package com.plociennik.poogphase.repository.other;
 
+import com.plociennik.poogphase.mapper.UserMapper;
 import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.Post;
 import com.plociennik.poogphase.model.User;
+import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.repository.*;
 import com.plociennik.poogphase.service.ChatMessageService;
 import com.plociennik.poogphase.service.CommentService;
 import com.plociennik.poogphase.service.PostService;
 import com.plociennik.poogphase.service.UserService;
+import com.plociennik.poogphase.view.client.ApiClient;
+import com.plociennik.poogphase.view.logic.FriendsManager;
+import org.h2.engine.UserAggregate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,6 +42,10 @@ public class VariousTests {
     private CommentRepository commentRepository;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private ApiClient apiClient;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void wipeAndShowAllRecords() {
@@ -91,9 +102,11 @@ public class VariousTests {
             dummy.setFirstName("Dreamy");
             dummy.setLastName("Drummer");
             dummy.setDateOfBirth(LocalDate.of(1992, 11, 23));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("silly"); friends.add("molina");
+            dummy.setFriends(friends);
             userRepository.save(dummy);
         }
-
         try {
             userService.getUser(userService.getUserByUsername("silly").getId()).isEmpty();
         } catch (NullPointerException e) {
@@ -104,9 +117,11 @@ public class VariousTests {
             silly.setFirstName("Silky");
             silly.setLastName("Sillery");
             silly.setDateOfBirth(LocalDate.of(1993, 4, 10));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("dummy"); friends.add("goofy"); friends.add("jackz"); friends.add("molina");
+            silly.setFriends(friends);
             userRepository.save(silly);
         }
-
         try {
             userService.getUser(userService.getUserByUsername("goofy").getId()).isEmpty();
         } catch (NullPointerException e) {
@@ -117,8 +132,57 @@ public class VariousTests {
             goofy.setFirstName("Gleeful");
             goofy.setLastName("Gluten");
             goofy.setDateOfBirth(LocalDate.of(1989, 9, 1));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("silly"); friends.add("molina"); friends.add("glory");
+            goofy.setFriends(friends);
             userRepository.save(goofy);
         }
+        try {
+            userService.getUser(userService.getUserByUsername("jackz").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User jackz = new User();
+            jackz.setUsername("jackz");
+            jackz.setPassword("jkjk");
+            jackz.setMail("jackful@myplace.com");
+            jackz.setFirstName("Jack");
+            jackz.setLastName("Fuller");
+            jackz.setDateOfBirth(LocalDate.of(1990, 5, 12));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("silly");
+            jackz.setFriends(friends);
+            userRepository.save(jackz);
+        }
+        try {
+            userService.getUser(userService.getUserByUsername("molina").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User molina = new User();
+            molina.setUsername("molina");
+            molina.setPassword("mlml");
+            molina.setMail("molinagala@myplace.com");
+            molina.setFirstName("Melanie");
+            molina.setLastName("Gallow");
+            molina.setDateOfBirth(LocalDate.of(1992, 2, 28));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("dummy"); friends.add("silly"); friends.add("goofy"); friends.add("glory");
+            molina.setFriends(friends);
+            userRepository.save(molina);
+        }
+        try {
+            userService.getUser(userService.getUserByUsername("glory").getId()).isEmpty();
+        } catch (NullPointerException e) {
+            User glory = new User();
+            glory.setUsername("glory");
+            glory.setPassword("glgl");
+            glory.setMail("glorywhole@myplace.com");
+            glory.setFirstName("Gloria");
+            glory.setLastName("Winnston");
+            glory.setDateOfBirth(LocalDate.of(1988, 10, 18));
+            Set<String> friends = new LinkedHashSet<>();
+            friends.add("goofy"); friends.add("molina");
+            glory.setFriends(friends);
+            userRepository.save(glory);
+        }
+        System.out.println("User size: " + userService.getAllUsers().size());
     }
 
     @Test
@@ -146,5 +210,44 @@ public class VariousTests {
     public void misc() {
         System.out.println(userRepository.findByUsername("dummy").getAge());
         System.out.println(userRepository.findByUsername("dummy").getFriends().size());
+    }
+
+    @Test
+    public void addFriends() {
+        User dummy = userService.getUserByUsername("dummy");
+        Set<String> friends = dummy.getFriends();
+        friends.add("silly"); friends.add("molina");
+        dummy.setFriends(friends);
+//        userService.saveUser(dummy);
+
+        User silly = userService.getUserByUsername("silly");
+        Set<String> sillyFriends = silly.getFriends();
+        sillyFriends.add("dummy"); sillyFriends.add("goofy"); sillyFriends.add("jackz"); sillyFriends.add("molina");
+        silly.setFriends(sillyFriends);
+//        userService.saveUser(silly);
+
+        User goofy = userService.getUserByUsername("goofy");
+        Set<String> goofyFriends = goofy.getFriends();
+        goofyFriends.add("silly"); goofyFriends.add("molina"); goofyFriends.add("glory");
+        goofy.setFriends(goofyFriends);
+//        userService.saveUser(goofy);
+    }
+
+    @Test
+    public void checkIfFriends() {
+        FriendsManager friendsManager = new FriendsManager(this.apiClient);
+
+        UserDto dummy = userMapper.mapToUserDto(userService.getUserByUsername("dummy"));
+        UserDto silly = userMapper.mapToUserDto(userService.getUserByUsername("silly"));
+        UserDto goofy = userMapper.mapToUserDto(userService.getUserByUsername("goofy"));
+        UserDto glory = userMapper.mapToUserDto(userService.getUserByUsername("glory"));
+
+        System.out.println(friendsManager.areTheyFriends(silly, silly));
+        System.out.println(friendsManager.areTheyFriends(goofy, dummy));
+        System.out.println(friendsManager.areTheyFriends(dummy, glory));
+
+
+//        System.out.println(friendsManager.searchFriends(glory).size());
+
     }
 }
