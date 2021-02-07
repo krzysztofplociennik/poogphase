@@ -2,6 +2,9 @@ package com.plociennik.poogphase.view.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.plociennik.poogphase.model.ChatMessage;
+import com.plociennik.poogphase.model.dto.ChatMessageDto;
+import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import org.apache.http.client.methods.HttpPost;
@@ -44,6 +47,14 @@ public class ApiClient {
                 .build().encode().toUri();
     }
 
+    private URI getAllCommentsURI() {
+        return null;
+    }
+
+    private URI getAllMessagesURI() {
+        return null;
+    }
+
     public List<UserDto> getUsers() {
         try {
             UserDto[] response = restTemplate().getForObject(getAllUsersURI(), UserDto[].class);
@@ -58,6 +69,26 @@ public class ApiClient {
         try {
             PostDto[] response = restTemplate().getForObject(getALlPostsURI(), PostDto[].class);
             return Arrays.asList(ofNullable(response).orElse(new PostDto[0]));
+        } catch (RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<CommentDto> getComments() {
+        try {
+            CommentDto[] response = restTemplate().getForObject(getAllCommentsURI(), CommentDto[].class);
+            return Arrays.asList(ofNullable(response).orElse(new CommentDto[0]));
+        } catch (RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<ChatMessageDto> getChatMessages() {
+        try {
+            ChatMessageDto[] response = restTemplate().getForObject(getAllMessagesURI(), ChatMessageDto[].class);
+            return Arrays.asList(ofNullable(response).orElse(new ChatMessageDto[0]));
         } catch (RestClientException e) {
             LOGGER.error(e.getMessage(), e);
             return new ArrayList<>();
@@ -85,5 +116,32 @@ public class ApiClient {
         } finally {
             httpClient.close();
         }
+    }
+
+    public void createComment(CommentDto commentDto) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonPost = mapper.createObjectNode();
+        jsonPost.put("authorId", commentDto.getAuthorId());
+        jsonPost.put("dateTime", commentDto.getDateTime().toString());
+        jsonPost.put("content", commentDto.getContent());
+        jsonPost.put("postId", commentDto.getPostId());
+
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
+
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpPost request = new HttpPost(baseEndpoint + "/comment/createComment");
+            StringEntity params = new StringEntity(json);
+            request.addHeader("content-type", "application/json");
+            request.setEntity(params);
+            httpClient.execute(request);
+        } catch (Exception ex) {
+        } finally {
+            httpClient.close();
+        }
+    }
+
+    public void createMessage(ChatMessageDto chatMessageDto) throws IOException {
+
     }
 }

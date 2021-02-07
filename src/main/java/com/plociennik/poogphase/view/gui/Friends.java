@@ -60,7 +60,7 @@ public class Friends extends HorizontalLayout {
         splitLayout.addToSecondary(maybeFriendsLayout);
         maybeFriendsLayout.add(new H2("Do you know these people?"));
 
-        for (UserDto user : friendsManager.searchMaybeFriends(loggedUser.get())) {
+        for (UserDto user : friendsManager.searchPossibleFriends(loggedUser.get())) {
             maybeFriendsLayout.add(new PossibleFriendForm(user));
         }
     }

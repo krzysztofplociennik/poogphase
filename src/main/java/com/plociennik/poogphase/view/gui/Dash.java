@@ -1,9 +1,13 @@
 package com.plociennik.poogphase.view.gui;
 
 import com.plociennik.poogphase.model.dto.PostDto;
+import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.gui.forms.PostWallForm;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -55,6 +59,10 @@ public class Dash extends HorizontalLayout {
         firstPartOfContentLayout.setPrimaryStyle("minWidth", "300px");
         firstPartOfContentLayout.setPrimaryStyle("maxWidth", "300px");
 
+        ComboBox<UserDto> userPick = new ComboBox<>("user");
+        userPick.setItems(apiClient.getUsers());
+        userPick.setItemLabelGenerator(UserDto::getUsername);
+
         TextArea whatDoYouThinkTextArea = new TextArea("Want to share something?");
         whatDoYouThinkTextArea.setWidth("250px");
         whatDoYouThinkTextArea.setHeight("150px");
@@ -63,7 +71,7 @@ public class Dash extends HorizontalLayout {
         createPostButton.addClickListener(buttonClickEvent -> {
             PostDto post = new PostDto();
             post.setAuthorId(apiClient.getUsers().stream()
-                            .filter(userDto -> userDto.getUsername().equals("dummy"))
+                            .filter(userDto -> userDto.getUsername().equals(userPick.getValue().getUsername()))
                             .findAny()
                             .get()
                             .getId());
@@ -76,7 +84,7 @@ public class Dash extends HorizontalLayout {
             }
         });
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(whatDoYouThinkTextArea, createPostButton);
+        verticalLayout.add(userPick, whatDoYouThinkTextArea, createPostButton);
         firstPartOfContentLayout.addToPrimary(verticalLayout);
     }
 
@@ -92,13 +100,20 @@ public class Dash extends HorizontalLayout {
 
         VerticalLayout verticalLayout = new VerticalLayout();
         secondPartOfContentLayout.addToPrimary(verticalLayout);
+        verticalLayout.add(new H4("Look what your friends have been doing recently!"));
+
+        Button closeViewButton = new Button("close", buttonClickEvent -> setupAPIView());
         for (PostDto post : posts) {
-            verticalLayout.add(new PostWallForm(this.apiClient, post), new Paragraph("================="));
+            verticalLayout.add(new PostWallForm(this.apiClient, post, secondPartOfContentLayout, closeViewButton), new Paragraph("================="));
         }
     }
 
     public void setupAPIView() {
         secondPartOfContentLayout.addToSecondary(new Button("API WIDGETS"));
+    }
+
+    public void showComments() {
+        secondPartOfContentLayout.addToPrimary(new Text("hello, comments here!"));
     }
 
 }

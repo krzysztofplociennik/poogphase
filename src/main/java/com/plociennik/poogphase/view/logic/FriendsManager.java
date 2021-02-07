@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class FriendsManager {
 
     private ApiClient apiClient;
@@ -34,7 +33,7 @@ public class FriendsManager {
         return resultList;
     }
 
-    public List<UserDto> searchMaybeFriends(UserDto userDto) {
+    public List<UserDto> searchPossibleFriends(UserDto userDto) {
         List<UserDto> resultList = new ArrayList<>();
 
         for (UserDto friend : searchFriends(userDto)) {
