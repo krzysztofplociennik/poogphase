@@ -1,9 +1,11 @@
 package com.plociennik.poogphase.view.gui;
 
+import com.plociennik.poogphase.model.Comment;
 import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.view.client.ApiClient;
+import com.plociennik.poogphase.view.gui.forms.CommentListForm;
 import com.plociennik.poogphase.view.gui.forms.PostWallForm;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -88,8 +90,19 @@ public class Posts extends HorizontalLayout {
     }
 
     public void setupRecentCommentsView() {
+        VerticalLayout recentCommentsLayout = new VerticalLayout();
+        List<CommentDto> reverseSortedComments = apiClient.getComments().stream()
+                .sorted(Comparator.comparing(CommentDto::getDateTime).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
 
-        secondPartOfPostsContent.addToSecondary(new H3("Most recent comments"));
+        recentCommentsLayout.add(new H3("Most recent comments"));
+
+        for (CommentDto comment : reverseSortedComments) {
+            recentCommentsLayout.add(new CommentListForm(this.apiClient, comment));
+        }
+
+        secondPartOfPostsContent.addToSecondary(recentCommentsLayout);
     }
 
     public FormLayout authorsForm(UserDto userDto) {

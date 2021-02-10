@@ -1,5 +1,8 @@
 package com.plociennik.poogphase;
 
+import com.plociennik.poogphase.model.dto.CommentDto;
+import com.plociennik.poogphase.view.logic.TimePeriod;
+
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.Calendar;
@@ -106,14 +109,14 @@ public class RandomTestingMain {
 //        System.out.println(map.size());
 
 //        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 9), LocalTime.of(14, 35));
-//        LocalDateTime dateTime2 = LocalDateTime.now();
-//        LocalDate date = dateTime2.toLocalDate();
+//        LocalDateTime fewMinutesAgo = LocalDateTime.now();
+//        LocalDate date = fewMinutesAgo.toLocalDate();
 //
-//        System.out.println(dateTime1.compareTo(dateTime2));
+//        System.out.println(dateTime1.compareTo(fewMinutesAgo));
 //
-//        Period between = Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate());
+//        Period between = Period.between(dateTime1.toLocalDate(), fewMinutesAgo.toLocalDate());
 //
-//        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate()));
+//        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), fewMinutesAgo.toLocalDate()));
 //
 //        System.out.println(between.getYears());
 //
@@ -131,13 +134,51 @@ public class RandomTestingMain {
 //
 //        LocalDateTime dateTime = LocalDateTime.now();
 //
-//        org.joda.time.LocalDateTime dateTime1 = org.joda.time.LocalDateTime.now();
 //
 //        OffsetDateTime offsetDateTime = OffsetDateTime.now();
 
 //        LocalDateTime dateTime = LocalDateTime.now();
 
+        LocalDateTime otherYear = LocalDateTime.of(2019, 2, 8, 16, 21);
+        LocalDateTime yearAgo = LocalDateTime.of(2020, 2, 8, 16, 21);
+        LocalDateTime lastMonth = LocalDateTime.of(2021, 1, 5, 15, 22);
+        LocalDateTime lastWeek = LocalDateTime.of(2021, 2, 4, 16, 21);
+        LocalDateTime yesterday = LocalDateTime.of(2021, 2, 8, 16, 21);
+        LocalDateTime fewMinutesAgo = LocalDateTime.of(2021, 2, 9, 10, 52);
+        LocalDateTime momentAgo = LocalDateTime.of(2021, 2, 9, 20, 40);
+        LocalDateTime futureNotValid = LocalDateTime.of(2021, 3, 8, 16, 21);
 
+        System.out.println(howLongAgo(momentAgo));
 
+        System.out.println(TimePeriod.howLongAgo(momentAgo));
+
+    }
+
+    public static String howLongAgo(LocalDateTime dateTime) {
+        LocalDateTime now = LocalDateTime.now();
+
+        Period timeBetween = Period.between(dateTime.toLocalDate(), now.toLocalDate());
+
+        if (timeBetween.getYears() >= 1) {
+            return "In " + dateTime.getYear();
+        } else if(timeBetween.getMonths() > 1) {
+            return "In " + dateTime.getMonth();
+        } else if(timeBetween.getMonths() == 1) {
+            return "Last month";
+        } else if (timeBetween.getDays() > 1) {
+            return timeBetween.getDays() + " days ago";
+        } else if (timeBetween.getDays() == 1) {
+            return "Yesterday";
+        } else if (now.getHour() - dateTime.getHour() > 1) {
+            return now.getHour() - dateTime.getHour() + " hours ago";
+        } else if (now.getHour() - dateTime.getHour() == 1) {
+            return "An hour ago";
+        } else if (now.getMinute() - dateTime.getMinute() > 1) {
+            return now.getMinute() - dateTime.getMinute() + " minutes ago";
+        } else if (now.getMinute() - dateTime.getMinute() == 1) {
+            return "A minute ago";
+        } else {
+            return "Now";
+        }
     }
 }

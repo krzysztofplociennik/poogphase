@@ -48,11 +48,13 @@ public class ApiClient {
     }
 
     private URI getAllCommentsURI() {
-        return null;
+        return UriComponentsBuilder.fromHttpUrl(baseEndpoint + "/comment/getComments")
+                .build().encode().toUri();
     }
 
     private URI getAllMessagesURI() {
-        return null;
+        return UriComponentsBuilder.fromHttpUrl(baseEndpoint + "/message/getMessages")
+                .build().encode().toUri();
     }
 
     public List<UserDto> getUsers() {

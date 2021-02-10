@@ -4,7 +4,7 @@ import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.view.client.ApiClient;
-import com.plociennik.poogphase.view.logic.CommentsSidePage;
+import com.plociennik.poogphase.view.logic.TimePeriod;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -34,7 +34,7 @@ public class PostWallForm extends FormLayout {
                         .findAny()
                         .get()
                         .getUsername() +
-                        ", " + howLongAgo(post.getDateTime()));
+                        ", " + TimePeriod.howLongAgo(post.getDateTime()));
         Paragraph content = new Paragraph(post.getContent());
         TextArea commentPostTextArea = new TextArea("comment here!");
         commentPostTextArea.setWidth("350px");

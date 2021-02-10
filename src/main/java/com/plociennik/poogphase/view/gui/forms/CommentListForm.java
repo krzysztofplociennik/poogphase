@@ -2,6 +2,7 @@ package com.plociennik.poogphase.view.gui.forms;
 
 import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.view.client.ApiClient;
+import com.plociennik.poogphase.view.logic.TimePeriod;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,7 +20,7 @@ public class CommentListForm extends FormLayout {
                 .findAny()
                 .get()
                 .getUsername() +
-                ", " + comment.getDateTime().toString());
+                ", " + TimePeriod.howLongAgo(comment.getDateTime()));
         Paragraph content = new Paragraph(comment.getContent());
         Paragraph separator = new Paragraph("==================");
 

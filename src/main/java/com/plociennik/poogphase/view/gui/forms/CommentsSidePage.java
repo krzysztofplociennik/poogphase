@@ -1,4 +1,4 @@
-package com.plociennik.poogphase.view.logic;
+package com.plociennik.poogphase.view.gui.forms;
 
 import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
