@@ -14,6 +14,7 @@ public class GeneralView extends SplitLayout {
 
     public GeneralView() {
         top = new SplitLayout();
+        setSizeFull();
 
         setOrientation(SplitLayout.Orientation.VERTICAL);
         setSizeFull();
@@ -58,5 +59,8 @@ public class GeneralView extends SplitLayout {
         mainPageButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("dash"));
         postsButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("posts"));
         friendsButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("friends"));
+        chatButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("chat"));
+        profileButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("profile"));
+        settingsButton.addClickListener(buttonClickEvent -> UI.getCurrent().navigate("settings"));
     }
 }

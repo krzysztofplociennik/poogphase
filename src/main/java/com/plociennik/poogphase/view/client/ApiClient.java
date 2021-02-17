@@ -144,6 +144,25 @@ public class ApiClient {
     }
 
     public void createMessage(ChatMessageDto chatMessageDto) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonPost = mapper.createObjectNode();
+        jsonPost.put("authorId", chatMessageDto.getAuthorId());
+        jsonPost.put("dateTime", chatMessageDto.getDateTime().toString());
+        jsonPost.put("content", chatMessageDto.getContent());
+        jsonPost.put("recipient", chatMessageDto.getRecipient());
 
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
+
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpPost request = new HttpPost(baseEndpoint + "/message/createMessage");
+            StringEntity params = new StringEntity(json);
+            request.addHeader("content-type", "application/json");
+            request.setEntity(params);
+            httpClient.execute(request);
+        } catch (Exception ex) {
+        } finally {
+            httpClient.close();
+        }
     }
 }

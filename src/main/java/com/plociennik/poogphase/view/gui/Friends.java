@@ -18,28 +18,28 @@ import java.util.Optional;
 @PageTitle("Friends")
 public class Friends extends HorizontalLayout {
     private GeneralView generalView;
-    private SplitLayout splitLayout;
+    private SplitLayout friendsPageContentLayout;
     private ApiClient apiClient;
 
     @Autowired
     public Friends(ApiClient apiClient) {
         this.apiClient = apiClient;
         setSizeFull();
-        setupGeneralView();
+        setupFriendsPageContentView();
         setupFriendsAndMaybeFriends();
 
-        add(generalView);
+//        add(generalView);
     }
 
-    public void setupGeneralView() {
+    public void setupFriendsPageContentView() {
         this.generalView = new GeneralView();
-        this.splitLayout = new SplitLayout();
-        generalView.setSizeFull();
+        this.friendsPageContentLayout = new SplitLayout();
+//        generalView.setSizeFull();
 
-        splitLayout.setOrientation(SplitLayout.Orientation.HORIZONTAL);
-        splitLayout.setPrimaryStyle("minWidth", "750px");
-        splitLayout.setPrimaryStyle("maxWidth", "750px");
-        generalView.addToSecondary(splitLayout);
+        friendsPageContentLayout.setOrientation(SplitLayout.Orientation.HORIZONTAL);
+        friendsPageContentLayout.setPrimaryStyle("minWidth", "750px");
+        friendsPageContentLayout.setPrimaryStyle("maxWidth", "750px");
+        generalView.addToSecondary(friendsPageContentLayout);
         add(generalView);
     }
 
@@ -49,7 +49,7 @@ public class Friends extends HorizontalLayout {
                         .filter(userDto1 -> userDto1.getUsername().equals("dummy")).findAny();
 
         VerticalLayout friendsLayout = new VerticalLayout();
-        splitLayout.addToPrimary(friendsLayout);
+        friendsPageContentLayout.addToPrimary(friendsLayout);
         friendsLayout.add(new H2("Your friends"));
 
         for (UserDto user : friendsManager.searchFriends(loggedUser.get())) {
@@ -57,7 +57,7 @@ public class Friends extends HorizontalLayout {
         }
 
         VerticalLayout maybeFriendsLayout = new VerticalLayout();
-        splitLayout.addToSecondary(maybeFriendsLayout);
+        friendsPageContentLayout.addToSecondary(maybeFriendsLayout);
         maybeFriendsLayout.add(new H2("Do you know these people?"));
 
         for (UserDto user : friendsManager.searchPossibleFriends(loggedUser.get())) {
