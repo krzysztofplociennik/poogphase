@@ -4,7 +4,7 @@ import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.gui.forms.PostWallForm;
-import com.vaadin.flow.component.Text;
+import com.plociennik.poogphase.view.logic.SessionManager;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H4;
@@ -70,11 +70,7 @@ public class Dash extends HorizontalLayout {
         Button createPostButton = new Button("post!");
         createPostButton.addClickListener(buttonClickEvent -> {
             PostDto post = new PostDto();
-            post.setAuthorId(apiClient.getUsers().stream()
-                            .filter(userDto -> userDto.getUsername().equals(userPick.getValue().getUsername()))
-                            .findAny()
-                            .get()
-                            .getId());
+            post.setAuthorId(userPick.getValue().getId());
             post.setDateTime(LocalDateTime.now());
             post.setContent(whatDoYouThinkTextArea.getValue());
             try {
@@ -111,9 +107,4 @@ public class Dash extends HorizontalLayout {
     public void setupAPIView() {
         secondPartOfContentLayout.addToSecondary(new Button("API WIDGETS"));
     }
-
-    public void showComments() {
-        secondPartOfContentLayout.addToPrimary(new Text("hello, comments here!"));
-    }
-
 }

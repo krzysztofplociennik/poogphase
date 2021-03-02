@@ -23,6 +23,7 @@ public class FriendsManager {
 
     public List<UserDto> searchFriends(UserDto userDto) {
         List<UserDto> resultList = new ArrayList<>();
+        SessionManager sessionManager = new SessionManager(this.apiClient);
 
         for (String username : userDto.getFriends()) {
             Optional<UserDto> searchedUser = apiClient.getUsers().stream()

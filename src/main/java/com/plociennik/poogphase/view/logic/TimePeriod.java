@@ -10,25 +10,25 @@ public class TimePeriod {
         Period timeBetween = Period.between(dateTime.toLocalDate(), now.toLocalDate());
 
         if (timeBetween.getYears() >= 1) {
-            return "In " + dateTime.getYear();
+            return "in " + dateTime.getYear();
         } else if(timeBetween.getMonths() > 1) {
-            return "In " + dateTime.getMonth();
+            return "in " + dateTime.getMonth();
         } else if(timeBetween.getMonths() == 1) {
-            return "Last month";
+            return "last month";
         } else if (timeBetween.getDays() > 1) {
             return timeBetween.getDays() + " days ago";
         } else if (timeBetween.getDays() == 1) {
-            return "Yesterday";
+            return "yesterday";
         } else if (now.getHour() - dateTime.getHour() > 1) {
             return now.getHour() - dateTime.getHour() + " hours ago";
         } else if (now.getHour() - dateTime.getHour() == 1) {
-            return "An hour ago";
+            return "an hour ago";
         } else if (now.getMinute() - dateTime.getMinute() > 1) {
             return now.getMinute() - dateTime.getMinute() + " minutes ago";
         } else if (now.getMinute() - dateTime.getMinute() == 1) {
-            return "A minute ago";
+            return "a minute ago";
         } else {
-            return "Now";
+            return "just now";
         }
     }
 }

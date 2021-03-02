@@ -16,8 +16,6 @@ import com.vaadin.flow.component.textfield.TextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 public class PostWallForm extends FormLayout {
 
@@ -78,19 +76,5 @@ public class PostWallForm extends FormLayout {
 
     public void showComments(SplitLayout layoutToChange, PostDto postToShow, Button cancelButton) {
         layoutToChange.addToSecondary(new CommentsSidePage(this.apiClient, postToShow, layoutToChange, cancelButton));
-    }
-
-    public String howLongAgo(LocalDateTime dateTime) {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        if (dateTime.getYear() != currentTime.getYear()) {
-            return dateTime.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " " + dateTime.getYear();
-        } else if (dateTime.getMonth() != currentTime.getMonth()) {
-            return dateTime.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        } else if (dateTime.getDayOfMonth() != currentTime.getDayOfMonth()) {
-            return dateTime.getDayOfMonth() + " " + dateTime.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        } else {
-            return dateTime.getHour() + ":" + dateTime.getMinute();
-        }
     }
 }

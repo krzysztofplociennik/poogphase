@@ -67,7 +67,6 @@ public class Posts extends HorizontalLayout {
 
         authorsLayout.add(new H3("h3 text"));
         firstPartOfPostsContent.addToPrimary(authorsLayout);
-
     }
 
     public void postsView() {
@@ -112,7 +111,6 @@ public class Posts extends HorizontalLayout {
         layout.add(horizontalLayout, new Paragraph("============="));
         form.add(layout);
         return form;
-
     }
 
     public List<UserDto> recentActiveUsers() {

@@ -5,6 +5,7 @@ import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.gui.forms.FriendListForm;
 import com.plociennik.poogphase.view.gui.forms.PossibleFriendForm;
 import com.plociennik.poogphase.view.logic.FriendsManager;
+import com.plociennik.poogphase.view.logic.SessionManager;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -12,7 +13,8 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.Optional;
+
+import javax.mail.Session;
 
 @Route("friends")
 @PageTitle("Friends")
@@ -42,14 +44,13 @@ public class Friends extends HorizontalLayout {
 
     public void setupFriendsAndMaybeFriends() {
         FriendsManager friendsManager = new FriendsManager(this.apiClient);
-        Optional<UserDto> loggedUser = apiClient.getUsers().stream()
-                        .filter(userDto1 -> userDto1.getUsername().equals("dummy")).findAny();
+        SessionManager sessionManager = new SessionManager(this.apiClient);
 
         VerticalLayout friendsLayout = new VerticalLayout();
         friendsPageContentLayout.addToPrimary(friendsLayout);
         friendsLayout.add(new H2("Your friends"));
 
-        for (UserDto user : friendsManager.searchFriends(loggedUser.get())) {
+        for (UserDto user : friendsManager.searchFriends(sessionManager.getLoggedUser())) {
             friendsLayout.add(new FriendListForm(user));
         }
 
@@ -57,7 +58,7 @@ public class Friends extends HorizontalLayout {
         friendsPageContentLayout.addToSecondary(maybeFriendsLayout);
         maybeFriendsLayout.add(new H2("Do you know these people?"));
 
-        for (UserDto user : friendsManager.searchPossibleFriends(loggedUser.get())) {
+        for (UserDto user : friendsManager.searchPossibleFriends(sessionManager.getLoggedUser())) {
             maybeFriendsLayout.add(new PossibleFriendForm(user));
         }
     }
