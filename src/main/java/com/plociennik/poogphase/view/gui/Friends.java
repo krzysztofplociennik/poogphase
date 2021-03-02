@@ -27,14 +27,11 @@ public class Friends extends HorizontalLayout {
         setSizeFull();
         setupFriendsPageContentView();
         setupFriendsAndMaybeFriends();
-
-//        add(generalView);
     }
 
     public void setupFriendsPageContentView() {
         this.generalView = new GeneralView();
         this.friendsPageContentLayout = new SplitLayout();
-//        generalView.setSizeFull();
 
         friendsPageContentLayout.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         friendsPageContentLayout.setPrimaryStyle("minWidth", "750px");

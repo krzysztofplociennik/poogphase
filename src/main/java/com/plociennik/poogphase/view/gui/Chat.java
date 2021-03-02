@@ -7,12 +7,15 @@ import com.plociennik.poogphase.view.gui.forms.ChatMessageForm;
 import com.plociennik.poogphase.view.logic.FriendsManager;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.splitlayout.SplitLayoutVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -31,10 +34,16 @@ public class Chat extends HorizontalLayout {
     private GeneralView generalView;
     private SplitLayout chatPageContentLayout;
     private ApiClient apiClient;
+    private UserDto loggedUser;
 
     @Autowired
     public Chat(ApiClient apiClient) {
         this.apiClient = apiClient;
+
+        loggedUser = apiClient.getUsers().stream()
+                .filter(userDto -> userDto.getUsername().equals("dummy"))
+                .findAny()
+                .get();
 
         setSizeFull();
         setupChatPageContentView();
@@ -54,33 +63,51 @@ public class Chat extends HorizontalLayout {
 
     public void pickUserView() {
         FriendsManager friendsManager = new FriendsManager(this.apiClient);
-        VerticalLayout verticalLayout = new VerticalLayout();
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-
-        UserDto loggedUser = apiClient.getUsers().stream()
-                .filter(userDto -> userDto.getUsername().equals("dummy"))
-                .findAny().get();
+        VerticalLayout pickUserLayout = new VerticalLayout();
+        HorizontalLayout searchUserLayout = new HorizontalLayout();
 
         TextField searchUserTextField = new TextField();
         searchUserTextField.setPlaceholder("type username");
         Icon searchIcon = new Icon(VaadinIcon.ANGLE_RIGHT);
-        searchIcon.addClickListener(iconClickEvent -> searchForUser());
+        searchIcon.addClickListener(iconClickEvent -> searchForUser(searchUserTextField.getValue()));
         H4 pickUserText = new H4("You can search for someone to send them a message");
         H4 friendPickText = new H4("Or you can pick someone from your friend list");
 
-        verticalLayout.add(pickUserText, horizontalLayout, friendPickText);
+        searchUserLayout.add(searchUserTextField, searchIcon);
+        searchUserLayout.setAlignItems(Alignment.CENTER);
+        pickUserLayout.add(pickUserText, searchUserLayout, friendPickText);
 
         for (UserDto friend : friendsManager.searchFriends(loggedUser)) {
-            verticalLayout.add(new Button(friend.getUsername(), buttonClickEvent -> chatWindowView(friend)));
+            pickUserLayout.add(new Button(friend.getUsername(), buttonClickEvent -> chatWindowView(friend)));
         }
 
-        chatPageContentLayout.addToPrimary(verticalLayout);
+        chatPageContentLayout.addToPrimary(pickUserLayout);
     }
 
     public void chatWindowView(UserDto selectedUser) {
         VerticalLayout chatWindowLayout = new VerticalLayout();
         VerticalLayout messagesListLayout = new VerticalLayout();
         HorizontalLayout sendMessageLayout = new HorizontalLayout();
+        SplitLayout windowSplitLayout = new SplitLayout();
+
+        TextField writeMessageTextField = new TextField();
+        Button sendMessageButton = new Button("send");
+
+        windowSplitLayout.addToPrimary(messagesListLayout);
+        windowSplitLayout.addToSecondary(sendMessageLayout);
+        windowSplitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+        windowSplitLayout.addThemeVariants(SplitLayoutVariant.LUMO_SMALL);
+        windowSplitLayout.setSizeFull();
+        windowSplitLayout.setPrimaryStyle("minHeight", "450px");
+        windowSplitLayout.setPrimaryStyle("maxHeight", "450px");
+
+        sendMessageLayout.add(writeMessageTextField, sendMessageButton);
+        sendMessageLayout.setWidthFull();
+
+        messagesListLayout.setWidthFull();
+        chatWindowLayout.add(windowSplitLayout);
+
+        chatPageContentLayout.addToSecondary(chatWindowLayout);
 
         UserDto loggedUser = apiClient.getUsers().stream()
                 .filter(userDto -> userDto.getUsername().equals("dummy"))
@@ -99,15 +126,15 @@ public class Chat extends HorizontalLayout {
 
         if (chatLog.size() == 0) {
             messagesListLayout.add(new H4("Well, there's actually nothing here..."));
+        } else {
+            for (ChatMessageDto message : chatLog) {
+                messagesListLayout.add(new ChatMessageForm(this.apiClient, message));
+            }
         }
 
-        for (ChatMessageDto message : chatLog) {
-            messagesListLayout.add(new ChatMessageForm(this.apiClient, message));
-        }
-
-        TextField writeMessageTextField = new TextField();
         writeMessageTextField.setWidth("900px");
-        Button sendMessageButton = new Button("send", buttonClickEvent -> {
+        sendMessageButton.addClickShortcut(Key.ENTER);
+        sendMessageButton.addClickListener(buttonClickEvent -> {
             try {
                 sendMessage(loggedUser, selectedUser, writeMessageTextField.getValue());
             } catch (IOException e) {
@@ -115,24 +142,26 @@ public class Chat extends HorizontalLayout {
             }
             chatWindowView(selectedUser);
         });
-        sendMessageButton.addClickShortcut(Key.ENTER);
-
-        sendMessageLayout.add(writeMessageTextField, sendMessageButton);
-        sendMessageLayout.setWidthFull();
-        sendMessageLayout.setHeight("100px");
-
-        messagesListLayout.setWidthFull();
-        messagesListLayout.setHeight("700px");
-        chatWindowLayout.add(messagesListLayout, sendMessageLayout);
-        chatPageContentLayout.addToSecondary(chatWindowLayout);
     }
 
-    public void searchForUser() {
+    public void searchForUser(String searchedPhrase) {
+        Button cancelButton = new Button("go back", buttonClickEvent -> pickUserView());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        VerticalLayout layout = new VerticalLayout();
+        List<UserDto> searchedUserList = apiClient.getUsers().stream()
+                .filter(userDto -> userDto.getUsername().contains(searchedPhrase))
+                .filter(userDto -> !userDto.getUsername().equals(loggedUser.getUsername()))
+                .collect(Collectors.toList());
 
-    }
-
-    public void searchResultsView() {
-
+        if (searchedUserList.size() != 0) {
+            layout.add(cancelButton);
+            for (UserDto resultUser : searchedUserList) {
+                layout.add(new Button(resultUser.getUsername(), buttonClickEvent -> chatWindowView(resultUser)));
+            }
+        } else {
+            layout.add(new H5("Sorry, it seems that there are no users with that username"), cancelButton);
+        }
+        chatPageContentLayout.addToPrimary(layout);
     }
 
     public void sendMessage(UserDto author, UserDto recipient, String message) throws IOException {

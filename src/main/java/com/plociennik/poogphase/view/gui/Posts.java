@@ -1,6 +1,5 @@
 package com.plociennik.poogphase.view.gui;
 
-import com.plociennik.poogphase.model.Comment;
 import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
@@ -136,9 +135,5 @@ public class Posts extends HorizontalLayout {
             }
         }
         return resultList;
-    }
-
-    public void showComments(CommentDto commentDto) {
-
     }
 }
