@@ -4,12 +4,14 @@ import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.gui.forms.PostWallForm;
 import com.plociennik.poogphase.view.logic.SessionManager;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,19 @@ public class Profile extends HorizontalLayout {
         firstPartOfProfilePageContent.setPrimaryStyle("minWidth", "300px");
         firstPartOfProfilePageContent.setPrimaryStyle("maxWidth", "300px");
 
-        infoLayout.add(new H5("Your account info"));
+        infoLayout.add(new H5("This is what people here know about you"));
+
+        TextField firstNameTextField = new TextField("Firstname");
+        firstNameTextField.setValue(sessionManager.getLoggedUser().getFirstName());
+        firstNameTextField.setReadOnly(true);
+        TextField lastNameTextField = new TextField("Lastname");
+        lastNameTextField.setValue(sessionManager.getLoggedUser().getLastName());
+        lastNameTextField.setReadOnly(true);
+        TextField dateOfBirthTextField = new TextField("Date of birth");
+        dateOfBirthTextField.setValue(sessionManager.getLoggedUser().getDateOfBirth().toString());
+        dateOfBirthTextField.setReadOnly(true);
+
+        infoLayout.add(firstNameTextField, lastNameTextField, dateOfBirthTextField);
 
         firstPartOfProfilePageContent.addToPrimary(infoLayout);
     }

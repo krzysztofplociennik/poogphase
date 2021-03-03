@@ -139,46 +139,69 @@ public class RandomTestingMain {
 
 //        LocalDateTime dateTime = LocalDateTime.now();
 
-        LocalDateTime otherYear = LocalDateTime.of(2019, 2, 8, 16, 21);
-        LocalDateTime yearAgo = LocalDateTime.of(2020, 2, 8, 16, 21);
-        LocalDateTime lastMonth = LocalDateTime.of(2021, 1, 5, 15, 22);
-        LocalDateTime lastWeek = LocalDateTime.of(2021, 2, 4, 16, 21);
-        LocalDateTime yesterday = LocalDateTime.of(2021, 2, 8, 16, 21);
-        LocalDateTime fewMinutesAgo = LocalDateTime.of(2021, 2, 9, 10, 52);
-        LocalDateTime momentAgo = LocalDateTime.of(2021, 2, 9, 20, 40);
-        LocalDateTime futureNotValid = LocalDateTime.of(2021, 3, 8, 16, 21);
+//        LocalDateTime otherYear = LocalDateTime.of(2019, 2, 8, 16, 21);
+//        LocalDateTime yearAgo = LocalDateTime.of(2020, 2, 8, 16, 21);
+//        LocalDateTime lastMonth = LocalDateTime.of(2021, 1, 5, 15, 22);
+//        LocalDateTime lastWeek = LocalDateTime.of(2021, 2, 4, 16, 21);
+//        LocalDateTime yesterday = LocalDateTime.of(2021, 2, 8, 16, 21);
+//        LocalDateTime fewMinutesAgo = LocalDateTime.of(2021, 2, 9, 10, 52);
+//        LocalDateTime momentAgo = LocalDateTime.of(2021, 2, 9, 20, 40);
+//        LocalDateTime futureNotValid = LocalDateTime.of(2021, 3, 8, 16, 21);
+//
+//        System.out.println(howLongAgo(momentAgo));
+//
+//        System.out.println(TimePeriod.howLongAgo(momentAgo));
 
-        System.out.println(howLongAgo(momentAgo));
+//        checkNumber(-10);
 
-        System.out.println(TimePeriod.howLongAgo(momentAgo));
+//        RandomTestingMain randomTestingMain = new RandomTestingMain();
+//
+//        randomTestingMain.writeSomething();
+
 
     }
 
-    public static String howLongAgo(LocalDateTime dateTime) {
-        LocalDateTime now = LocalDateTime.now();
+//    public static void checkNumber(int number) {
+//        if (number < 0) {
+//            System.out.println("negative!");
+//            return;
+//        } else if (number == 0) {
+//            System.out.println("neither!");
+//        } else {
+//            System.out.println("positive!");
+//        }
+//        System.out.println("!\n!\n!\n!");
+//    }
+//
+//    public void writeSomething() {
+//        System.out.println("Something");
+//    }
 
-        Period timeBetween = Period.between(dateTime.toLocalDate(), now.toLocalDate());
-
-        if (timeBetween.getYears() >= 1) {
-            return "In " + dateTime.getYear();
-        } else if(timeBetween.getMonths() > 1) {
-            return "In " + dateTime.getMonth();
-        } else if(timeBetween.getMonths() == 1) {
-            return "Last month";
-        } else if (timeBetween.getDays() > 1) {
-            return timeBetween.getDays() + " days ago";
-        } else if (timeBetween.getDays() == 1) {
-            return "Yesterday";
-        } else if (now.getHour() - dateTime.getHour() > 1) {
-            return now.getHour() - dateTime.getHour() + " hours ago";
-        } else if (now.getHour() - dateTime.getHour() == 1) {
-            return "An hour ago";
-        } else if (now.getMinute() - dateTime.getMinute() > 1) {
-            return now.getMinute() - dateTime.getMinute() + " minutes ago";
-        } else if (now.getMinute() - dateTime.getMinute() == 1) {
-            return "A minute ago";
-        } else {
-            return "Now";
-        }
-    }
+//    public static String howLongAgo(LocalDateTime dateTime) {
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        Period timeBetween = Period.between(dateTime.toLocalDate(), now.toLocalDate());
+//
+//        if (timeBetween.getYears() >= 1) {
+//            return "In " + dateTime.getYear();
+//        } else if(timeBetween.getMonths() > 1) {
+//            return "In " + dateTime.getMonth();
+//        } else if(timeBetween.getMonths() == 1) {
+//            return "Last month";
+//        } else if (timeBetween.getDays() > 1) {
+//            return timeBetween.getDays() + " days ago";
+//        } else if (timeBetween.getDays() == 1) {
+//            return "Yesterday";
+//        } else if (now.getHour() - dateTime.getHour() > 1) {
+//            return now.getHour() - dateTime.getHour() + " hours ago";
+//        } else if (now.getHour() - dateTime.getHour() == 1) {
+//            return "An hour ago";
+//        } else if (now.getMinute() - dateTime.getMinute() > 1) {
+//            return now.getMinute() - dateTime.getMinute() + " minutes ago";
+//        } else if (now.getMinute() - dateTime.getMinute() == 1) {
+//            return "A minute ago";
+//        } else {
+//            return "Now";
+//        }
+//    }
 }
