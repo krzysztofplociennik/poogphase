@@ -14,8 +14,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.mail.Session;
-
 @Route("friends")
 @PageTitle("Friends")
 public class Friends extends HorizontalLayout {

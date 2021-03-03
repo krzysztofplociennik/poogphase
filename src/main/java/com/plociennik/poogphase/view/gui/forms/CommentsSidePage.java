@@ -16,10 +16,10 @@ public class CommentsSidePage extends VerticalLayout {
     public CommentsSidePage(ApiClient apiClient, PostDto post, SplitLayout sidePage, Button cancelButton) {
         this.apiClient = apiClient;
 
+        add(cancelButton);
         for (CommentDto comment : post.getComments()) {
             add(new CommentListForm(this.apiClient, comment));
         }
-        add(cancelButton);
         sidePage.addToSecondary(this);
     }
 }
