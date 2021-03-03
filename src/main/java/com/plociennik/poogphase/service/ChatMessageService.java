@@ -20,35 +20,26 @@ public class ChatMessageService {
         return chatMessageRepository.findAll();
     }
 
-    public ChatMessage saveMessage(ChatMessage message) {
-        Optional<ChatMessage> optionalChatMessage = message.getAuthor().getMessages().stream()
-                .filter(chatMessage -> chatMessage.getId() == message.getId())
-                .findAny();
-        if (optionalChatMessage.isEmpty()) {
-            message.getAuthor().getMessages().add(message);
-            message.getAuthor().setMessages(message.getAuthor().getMessages());
-            return chatMessageRepository.save(message);
-        } else {
-            optionalChatMessage.get().setRecipient(message.getRecipient());
-            optionalChatMessage.get().setAuthor(message.getAuthor());
-            optionalChatMessage.get().setContent(message.getContent());
-            optionalChatMessage.get().setDateTime(message.getDateTime());
-            return chatMessageRepository.save(optionalChatMessage.get());
-        }
+    public ChatMessage saveMessage(final ChatMessage message) {
+        User author = userService.getUserByUsername(message.getAuthor().getUsername());
+        author.getMessages().add(message);
+        userService.saveUser(author);
+        return chatMessageRepository.save(message);
     }
 
     public Optional<ChatMessage> getMessage(final long id) {
         return chatMessageRepository.findById(id);
     }
 
-    public void removeMessage(long id) {
+    public void removeMessage(final long id) {
         ChatMessage chatMessage = chatMessageRepository.findById(id).get();
         User author = chatMessage.getAuthor();
         author.getMessages().remove(chatMessage);
         userService.saveUser(author);
+        chatMessageRepository.deleteById(id);
     }
 
-    public ChatMessage getByContent(String content) {
+    public ChatMessage getByContent(final String content) {
         return chatMessageRepository.findByContent(content);
     }
 

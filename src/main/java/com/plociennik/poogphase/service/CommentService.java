@@ -18,13 +18,9 @@ public class CommentService {
     @Autowired
     private PostService postService;
 
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll();
-    }
-
-    public Comment saveComment(User author, Post post, Comment comment) {
-        comment.setAuthor(author);
-        comment.setPost(post);
+    public Comment saveComment(final Comment comment) {
+//        comment.setAuthor(author);
+//        comment.setPost(post);
         return commentRepository.save(comment);
     }
 
@@ -32,17 +28,21 @@ public class CommentService {
         return commentRepository.findById(id);
     }
 
-    public void removeComment(long id) {
+    public List<Comment> getAllComments() {
+        return commentRepository.findAll();
+    }
+
+    public void removeComment(final long id) {
         Comment comment = commentRepository.findById(id).get();
         User author = comment.getAuthor();
         Post post = comment.getPost();
         author.getComments().remove(comment);
         userService.saveUser(author);
         post.getComments().remove(comment);
-        postService.savePost(post.getAuthor(), post);
+        postService.savePost(post);
     }
 
-    public Comment getByContent(String content) {
+    public Comment getByContent(final String content) {
         return commentRepository.findByContent(content);
     }
 }

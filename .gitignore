@@ -1,8 +1,9 @@
 .idea
+config
 node_modules
 target
-databaseDev.trace.db
 databaseDev.mv.db
+databaseDev.trace.db
 package.json
 pnpm-lock.yaml
 pnpmfile.js

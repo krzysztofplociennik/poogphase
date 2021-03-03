@@ -1,5 +1,13 @@
 package com.plociennik.poogphase;
 
+import com.plociennik.poogphase.model.dto.CommentDto;
+import com.plociennik.poogphase.view.logic.TimePeriod;
+
+import java.time.*;
+import java.time.format.TextStyle;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class RandomTestingMain {
 
     public static void main(String[] args) {
@@ -100,9 +108,100 @@ public class RandomTestingMain {
 //        map.put("ex", "1");
 //        System.out.println(map.size());
 
+//        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2020, 1, 9), LocalTime.of(14, 35));
+//        LocalDateTime fewMinutesAgo = LocalDateTime.now();
+//        LocalDate date = fewMinutesAgo.toLocalDate();
+//
+//        System.out.println(dateTime1.compareTo(fewMinutesAgo));
+//
+//        Period between = Period.between(dateTime1.toLocalDate(), fewMinutesAgo.toLocalDate());
+//
+//        System.out.println("Period: " + Period.between(dateTime1.toLocalDate(), fewMinutesAgo.toLocalDate()));
+//
+//        System.out.println(between.getYears());
+//
+//        System.out.println(date);
+//
+//        System.out.println(date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH ));
 
+//        DateTime yodaDateTime = new DateTime(2020, 1, 20, 7, 36);
+//
+//        System.out.println(DateTime.now());
+//
+//        System.out.println(yodaDateTime);
+//
+//        System.out.println(yodaDateTime.toGregorianCalendar().toString());
+//
+//        LocalDateTime dateTime = LocalDateTime.now();
+//
+//
+//        OffsetDateTime offsetDateTime = OffsetDateTime.now();
 
+//        LocalDateTime dateTime = LocalDateTime.now();
+
+//        LocalDateTime otherYear = LocalDateTime.of(2019, 2, 8, 16, 21);
+//        LocalDateTime yearAgo = LocalDateTime.of(2020, 2, 8, 16, 21);
+//        LocalDateTime lastMonth = LocalDateTime.of(2021, 1, 5, 15, 22);
+//        LocalDateTime lastWeek = LocalDateTime.of(2021, 2, 4, 16, 21);
+//        LocalDateTime yesterday = LocalDateTime.of(2021, 2, 8, 16, 21);
+//        LocalDateTime fewMinutesAgo = LocalDateTime.of(2021, 2, 9, 10, 52);
+//        LocalDateTime momentAgo = LocalDateTime.of(2021, 2, 9, 20, 40);
+//        LocalDateTime futureNotValid = LocalDateTime.of(2021, 3, 8, 16, 21);
+//
+//        System.out.println(howLongAgo(momentAgo));
+//
+//        System.out.println(TimePeriod.howLongAgo(momentAgo));
+
+//        checkNumber(-10);
+
+//        RandomTestingMain randomTestingMain = new RandomTestingMain();
+//
+//        randomTestingMain.writeSomething();
 
 
     }
+
+//    public static void checkNumber(int number) {
+//        if (number < 0) {
+//            System.out.println("negative!");
+//            return;
+//        } else if (number == 0) {
+//            System.out.println("neither!");
+//        } else {
+//            System.out.println("positive!");
+//        }
+//        System.out.println("!\n!\n!\n!");
+//    }
+//
+//    public void writeSomething() {
+//        System.out.println("Something");
+//    }
+
+//    public static String howLongAgo(LocalDateTime dateTime) {
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        Period timeBetween = Period.between(dateTime.toLocalDate(), now.toLocalDate());
+//
+//        if (timeBetween.getYears() >= 1) {
+//            return "In " + dateTime.getYear();
+//        } else if(timeBetween.getMonths() > 1) {
+//            return "In " + dateTime.getMonth();
+//        } else if(timeBetween.getMonths() == 1) {
+//            return "Last month";
+//        } else if (timeBetween.getDays() > 1) {
+//            return timeBetween.getDays() + " days ago";
+//        } else if (timeBetween.getDays() == 1) {
+//            return "Yesterday";
+//        } else if (now.getHour() - dateTime.getHour() > 1) {
+//            return now.getHour() - dateTime.getHour() + " hours ago";
+//        } else if (now.getHour() - dateTime.getHour() == 1) {
+//            return "An hour ago";
+//        } else if (now.getMinute() - dateTime.getMinute() > 1) {
+//            return now.getMinute() - dateTime.getMinute() + " minutes ago";
+//        } else if (now.getMinute() - dateTime.getMinute() == 1) {
+//            return "A minute ago";
+//        } else {
+//            return "Now";
+//        }
+//    }
 }

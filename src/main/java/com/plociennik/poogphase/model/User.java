@@ -17,12 +17,13 @@ public class User {
     private String lastName;
     private LocalDate dateOfBirth;
     private Set<String> friends;
-    private Set<Post> posts;
-    private Set<Comment> comments;
-    private Set<ChatMessage> messages;
-    private Map<User, Set<ChatMessage>> chatLogs;
+    private List<Post> posts;
+    private List<Comment> comments;
+    private List<ChatMessage> messages;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName, LocalDate dateOfBirth, Set<String> friends, Set<Post> posts, Set<Comment> comments, Set<ChatMessage> messages, Map<User, Set<ChatMessage>> chatLogs) {
+    public User(long id, String username, String password, String mail, String firstName, String lastName,
+                LocalDate dateOfBirth, Set<String> friends, List<Post> posts, List<Comment> comments,
+                List<ChatMessage> messages) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -34,15 +35,13 @@ public class User {
         this.posts = posts;
         this.comments = comments;
         this.messages = messages;
-        this.chatLogs = chatLogs;
     }
 
     public User() {
         friends = new HashSet<>();
-        posts = new HashSet<>();
-        comments = new HashSet<>();
-        messages = new HashSet<>();
-        chatLogs = new HashMap<>();
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
+        messages = new ArrayList<>();
     }
 
     @Id
@@ -100,11 +99,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Transient
-    public int getAge() {
-        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
-    }
-
     @Column
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
@@ -112,6 +106,11 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Transient
+    public int getAge() {
+        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
     }
 
     @ElementCollection
@@ -131,51 +130,41 @@ public class User {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Set<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 
     @OneToMany(
-            fetch = FetchType.EAGER,
             targetEntity = Comment.class,
             mappedBy = "author",
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    public Set<Comment> getComments() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
     @OneToMany(
-            fetch = FetchType.EAGER,
             targetEntity = ChatMessage.class,
             mappedBy = "author",
-            orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.REMOVE
     )
-    public Set<ChatMessage> getMessages() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<ChatMessage> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<ChatMessage> messages) {
+    public void setMessages(List<ChatMessage> messages) {
         this.messages = messages;
-    }
-
-    @Transient
-    public Map<User, Set<ChatMessage>> getChatLogs() {
-        return chatLogs;
-    }
-
-    public void setChatLogs(Map<User, Set<ChatMessage>> chatLogs) {
-        this.chatLogs = chatLogs;
     }
 
     @Override
@@ -190,8 +179,7 @@ public class User {
                 Objects.equals(getFirstName(), user.getFirstName()) &&
                 Objects.equals(getLastName(), user.getLastName()) &&
                 Objects.equals(getDateOfBirth(), user.getDateOfBirth()) &&
-                Objects.equals(getFriends(), user.getFriends()) &&
-                Objects.equals(chatLogs, user.chatLogs);
+                Objects.equals(getFriends(), user.getFriends());
     }
 
     @Override
