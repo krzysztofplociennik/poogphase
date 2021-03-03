@@ -1,0 +1,12 @@
+.idea
+node_modules
+target
+databaseDev.trace.db
+databaseDev.mv.db
+package.json
+pnpm-lock.yaml
+pnpmfile.js
+tsconfig.json
+types.d.ts
+webpack.config.js
+webpack.generated.js
