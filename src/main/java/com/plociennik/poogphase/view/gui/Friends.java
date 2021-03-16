@@ -49,7 +49,7 @@ public class Friends extends HorizontalLayout {
         friendsLayout.add(new H2("Your friends"));
 
         for (UserDto user : friendsManager.searchFriends(sessionManager.getLoggedUser())) {
-            friendsLayout.add(new FriendListForm(user));
+            friendsLayout.add(new FriendListForm(this.apiClient, user));
         }
 
         VerticalLayout maybeFriendsLayout = new VerticalLayout();

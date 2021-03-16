@@ -42,22 +42,9 @@ public class PossibleFriendForm extends FormLayout {
     }
 
     public void addFriend(UserDto user, UserDto friendToBe) throws IOException {
-        System.out.println("User: " + user.getFriends().size());
-        System.out.println("Possible friend: " + friendToBe.getFriends().size());
         user.getFriends().add(friendToBe.getUsername());
-        friendToBe.getFriends().add(user.getUsername());
-        System.out.println("User: " + user.getFriends().size());
-        System.out.println("Possible friend: " + friendToBe.getFriends().size());
         apiClient.updateUser(user);
+        friendToBe.getFriends().add(user.getUsername());
         apiClient.updateUser(friendToBe);
-
-        System.out.println("User after adding: " + apiClient.getUsers().stream()
-                .filter(userDto -> userDto.getUsername().equals(user.getUsername()))
-                .findAny()
-                .get().getFriends().size());
-        System.out.println("Possible friend after adding: " + apiClient.getUsers().stream()
-                .filter(userDto -> userDto.getUsername().equals(friendToBe.getUsername()))
-                .findAny()
-                .get().getFriends().size());
     }
 }
