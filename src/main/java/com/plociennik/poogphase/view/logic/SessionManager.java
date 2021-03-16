@@ -5,7 +5,7 @@ import com.plociennik.poogphase.view.client.ApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SessionManager {
-    private final ApiClient apiClient;
+    private ApiClient apiClient;
     public UserDto loggedUser;
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.plociennik.poogphase.service;
 
 import com.plociennik.poogphase.model.User;
+import com.plociennik.poogphase.model.dto.UserDto;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -121,11 +124,6 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void showNumberOfRecords() {
-        System.out.println("Number of records: " + userService.getAllUsers().size());
-    }
-
-    @Test
     public void addAndDeleteFriend() {
         User dummy = userService.getUserByUsername("dummy");
         User silly = userService.getUserByUsername("silly");
@@ -142,5 +140,81 @@ public class UserServiceTestSuite {
 
         Assert.assertEquals(sizeOfFriendsListInDummy, userService.getUserByUsername("dummy").getFriends().size());
         Assert.assertEquals(sizeOfFriendsListInSilly, userService.getUserByUsername("silly").getFriends().size());
+    }
+
+    @Test
+    public void editExistingUser() {
+        User dummy = userService.getUserByUsername("dummy");
+        dummy.setFirstName("Dreamy");
+        userService.saveUser(dummy);
+
+        Assert.assertEquals("Dreamy", userService.getUserByUsername("dummy").getFirstName());
+    }
+
+    @Test
+    public void addFriendAndUpdateUser() {
+        System.out.println("Dummy's friends before adding: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+        User dummy = userService.getUserByUsername("dummy");
+        long dummyFriendsSize = dummy.getFriends().size();
+        User jackz = userService.getUserByUsername("jackz");
+        long jackzFriendsSize = jackz.getFriends().size();
+
+        userService.addFriend(dummy, jackz);
+
+        Assert.assertEquals(dummyFriendsSize + 1, userService.getUserByUsername("dummy").getFriends().size());
+        Assert.assertEquals(jackzFriendsSize + 1, userService.getUserByUsername("jackz").getFriends().size());
+        System.out.println("Dummy's friends after adding: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+    }
+
+    @Test
+    public void addingAlreadyFriend() {
+
+    }
+
+    @Test
+    public void deletingFriendAndUpdateUser() {
+        System.out.println("Dummy's friends before deleting: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+        User dummy = userService.getUserByUsername("dummy");
+        long dummyFriendsSize = dummy.getFriends().size();
+        User jackz = userService.getUserByUsername("jackz");
+        long jackzFriendsSize = jackz.getFriends().size();
+
+        userService.deleteFriend(dummy, jackz);
+
+        Assert.assertEquals(dummyFriendsSize - 1, userService.getUserByUsername("dummy").getFriends().size());
+        Assert.assertEquals(jackzFriendsSize - 1, userService.getUserByUsername("jackz").getFriends().size());
+
+        System.out.println("Dummy's friends after deleting: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+    }
+
+    @Test
+    public void showUsersId() {
+        for (User user : userService.getAllUsers()) {
+            System.out.println(user.getUsername() + " " + user.getId());
+        }
+    }
+
+    @Test
+    public void showFriends() {
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+    }
+
+    @Test
+    public void showNumberOfRecords() {
+        System.out.println("Number of records: " + userService.getAllUsers().size());
     }
 }

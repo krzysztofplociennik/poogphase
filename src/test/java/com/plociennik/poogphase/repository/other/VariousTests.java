@@ -1,8 +1,6 @@
 package com.plociennik.poogphase.repository.other;
 
 import com.plociennik.poogphase.mapper.UserMapper;
-import com.plociennik.poogphase.model.ChatMessage;
-import com.plociennik.poogphase.model.Post;
 import com.plociennik.poogphase.model.User;
 import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.repository.*;
@@ -12,14 +10,11 @@ import com.plociennik.poogphase.service.PostService;
 import com.plociennik.poogphase.service.UserService;
 import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.logic.FriendsManager;
-import org.h2.engine.UserAggregate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -43,9 +38,9 @@ public class VariousTests {
     @Autowired
     private CommentService commentService;
     @Autowired
-    private ApiClient apiClient;
-    @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private ApiClient apiClient;
 
     @Test
     public void wipeAndShowAllRecords() {
@@ -67,7 +62,8 @@ public class VariousTests {
 //        postRepository.deleteById(991L);
 //        commentRepository.deleteById(2205L);
 
-//        userService.removeUser(1L);
+//        userService.removeUser(683L);
+//        userService.removeUser(676L);
 //        chatMessageService.removeMessage(4L);
 //        chatMessageService.removeMessage(1238L);
 //        postService.removePost(991L);
@@ -76,7 +72,7 @@ public class VariousTests {
 
     @Test
     public void showRecordsId() {
-//        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
+        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
 //        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
 //        for (Post post : postRepository.findAll()) { System.out.println(post.getContent() + " : " + post.getId()); }
 //        for (Comment comment : commentRepository.findAll()) { System.out.println(comment.getContent() + " : " + comment.getId()); }
@@ -207,12 +203,6 @@ public class VariousTests {
     }
 
     @Test
-    public void misc() {
-        System.out.println(userRepository.findByUsername("dummy").getAge());
-        System.out.println(userRepository.findByUsername("dummy").getFriends().size());
-    }
-
-    @Test
     public void addFriends() {
         User dummy = userService.getUserByUsername("dummy");
         Set<String> friends = dummy.getFriends();
@@ -245,9 +235,39 @@ public class VariousTests {
         System.out.println(friendsManager.areTheyFriends(silly, silly));
         System.out.println(friendsManager.areTheyFriends(goofy, dummy));
         System.out.println(friendsManager.areTheyFriends(dummy, glory));
+    }
 
+    @Test
+    public void checkListOfFriends() {
+        User user = userService.getUserByUsername("dummy");
 
-//        System.out.println(friendsManager.searchFriends(glory).size());
+        System.out.println("Current friends: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
 
+        user.getFriends().add("testingFriend");
+        userService.saveUser(user);
+
+        System.out.println("After adding: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+
+        user.getFriends().remove("testingFriend");
+        String friendToRemove = userService.getUserByUsername("dummy").getFriends().stream().filter(s -> s.equals("testingFriend")).findAny().get();
+        userService.getUserByUsername("dummy").getFriends().remove(friendToRemove);
+        userService.saveUser(user);
+
+        System.out.println("After removing: ");
+        for (String friend : userService.getUserByUsername("dummy").getFriends()) {
+            System.out.println(friend);
+        }
+    }
+
+    @Test
+    public void misc() {
+        System.out.println(userRepository.findByUsername("dummy").getAge());
+        System.out.println(userRepository.findByUsername("dummy").getFriends().size());
     }
 }

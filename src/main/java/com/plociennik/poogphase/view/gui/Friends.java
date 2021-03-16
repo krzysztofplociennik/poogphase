@@ -57,7 +57,7 @@ public class Friends extends HorizontalLayout {
         maybeFriendsLayout.add(new H2("Do you know these people?"));
 
         for (UserDto user : friendsManager.searchPossibleFriends(sessionManager.getLoggedUser())) {
-            maybeFriendsLayout.add(new PossibleFriendForm(user));
+            maybeFriendsLayout.add(new PossibleFriendForm(this.apiClient, user));
         }
     }
 }

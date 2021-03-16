@@ -1,13 +1,12 @@
 package com.plociennik.poogphase.view.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.plociennik.poogphase.model.ChatMessage;
 import com.plociennik.poogphase.model.dto.ChatMessageDto;
 import com.plociennik.poogphase.model.dto.CommentDto;
 import com.plociennik.poogphase.model.dto.PostDto;
 import com.plociennik.poogphase.model.dto.UserDto;
+import com.plociennik.poogphase.view.logic.JsonObjectMapper;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -31,6 +30,7 @@ public class ApiClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiClient.class);
     @Value("${api.endpoint}")
     private String baseEndpoint;
+    private JsonObjectMapper objectMapper = new JsonObjectMapper();
 
     @Bean
     public RestTemplate restTemplate() {
@@ -98,19 +98,10 @@ public class ApiClient {
     }
 
     public void createPost(PostDto postDto) throws IOException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode jsonPost = mapper.createObjectNode();
-        jsonPost.put("authorId", postDto.getAuthorId());
-        jsonPost.put("dateTime", postDto.getDateTime().toString());
-        jsonPost.put("content", postDto.getContent());
-
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
-
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost(baseEndpoint + "/post/createPost");
-            StringEntity params = new StringEntity(json);
+            StringEntity params = new StringEntity(objectMapper.mapPostDtoToJson(postDto));
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
             httpClient.execute(request);
@@ -121,19 +112,10 @@ public class ApiClient {
     }
 
     public void createComment(CommentDto commentDto) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode jsonPost = mapper.createObjectNode();
-        jsonPost.put("authorId", commentDto.getAuthorId());
-        jsonPost.put("dateTime", commentDto.getDateTime().toString());
-        jsonPost.put("content", commentDto.getContent());
-        jsonPost.put("postId", commentDto.getPostId());
-
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
-
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost(baseEndpoint + "/comment/createComment");
-            StringEntity params = new StringEntity(json);
+            StringEntity params = new StringEntity(objectMapper.mapCommentDtoToJson(commentDto));
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
             httpClient.execute(request);
@@ -144,19 +126,24 @@ public class ApiClient {
     }
 
     public void createMessage(ChatMessageDto chatMessageDto) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode jsonPost = mapper.createObjectNode();
-        jsonPost.put("authorId", chatMessageDto.getAuthorId());
-        jsonPost.put("dateTime", chatMessageDto.getDateTime().toString());
-        jsonPost.put("content", chatMessageDto.getContent());
-        jsonPost.put("recipient", chatMessageDto.getRecipient());
-
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonPost);
-
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost(baseEndpoint + "/message/createMessage");
-            StringEntity params = new StringEntity(json);
+            StringEntity params = new StringEntity(objectMapper.mapChatMessageDtoToJson(chatMessageDto));
+            request.addHeader("content-type", "application/json");
+            request.setEntity(params);
+            httpClient.execute(request);
+        } catch (Exception ex) {
+        } finally {
+            httpClient.close();
+        }
+    }
+
+    public void updateUser(UserDto userDto) throws IOException {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpPut request = new HttpPut(baseEndpoint + "/user/updateUser");
+            StringEntity params = new StringEntity(objectMapper.mapUserDtoToJson(userDto));
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
             httpClient.execute(request);

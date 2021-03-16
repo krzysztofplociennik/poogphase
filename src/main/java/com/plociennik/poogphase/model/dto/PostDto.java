@@ -1,5 +1,7 @@
 package com.plociennik.poogphase.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,11 @@ public class PostDto {
     private List<CommentDto> comments;
     private String content;
 
-    public PostDto(long id, long authorId, LocalDateTime dateTime, List<CommentDto> comments, String content) {
+    public PostDto(long id,
+                   long authorId,
+                   LocalDateTime dateTime,
+                   List<CommentDto> comments,
+                   String content) {
         this.id = id;
         this.authorId = authorId;
         this.dateTime = dateTime;

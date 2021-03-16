@@ -96,10 +96,6 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
     }
 
-//    public int getAge() {
-//        return Period.between(this.getDateOfBirth(), LocalDate.now()).getYears();
-//    }
-
     public Set<String> getFriends() {
         return friends;
     }
