@@ -4,7 +4,9 @@ import com.plociennik.poogphase.model.dto.ChatMessageDto;
 import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.view.client.ApiClient;
 import com.plociennik.poogphase.view.gui.forms.ChatMessageForm;
+import com.plociennik.poogphase.view.logic.ChatMessageSender;
 import com.plociennik.poogphase.view.logic.FriendsManager;
+import com.plociennik.poogphase.view.logic.SessionManager;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -34,16 +36,14 @@ public class Chat extends HorizontalLayout {
     private GeneralView generalView;
     private SplitLayout chatPageContentLayout;
     private ApiClient apiClient;
-    private UserDto loggedUser;
+    private SessionManager sessionManager;
+    private ChatMessageSender chatMessageSender;
 
     @Autowired
     public Chat(ApiClient apiClient) {
         this.apiClient = apiClient;
-
-        loggedUser = apiClient.getUsers().stream()
-                .filter(userDto -> userDto.getUsername().equals("dummy"))
-                .findAny()
-                .get();
+        this.sessionManager = new SessionManager(this.apiClient);
+        this.chatMessageSender = new ChatMessageSender(this.apiClient);
 
         setSizeFull();
         setupChatPageContentView();
@@ -77,7 +77,7 @@ public class Chat extends HorizontalLayout {
         searchUserLayout.setAlignItems(Alignment.CENTER);
         pickUserLayout.add(pickUserText, searchUserLayout, friendPickText);
 
-        for (UserDto friend : friendsManager.searchFriends(loggedUser)) {
+        for (UserDto friend : friendsManager.searchFriends(sessionManager.getLoggedUser())) {
             pickUserLayout.add(new Button(friend.getUsername(), buttonClickEvent -> chatWindowView(friend)));
         }
 
@@ -136,7 +136,7 @@ public class Chat extends HorizontalLayout {
         sendMessageButton.addClickShortcut(Key.ENTER);
         sendMessageButton.addClickListener(buttonClickEvent -> {
             try {
-                sendMessage(loggedUser, selectedUser, writeMessageTextField.getValue());
+                chatMessageSender.sendMessage(loggedUser, selectedUser, writeMessageTextField.getValue());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -150,7 +150,7 @@ public class Chat extends HorizontalLayout {
         VerticalLayout layout = new VerticalLayout();
         List<UserDto> searchedUserList = apiClient.getUsers().stream()
                 .filter(userDto -> userDto.getUsername().contains(searchedPhrase))
-                .filter(userDto -> !userDto.getUsername().equals(loggedUser.getUsername()))
+                .filter(userDto -> !userDto.getUsername().equals(sessionManager.getLoggedUser().getUsername()))
                 .collect(Collectors.toList());
 
         if (searchedUserList.size() != 0) {
@@ -162,14 +162,5 @@ public class Chat extends HorizontalLayout {
             layout.add(new H5("Sorry, it seems that there are no users with that username"), cancelButton);
         }
         chatPageContentLayout.addToPrimary(layout);
-    }
-
-    public void sendMessage(UserDto author, UserDto recipient, String message) throws IOException {
-        ChatMessageDto chatMessageDto = new ChatMessageDto();
-        chatMessageDto.setDateTime(LocalDateTime.now());
-        chatMessageDto.setAuthorId(author.getId());
-        chatMessageDto.setRecipient(recipient.getUsername());
-        chatMessageDto.setContent(message);
-        apiClient.createMessage(chatMessageDto);
     }
 }
