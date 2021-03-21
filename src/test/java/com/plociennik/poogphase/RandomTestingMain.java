@@ -1,7 +1,6 @@
 package com.plociennik.poogphase;
 
 import com.plociennik.poogphase.model.dto.CommentDto;
-import com.plociennik.poogphase.view.logic.TimePeriod;
 
 import java.time.*;
 import java.time.format.TextStyle;

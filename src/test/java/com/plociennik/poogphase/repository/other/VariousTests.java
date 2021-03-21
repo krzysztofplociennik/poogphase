@@ -8,8 +8,6 @@ import com.plociennik.poogphase.service.ChatMessageService;
 import com.plociennik.poogphase.service.CommentService;
 import com.plociennik.poogphase.service.PostService;
 import com.plociennik.poogphase.service.UserService;
-import com.plociennik.poogphase.view.client.ApiClient;
-import com.plociennik.poogphase.view.logic.FriendsManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +37,6 @@ public class VariousTests {
     private CommentService commentService;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private ApiClient apiClient;
 
     @Test
     public void wipeAndShowAllRecords() {
@@ -221,20 +217,6 @@ public class VariousTests {
         goofyFriends.add("silly"); goofyFriends.add("molina"); goofyFriends.add("glory");
         goofy.setFriends(goofyFriends);
 //        userService.saveUser(goofy);
-    }
-
-    @Test
-    public void checkIfFriends() {
-        FriendsManager friendsManager = new FriendsManager(this.apiClient);
-
-        UserDto dummy = userMapper.mapToUserDto(userService.getUserByUsername("dummy"));
-        UserDto silly = userMapper.mapToUserDto(userService.getUserByUsername("silly"));
-        UserDto goofy = userMapper.mapToUserDto(userService.getUserByUsername("goofy"));
-        UserDto glory = userMapper.mapToUserDto(userService.getUserByUsername("glory"));
-
-        System.out.println(friendsManager.areTheyFriends(silly, silly));
-        System.out.println(friendsManager.areTheyFriends(goofy, dummy));
-        System.out.println(friendsManager.areTheyFriends(dummy, glory));
     }
 
     @Test
