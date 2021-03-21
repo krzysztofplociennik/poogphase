@@ -1,14 +1,17 @@
 **Description**
 
-The project is sort of a clone of Facebook. It is a very simple implementation but it still inherits fundamental functionalities like creating a post, comment or adding a friend.
+The project is sort of a clone of Facebook. It is a very simple implementation, but it still inherits fundamental functionalities like creating a post, comment or adding a friend.
 
 Please note that the project is in a very early stage and as of now I just want to show basic functions and view. More things are coming soon.
 
-My focus right now would be to add "friend invite" functionality and create a login and registration forms.
+My focus right now would be to create a login and registration forms.
+
+This repository represents the backend of this project.
+The front part is here: https://github.com/krzysztofplociennik/poogphase-front
 
 **Current Stack**
 
-- Java 8
+- Java
 - Spring Boot
 - Hibernate
 - H2 Database
