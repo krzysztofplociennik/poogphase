@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -87,8 +88,6 @@ public class VariousTests {
             dummy.setUsername("dummy");
             dummy.setPassword("drdr");
             dummy.setMail("dreamydrummer@myplace.com");
-            dummy.setFirstName("Dreamy");
-            dummy.setLastName("Drummer");
             dummy.setDateOfBirth(LocalDate.of(1992, 11, 23));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("silly"); friends.add("molina");
@@ -102,8 +101,6 @@ public class VariousTests {
             silly.setUsername("silly");
             silly.setPassword("sisi");
             silly.setMail("silkysillery@myplace.com");
-            silly.setFirstName("Silky");
-            silly.setLastName("Sillery");
             silly.setDateOfBirth(LocalDate.of(1993, 4, 10));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("dummy"); friends.add("goofy"); friends.add("jackz"); friends.add("molina");
@@ -117,8 +114,6 @@ public class VariousTests {
             goofy.setUsername("goofy");
             goofy.setPassword("glgl");
             goofy.setMail("gleefulgluten@myplace.com");
-            goofy.setFirstName("Gleeful");
-            goofy.setLastName("Gluten");
             goofy.setDateOfBirth(LocalDate.of(1989, 9, 1));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("silly"); friends.add("molina"); friends.add("glory");
@@ -132,8 +127,6 @@ public class VariousTests {
             jackz.setUsername("jackz");
             jackz.setPassword("jkjk");
             jackz.setMail("jackful@myplace.com");
-            jackz.setFirstName("Jack");
-            jackz.setLastName("Fuller");
             jackz.setDateOfBirth(LocalDate.of(1990, 5, 12));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("silly");
@@ -147,8 +140,6 @@ public class VariousTests {
             molina.setUsername("molina");
             molina.setPassword("mlml");
             molina.setMail("molinagala@myplace.com");
-            molina.setFirstName("Melanie");
-            molina.setLastName("Gallow");
             molina.setDateOfBirth(LocalDate.of(1992, 2, 28));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("dummy"); friends.add("silly"); friends.add("goofy"); friends.add("glory");
@@ -162,8 +153,6 @@ public class VariousTests {
             glory.setUsername("glory");
             glory.setPassword("glgl");
             glory.setMail("glorywhole@myplace.com");
-            glory.setFirstName("Gloria");
-            glory.setLastName("Winnston");
             glory.setDateOfBirth(LocalDate.of(1988, 10, 18));
             Set<String> friends = new LinkedHashSet<>();
             friends.add("goofy"); friends.add("molina");
@@ -224,7 +213,12 @@ public class VariousTests {
 
     @Test
     public void misc() {
-        System.out.println(userRepository.findByUsername("dummy").getAge());
+        User user = userRepository.findByUsername("dummy");
+        System.out.println(user.getFriends().size());
+
+        user.getFriends().remove("testingFriend");
+        userRepository.save(user);
+
         System.out.println(userRepository.findByUsername("dummy").getFriends().size());
     }
 }

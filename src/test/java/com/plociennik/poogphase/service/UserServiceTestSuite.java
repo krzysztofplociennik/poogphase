@@ -145,10 +145,10 @@ public class UserServiceTestSuite {
     @Test
     public void editExistingUser() {
         User dummy = userService.getUserByUsername("dummy");
-        dummy.setFirstName("Dreamy");
+        dummy.setPassword("Dreamy");
         userService.saveUser(dummy);
 
-        Assert.assertEquals("Dreamy", userService.getUserByUsername("dummy").getFirstName());
+        Assert.assertEquals("Dreamy", userService.getUserByUsername("dummy").getPassword());
     }
 
     @Test

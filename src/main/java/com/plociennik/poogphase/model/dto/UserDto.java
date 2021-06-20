@@ -9,23 +9,18 @@ public class UserDto {
     private String username;
     private String password;
     private String mail;
-    private String firstName;
-    private String lastName;
     private LocalDate dateOfBirth;
     private Set<String> friends;
     private List<PostDto> posts;
     private List<CommentDto> comments;
     private List<ChatMessageDto> messages;
 
-    public UserDto(long id, String username, String password, String mail, String firstName, String lastName,
-                   LocalDate dateOfBirth, Set<String> friends, List<PostDto> posts, List<CommentDto> comments,
-                   List<ChatMessageDto> messages) {
+    public UserDto(long id, String username, String password, String mail, LocalDate dateOfBirth, Set<String> friends,
+                   List<PostDto> posts, List<CommentDto> comments, List<ChatMessageDto> messages) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.mail = mail;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.friends = friends;
         this.posts = posts;
@@ -70,22 +65,6 @@ public class UserDto {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public LocalDate getDateOfBirth() {

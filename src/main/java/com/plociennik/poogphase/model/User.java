@@ -13,23 +13,18 @@ public class User {
     private String username;
     private String password;
     private String mail;
-    private String firstName;
-    private String lastName;
     private LocalDate dateOfBirth;
     private Set<String> friends;
     private List<Post> posts;
     private List<Comment> comments;
     private List<ChatMessage> messages;
 
-    public User(long id, String username, String password, String mail, String firstName, String lastName,
-                LocalDate dateOfBirth, Set<String> friends, List<Post> posts, List<Comment> comments,
-                List<ChatMessage> messages) {
+    public User(long id, String username, String password, String mail, LocalDate dateOfBirth, Set<String> friends,
+                List<Post> posts, List<Comment> comments, List<ChatMessage> messages) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.mail = mail;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.friends = friends;
         this.posts = posts;
@@ -79,24 +74,6 @@ public class User {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    @Column
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Column
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     @Column
@@ -176,14 +153,12 @@ public class User {
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getMail(), user.getMail()) &&
-                Objects.equals(getFirstName(), user.getFirstName()) &&
-                Objects.equals(getLastName(), user.getLastName()) &&
                 Objects.equals(getDateOfBirth(), user.getDateOfBirth()) &&
                 Objects.equals(getFriends(), user.getFriends());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getFirstName(), getLastName(), getDateOfBirth(), (int)(Math.random() * 9999) + 1);
+        return Objects.hash(getId(), getUsername(), getPassword(), getMail(), getDateOfBirth(), (int)(Math.random() * 9999) + 1);
     }
 }
