@@ -157,20 +157,20 @@ public class RandomTestingMain {
 //        randomTestingMain.writeSomething();
 
 
-        Set<String> set = new LinkedHashSet<>();
-        Set<String> set2 = new HashSet<>();
-        set.add("dummy");
-        set.add("silly");
-        System.out.println(set.size());
-        set.add("dummy");
-        set.add("jackz");
-        System.out.println(set.size());
-
-        set.remove("dummy");
-        System.out.println(set.size());
-        set.remove("silly");
-        set.remove("jackz");
-        System.out.println(set.size());
+//        Set<String> set = new LinkedHashSet<>();
+//        Set<String> set2 = new HashSet<>();
+//        set.add("dummy");
+//        set.add("silly");
+//        System.out.println(set.size());
+//        set.add("dummy");
+//        set.add("jackz");
+//        System.out.println(set.size());
+//
+//        set.remove("dummy");
+//        System.out.println(set.size());
+//        set.remove("silly");
+//        set.remove("jackz");
+//        System.out.println(set.size());
 
 
 

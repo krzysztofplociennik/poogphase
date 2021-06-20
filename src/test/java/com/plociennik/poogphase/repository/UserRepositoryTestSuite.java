@@ -94,7 +94,6 @@ public class UserRepositoryTestSuite {
 
     @Test
     public void deleteUser() {
-        //Given
         User user1 = new User();
         user1.setUsername("deleteUsername");
         userRepository.save(user1);
@@ -106,7 +105,6 @@ public class UserRepositoryTestSuite {
 
     @Test
     public void testIfCollectionsAreNotNullUponCreatingNewUser() {
-        //Given
         User user = new User();
         user.setUsername("notNullUsername");
         userRepository.save(user);

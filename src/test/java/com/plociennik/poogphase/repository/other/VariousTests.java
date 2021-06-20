@@ -2,7 +2,6 @@ package com.plociennik.poogphase.repository.other;
 
 import com.plociennik.poogphase.mapper.UserMapper;
 import com.plociennik.poogphase.model.User;
-import com.plociennik.poogphase.model.dto.UserDto;
 import com.plociennik.poogphase.repository.*;
 import com.plociennik.poogphase.service.ChatMessageService;
 import com.plociennik.poogphase.service.CommentService;
@@ -68,7 +67,7 @@ public class VariousTests {
 
     @Test
     public void showRecordsId() {
-        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
+//        for (User user : userRepository.findAll()) { System.out.println(user.getUsername() + " : " + user.getId()); }
 //        for (ChatMessage chatMessage : chatMessageRepository.findAll()) { System.out.println(chatMessage.getContent() + " : " + chatMessage.getId()); }
 //        for (Post post : postRepository.findAll()) { System.out.println(post.getContent() + " : " + post.getId()); }
 //        for (Comment comment : commentRepository.findAll()) { System.out.println(comment.getContent() + " : " + comment.getId()); }
@@ -77,9 +76,6 @@ public class VariousTests {
     @Test
     public void insertData() {
         insertUsers();
-        insertPosts();
-        insertComments();
-        insertMessages();
     }
 
     @Test
@@ -175,27 +171,6 @@ public class VariousTests {
             userRepository.save(glory);
         }
         System.out.println("User size: " + userService.getAllUsers().size());
-    }
-
-    @Test
-    public void insertPosts() {
-        if (userService.getAllUsers().size() != 0) {
-
-        }
-    }
-
-    @Test
-    public void insertComments() {
-        if (userService.getAllUsers().size() != 0 && postService.getAllPosts().size() != 0) {
-
-        }
-    }
-
-    @Test
-    public void insertMessages() {
-        if (userService.getAllUsers().size() != 0) {
-
-        }
     }
 
     @Test

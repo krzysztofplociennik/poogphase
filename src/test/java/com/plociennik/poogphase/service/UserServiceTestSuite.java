@@ -173,11 +173,6 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void addingAlreadyFriend() {
-
-    }
-
-    @Test
     public void deletingFriendAndUpdateUser() {
         System.out.println("Dummy's friends before deleting: ");
         for (String friend : userService.getUserByUsername("dummy").getFriends()) {
